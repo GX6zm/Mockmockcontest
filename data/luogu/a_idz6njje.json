@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="no-js">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta name="csrf-token" content="1794833983:QZrMlYlKnqM/rh7Ym9mh/FbXFauEn9vVlnBPlFwjGtw=">
+    <meta name="renderer" content="webkit">
+    <script>
+        window.__feInitLocalTime = new Date().getTime() / 1000;
+        window.__feConfigVersion = '74d532c6c7861bfe'; window.__feConfigRequest = '\/_lfe\/config'; window.__fePhoneHomeCall = 'https\u003A\/\/moshimoshi\u003Aagltb3noatpwohhuenb5ag1tc2jsnnl3\u0040errtrack.luogu.com.cn\/lotlp1';        window.__luoguTagVersion = 'zh\u002DCN\/2026111520'; window.__luoguTagRequest = '\/_lfe\/tags';
+    </script>
+    <title>别样的 NOIP 大战（CCF视角） - 洛谷专栏</title>
+    <link rel="icon" href="https://fecdn.luogu.com.cn/favicon.ico">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'unsafe-eval' 'unsafe-inline' luogu.com *.luogu.com luogu.com.cn *.luogu.com.cn luogu.org *.luogu.org wss: blob: luoguprivate.oss-cn-hangzhou.aliyuncs.com luogu.oss-cn-hangzhou.aliyuncs.com https://challenges.cloudflare.com https://*.dun.163yun.com https://*.dun.163.com https://*.nosdn.126.net https://*.nosdn.127.net https://nos.netease.com https://cstaticdun.126.net https://cstaticdun1.126.net https://cstaticdun-v6.126.net https://acstatic-dun.126.net; img-src * data:; font-src * data:; worker-src data: blob:; frame-src https://fecdn.luogu.com.cn https://player.bilibili.com https://www.bilibili.com https://challenges.cloudflare.com">
+        <script id="lentille-context" type="application/json">{"instance":"main","template":"article.show","status":200,"locale":"zh-CN","data":{"article":{"lid":"idz6njje","title":"\u522b\u6837\u7684 NOIP \u5927\u6218\uff08CCF\u89c6\u89d2\uff09","category":5,"time":1764424969,"author":{"uid":1038651,"avatar":"https:\/\/cdn.luogu.com.cn\/upload\/usericon\/1038651.png","name":"llamn","slogan":"","badge":null,"isAdmin":false,"isBanned":false,"color":"Red","ccfLevel":7,"xcpcLevel":0,"background":"https:\/\/cdn.luogu.com.cn\/upload\/image_hosting\/2rcj72mi.png"},"upvote":58,"replyCount":25,"favorCount":14,"status":2,"solutionFor":null,"promoteStatus":2,"collection":{"id":219,"name":"NOIP2025 \u6e38\u8bb0"},"content":"\u4eca\u5929\u4e0a\u5348\uff0c\u9009\u624b\u7ed9\u6211\u6253\u6765\u7535\u8bdd\u3002\u4ed6\u8bf4\uff1a\u201c\u6211\u8981 AK \u4e86\uff0c\u4f60\u6562\u4e0d\u6562\u548c\u6211\u4e3e\u884c NOIP \u5927\u6218\uff1f\u201d\u6211\u8c6a\u723d\u7684\u7b54\u5e94\u4e86\uff1a\u201c\u6211\u5f53\u7136\u6562\uff01\uff0c\u5468\u516d\u65e9\u4e0a\u516b\u70b9\u534a\u5728 GDFZ \u4e3e\u884c\uff0c\u8c01\u4e0d\u6765\u8c01\u5c31\u662f\u6002\u8d27\u201d\u3002\n\n\u6211\u539f\u672c\u4ee5\u4e3a\u6211\u6050\u5413\u4e86\u9009\u624b\uff0c\u9009\u624b\u5e94\u8be5\u8eb2\u5728\u5bb6\uff0c\u4e0d\u6562\u627e\u6211\uff0c\u53ef\u6b63\u5f53\u8fd9\u65f6\uff0c\u6211\u542c\u89c1\u4e86\u97f3\u4e50\u58f0\uff0c\u539f\u6765\u662f\u6211\u90ae\u7bb1\u54cd\u4e86\uff0c\u4e00\u770b\uff0c\u7adf\u7136\u662f\u9009\u624b\u53d1\u6765\u7684\u90ae\u4ef6\uff0c\u4ed6\u8fd8\u771f\u6709\u52c7\u6c14\uff0c\u6211\u6253\u5f00\u4e86\u90ae\u7bb1\uff0c\u770b\u89c1\u90ae\u7bb1\u91cc\u9762\u9a82\u9053\uff1a\u201c\u5c0f\u5e9f\u7269\uff0c\u4f60\u600e\u4e48\u8fd8\u4e0d\u53d1 pdf\uff0c\u518d\u4e0d\u6765\u4f60\u7684\u9898\u5c31\u88ab\u6211\u5077\u51fa\u6765\u4e86\u3002\u201d\u6211\u770b\u89c1\u4ed6\u5bf9\u6211\u7684\u6bd2\u9a82\u4e4b\u540e\uff0c\u6211\u56de\u9a82\u9053\uff1a\u201c\u6211\u8981\u628a\u9898\u9762\u548c\u5927\u6837\u4f8b\u90fd\u6539\u6210\u524d\u9762\u5e26 `._` \u7684\u6587\u4ef6\uff0c\u5e2e\u4f60\u666e\u53ca\u4e00\u4e0b macOS\uff0c\u4f60\u8bf4\u597d\u4e0d\u597d\u554a\u3002\u201d\n\n\u4ed6\u5413\u5f97\u6ca1\u518d\u56de\u5e94\u6211\uff0c\u53ef\u662f\u5230\u4e86\u516b\u70b9\u534a\uff0c\u9009\u624b\u7adf\u7136\u53c8\u7ed9\u6211\u5199\u90ae\u4ef6\u4e86\uff0c\u4ed6\u8fd8\u771f\u8981\u548c\u6211\u4e3e\u884c NOIP \u5927\u6218\uff0c\u4e8e\u662f\u6211\u6309\u7167\u7ea6\u5b9a\uff0c\u5230\u8fbe\u4e86 NOIP\uff0c\u53ef\u4ed6\u5df2\u7ecf\u7b49\u6211\u5f88\u4e45\u5e76\u5199\u51fa 2KB \u7684\u7f3a\u7701\u6e90\u4e86\u3002\n\n\u4e0a\u5348\u4e5d\u70b9\uff0c\u6211\u5360\u4eca\u4e0a\u98ce\uff0c\u4ed6\u6bd4\u4e0d\u8fc7\u6211\uff0c\u5230\u4e86\u7b2c\u516d\u56de\u5408\uff0c\u4ed6\u5c31\u4e3b\u52a8\u6eda\u56de\u53bb\u5199\u66b4\u529b\u4e86\u3002\n\n\u7b2c\u4e8c\u5c40\uff0c\u4ed6\u5f00\u59cb\u5360\u4e0a\u98ce\uff0c\u6211\u4e5f\u4e0d\u7518\u52bf\u5f31\uff0c\u6211\u4eec\u50f5\u6301\u4e86\u534a\u4e2a\u5c0f\u65f6\uff0c\u6211\u56e0\u4e3a\u5931\u8bef\u5f80 NOIP \u91cc\u653e\u96be\u5ea6\u4ec5\u4e3a NOIP \u96be\u5ea6\u7684\u9ec4\u9898\uff0c\u88ab\u4ed6 AC \u4e86\u3002   \n\n\u4ece\u90a3\u65f6\u5f00\u59cb\uff0c\u6211\u5c31\u4e0d\u8f7b\u654c\u4e86\uff0c\u6211\u8ba4\u771f\u7814\u7a76\u4ed6\u7684 T1 \u4ee3\u7801\uff0c\u4e8e\u662f\u6211\u603b\u7ed3\u51fa\u4e86\u4e00\u4e2a\u8ba9\u4ed6\u53d1\u73b0\u4e0d\u4e86 `m \u003C sum` \u7684\u5927\u6837\u4f8b\u3002   \n\n\u4e00\u4e2a\u5c0f\u65f6\u540e\uff0c\u6211\u4eec\u4e3e\u884c\u7b2c\u4e09\u5c40\uff0c\u4ed6\u4f7f\u7528\u7956\u4f20\u65b9\u6848\uff0c\u5bf9\u6211\u7684 T2 \u75af\u72c2 all in\uff0c\u6211\u4eec\u52bf\u5747\u529b\u654c\uff0c\u5e73\u5206\u79cb\u8272\uff0c\u6211\u4eec\u6bd4\u4e86 3 \u4e2a\u591a\u5c0f\u65f6\uff0c\u4e5f\u6ca1\u5206\u51fa\u80dc\u8d1f\u3002    \n\n\u540e\u6765\uff0c\u4ed6\u4e0d\u77e5\u4e0d\u89c9\u7684 T2 \u601d\u8def\u60f3\u9519\u4e86\uff0c\u6211\u8d81\u7740\u8fd9\u4e2a\u597d\u673a\u4f1a\uff0c\u4e00\u8bb0\u7d2b\u9ed1\u9ed1\uff0c\u4e00\u98de\u51b2\u5929\uff0c\u6253\u7684\u4ed6\u4e0d\u6562\u8fd8\u624b\uff0c\u5bf9\u4ed6\u7684\u6253\u51fb\u6bd4\u8ffd\u5fc6\u8fd8\u5927\u3002\n\n---    \n\n\u4e0b\u9762\u662f\u6211\u7684\u7ecf\u5386\u3002      \n\u88ab\u524d\u4e09\u573a\u63d0\u9ad8\u7ea7\u6bd4\u8d5b\u8f93\u5165\u4e00\u79cd\u80fd\u5207\u524d\u4e24\u9898\u7684\u795e\u5947\u5e7b\u60f3\uff0c\u6bd4\u8d5b\u5f00\u59cb\u82b1 15min \u505a\u5b8c T1 \u540e\u5168\u529b\u51b2\u51fb T2\uff0c\u4e71\u63a8\u4e86\u4e2a\u51e0\u4e2a\u7ec4\u5408\u6570\u548c 2 \u7684\u5e42\u76f8\u4e58\u7684\u4e71\u4e03\u516b\u7cdf\u516c\u5f0f\uff0c\u6700\u540e\u534a\u4e2a\u5c0f\u65f6\u8349\u8349\u5199\u5b8c $O(2^n)$ \u548c\u4e24\u4e2a\u76f4\u63a5\u8f93\u51fa $2^n$ \u7684\u70b9\u7ed3\u675f\uff0c\u7136\u540e\u51fa\u6765\u53d1\u73b0 T1 \u7684\u5206\u662f\u6b8b\u7f3a\u7684\u3002\n\n\u4e00\u573a\u8ff7\u68a6\u7adf\u7136\u662f\u5982\u6b64\u6536\u573a\u8fd8\u662f\u592a\u770b\u5f97\u8d77\u6211\u4e86\uff0c\u7528\u77f3\u5934\u5c31\u80fd\u6253\u5012\u7684\u7a3b\u8349\u4eba\u4f55\u5fc5\u7528\u5766\u514b\u78be\u538b\uff1f\n\n\u6700\u540e\u795d\u51fa\u9898\u4eba\u3001CCF \u5168\u5bb6\u5065\u5eb7\u3002\n\n---\n\n\u51fa\u5206\u4e86\uff0c$95 + 28 = 123$\u3002    \n\u770b\u4e86\uff08\u5468\u4e09\u7684\uff09[\u7b2c\u4e00\u7bc7\u9898\u89e3](https:\/\/www.luogu.com.cn\/article\/0hx5tid2)\uff0c\u53d1\u73b0\u8d5b\u573a\u601d\u8def\u5df2\u7ecf\u60f3\u5230 `\u8003\u8651\u76f4\u63a5\u5148\u6254 i\u22121 \u5757` \u4e4b\u524d\u4e86\uff0c\u7136\u800c\u5c31\u662f\u5728\u8fd9\u91cc\u53bb\u4e71\u60f3\u4ec0\u4e48\u201c\u679a\u4e3e $2$ \u7684\u6570\u91cf\u201d\u6700\u540e\u5728\u4ee3\u7801\u7684\u65e0\u9650 bug \u4e2d\u79bb\u573a\u3002\n\n\u5982\u679c\u6211\u591a\u60f3\u51e0\u4e0b\u800c\u4e0d\u662f\u76f4\u63a5\u53bb\u60f3 $O(n^3)$\uff0c\u5982\u679c\u6211\u591a\u505a\u51e0\u9053\u7ec4\u5408\u8ba1\u6570\u9898\uff0c\u4e0d\u81f3\u4e8e\u80fd\u505a DS \u84dd\u9898\u800c\u4e0d\u4f1a\u505a\u8ba1\u6570\u9ec4\u9898\uff0c\u5982\u679c\u6211\u7a0d\u5fae\u5b66\u4e00\u4e0b\u6bd4\u8d5b\u524d\u51e0\u5929\u91cc\u770b\u5230\u4e86\u81f3\u5c11\u4e09\u6b21\u7684\u201c\u8303\u5fb7\u8499\u5fb7\u5377\u79ef\u201d\u5462\uff1f\n\n...\u6ca1\u6709\u5982\u679c\u3002\n\n---","contentFull":true,"adminNote":null},"favored":false,"voted":null,"canReply":false,"canEdit":false},"user":null,"time":1794747583.525265}</script>            <script src="https://fecdn.luogu.com.cn/columba/loader.20261113-2335.js" charset="utf-8" defer></script>
+    <link rel="stylesheet" href="https://fecdn.luogu.com.cn/columba/loader.20261113-2335.css" />
+    <script src="https://fecdn.luogu.com.cn/columba/vendor.20261113-2335.js" charset="utf-8" defer></script>
+        <link rel="canonical" href="https://www.luogu.com.cn/article/idz6njje" />
+    <script type="application/ld+json">{"@context":"https:\/\/schema.org","@type":"Article","name":"\u522b\u6837\u7684 NOIP \u5927\u6218\uff08CCF\u89c6\u89d2\uff09","description":"\u4eca\u5929\u4e0a\u5348\uff0c\u9009\u624b\u7ed9\u6211\u6253\u6765\u7535\u8bdd\u3002\u4ed6\u8bf4\uff1a\u201c\u6211\u8981 AK \u4e86\uff0c\u4f60\u6562\u4e0d\u6562\u548c\u6211\u4e3e\u884c NOIP \u5927\u6218\uff1f\u201d\u6211\u8c6a\u723d\u7684\u7b54\u5e94\u4e86\uff1a\u201c\u6211\u5f53\u7136\u6562\uff01\uff0c\u5468\u516d\u65e9\u4e0a\u516b\u70b9\u534a\u5728 GDFZ \u4e3e\u884c\uff0c\u8c01\u4e0d\u6765\u8c01\u5c31\u662f\u6002\u8d27\u201d\u3002\n\u6211\u539f\u672c\u4ee5\u4e3a\u6211\u6050\u5413\u4e86\u9009\u624b\uff0c\u9009\u624b\u5e94\u8be5\u8eb2\u5728\u5bb6\uff0c\u4e0d\u6562\u627e\u6211\uff0c\u53ef\u6b63\u5f53\u8fd9\u65f6\uff0c\u6211\u542c\u89c1\u4e86\u97f3\u4e50\u58f0\uff0c\u539f\u6765\u662f\u6211\u90ae\u7bb1\u54cd\u4e86\uff0c\u4e00\u770b\uff0c\u7adf\u7136\u662f\u9009\u624b\u53d1\u6765\u7684\u90ae\u4ef6\uff0c\u4ed6\u8fd8\u771f\u6709\u52c7\u6c14\uff0c\u6211\u6253\u5f00\u4e86\u90ae\u7bb1\uff0c\u770b\u89c1\u90ae\u7bb1\u91cc\u9762\u9a82\u9053\uff1a\u201c\u5c0f\u5e9f\u7269\uff0c\u4f60\u600e\u4e48\u8fd8\u4e0d\u53d1\u2026","genre":"\u751f\u6d3b\u00b7\u6e38\u8bb0","author":{"@type":"Person","name":"llamn"},"datePublished":"2025-11-29T22:02:49+08:00"}</script>
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content="别样的 NOIP 大战（CCF视角）" />
+    <meta property="og:description" content="今天上午，选手给我打来电话。他说：“我要 AK 了，你敢不敢和我举行 NOIP 大战？”我豪爽的答应了：“我当然敢！，周六早上八点半在 GDFZ 举行，谁不来谁就是怂货”。
+我原本以为我恐吓了选手，选手应该躲在家，不敢找我，可正当这时，我听见了音乐声，原来是我邮箱响了，一看，竟然是选手发来的邮件，他还真有勇气，我打开了邮箱，看见邮箱里面骂道：“小废物，你怎么还不发…" />
+    <meta property="article:section" content="生活·游记" />
+    <meta property="article:author" content="llamn" />
+    <meta property="article:published_time" content="2025-11-29T22:02:49+08:00" />
+    <meta property="og:url" content="https://www.luogu.com.cn/article/idz6njje" />
+    <meta property="og:site_name" content="洛谷专栏" />
+        <script id="luogu-theme" type="application/json">{"id":1,"lNavi":{"back":"#ffffff","fore":"#262626","logo":null},"lBody":{"back":"#f0f4fa","blur":1000,"fade":1000,"image":"https:\/\/cdn.luogu.com.cn\/images\/bg\/fe\/luogu4-bg-l.jpg","midOpts":{"size":"cover"}},"dNavi":{"back":"#1d2025","fore":"#ffffff","logo":"#ffffff"},"dBody":{"back":"#0d1018","blur":1000,"fade":1000,"image":"https:\/\/cdn.luogu.com.cn\/images\/bg\/fe\/luogu4-bg-d.jpg","midOpts":{"size":"cover"}}}</script>
+    <style></style>
+</head>
+<body>
+<div id="app">
+    <noscript>
+        <h3>请<b style="color:#f00;">不要禁用</b>脚本，否则网页无法正常加载</h3>
+    </noscript>
+        <article>
+        <h1>别样的 NOIP 大战（CCF视角）</h1>
+        <p style="font-size: .75em;">
+            <a rel="author">llamn</a>
+            ·
+            <time datetime="2025-11-29T22:02:49+08:00">2025-11-29 22:02:49</time>
+            ·
+            <a href="/article?category=5">生活·游记</a>
+        </p>
+
+        <p>今天上午，选手给我打来电话。他说：“我要 AK 了，你敢不敢和我举行 NOIP 大战？”我豪爽的答应了：“我当然敢！，周六早上八点半在 GDFZ 举行，谁不来谁就是怂货”。</p>
+<p>我原本以为我恐吓了选手，选手应该躲在家，不敢找我，可正当这时，我听见了音乐声，原来是我邮箱响了，一看，竟然是选手发来的邮件，他还真有勇气，我打开了邮箱，看见邮箱里面骂道：“小废物，你怎么还不发 pdf，再不来你的题就被我偷出来了。”我看见他对我的毒骂之后，我回骂道：“我要把题面和大样例都改成前面带 <code>._</code> 的文件，帮你普及一下 macOS，你说好不好啊。”</p>
+<p>他吓得没再回应我，可是到了八点半，选手竟然又给我写邮件了，他还真要和我举行 NOIP 大战，于是我按照约定，到达了 NOIP，可他已经等我很久并写出 2KB 的缺省源了。</p>
+<p>上午九点，我占今上风，他比不过我，到了第六回合，他就主动滚回去写暴力了。</p>
+<p>第二局，他开始占上风，我也不甘势弱，我们僵持了半个小时，我因为失误往 NOIP 里放难度仅为 NOIP 难度的黄题，被他 AC 了。   </p>
+<p>从那时开始，我就不轻敌了，我认真研究他的 T1 代码，于是我总结出了一个让他发现不了 <code>m &lt; sum</code> 的大样例。   </p>
+<p>一个小时后，我们举行第三局，他使用祖传方案，对我的 T2 疯狂 all in，我们势均力敌，平分秋色，我们比了 3 个多小时，也没分出胜负。    </p>
+<p>后来，他不知不觉的 T2 思路想错了，我趁着这个好机会，一记紫黑黑，一飞冲天，打的他不敢还手，对他的打击比追忆还大。</p>
+
+<p>下面是我的经历。<br />
+被前三场提高级比赛输入一种能切前两题的神奇幻想，比赛开始花 15min 做完 T1 后全力冲击 T2，乱推了个几个组合数和 2 的幂相乘的乱七八糟公式，最后半个小时草草写完 <la-tex display="inline">O(2^n)</la-tex> 和两个直接输出 <la-tex display="inline">2^n</la-tex> 的点结束，然后出来发现 T1 的分是残缺的。</p>
+<p>一场迷梦竟然是如此收场还是太看得起我了，用石头就能打倒的稻草人何必用坦克碾压？</p>
+<p>最后祝出题人、CCF 全家健康。</p>
+
+<p>出分了，<la-tex display="inline">95 + 28 = 123</la-tex>。<br />
+看了（周三的）第一篇题解，发现赛场思路已经想到 <code>考虑直接先扔 i−1 块</code> 之前了，然而就是在这里去乱想什么“枚举 <la-tex display="inline">2</la-tex> 的数量”最后在代码的无限 bug 中离场。</p>
+<p>如果我多想几下而不是直接去想 <la-tex display="inline">O(n^3)</la-tex>，如果我多做几道组合计数题，不至于能做 DS 蓝题而不会做计数黄题，如果我稍微学一下比赛前几天里看到了至少三次的“范德蒙德卷积”呢？</p>
+<p>...没有如果。</p>
+
+    </article>
+</div>
+<script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a5ae6f4b2e2b9ae8',t:'MTc5NDc0NzU4Mw=='};var l=window.parent.location,o;try{o=new URL(l.origin).origin}catch(e){try{o=new URL(new URL(l.href).origin).origin}catch(e){o=''}}var u='/cdn-cgi/challenge-platform/scripts/jsd/main.js?ray=a5ae6f4b2e2b9ae8',a=document.createElement('script');a.src=o?new URL(u,o).href:u;document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

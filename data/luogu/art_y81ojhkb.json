@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="no-js">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta name="csrf-token" content="1794832224:OrE5KE7Y8QZgM/nOotgILUI5Sw5BazwKoZaouqG508I=">
+    <meta name="renderer" content="webkit">
+    <script>
+        window.__feInitLocalTime = new Date().getTime() / 1000;
+        window.__feConfigVersion = '74d532c6c7861bfe'; window.__feConfigRequest = '\/_lfe\/config'; window.__fePhoneHomeCall = 'https\u003A\/\/moshimoshi\u003Aagltb3noatpwohhuenb5ag1tc2jsnnl3\u0040errtrack.luogu.com.cn\/lotlp1';        window.__luoguTagVersion = 'zh\u002DCN\/2026111520'; window.__luoguTagRequest = '\/_lfe\/tags';
+    </script>
+    <title>NOI 2026 游记 - 洛谷专栏</title>
+    <link rel="icon" href="https://fecdn.luogu.com.cn/favicon.ico">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'unsafe-eval' 'unsafe-inline' luogu.com *.luogu.com luogu.com.cn *.luogu.com.cn luogu.org *.luogu.org wss: blob: luoguprivate.oss-cn-hangzhou.aliyuncs.com luogu.oss-cn-hangzhou.aliyuncs.com https://challenges.cloudflare.com https://*.dun.163yun.com https://*.dun.163.com https://*.nosdn.126.net https://*.nosdn.127.net https://nos.netease.com https://cstaticdun.126.net https://cstaticdun1.126.net https://cstaticdun-v6.126.net https://acstatic-dun.126.net; img-src * data:; font-src * data:; worker-src data: blob:; frame-src https://fecdn.luogu.com.cn https://player.bilibili.com https://www.bilibili.com https://challenges.cloudflare.com">
+        <script id="lentille-context" type="application/json">{"instance":"main","template":"article.show","status":200,"locale":"zh-CN","data":{"article":{"lid":"y81ojhkb","title":"NOI 2026 \u6e38\u8bb0","category":5,"time":1784872015,"author":{"uid":546441,"avatar":"https:\/\/cdn.luogu.com.cn\/upload\/usericon\/546441.png","name":"white_tiger_yyyy","slogan":"Dust to Dust, Ash to Ash, \u5f7c\u65b9\u3078","badge":null,"isAdmin":false,"isBanned":false,"color":"Red","ccfLevel":9,"xcpcLevel":0,"background":"https:\/\/cdn.luogu.com.cn\/upload\/image_hosting\/6we7gypp.png"},"upvote":9,"replyCount":10,"favorCount":3,"status":2,"solutionFor":null,"promoteStatus":2,"collection":{"id":228,"name":"NOI 2026 \u6e38\u8bb0"},"content":"# NOI2026 \u6e38\u8bb0\n\n## \u524d\u8a00\n\n\u5c18\u57c3\u843d\u5b9a\uff0c\u662f\u4e2a\u8ba9\u4eba\u5f88\u96be\u4e0d\u6ee1\u610f\u7684\u6210\u7ee9\uff0c\u4f46\u662f\u786e\u5b9e\u66b4\u9732\u51fa\u4e86\u592a\u591a\u95ee\u9898\u554a\u2026\u2026\n\n## Day -1\n\n\u5230\u8fbe cyyz \u4e86\uff0c\u7136\u540e\u53d1\u73b0\u4f4f\u5bbf\u6761\u4ef6\u610f\u5916\u7684\u597d\uff0c\u800c\u4e14\u597d\u7684\u79bb\u8c31\u4e86\uff0c\u751a\u81f3\u8fd8\u6709\u868a\u5e10\u548c\u5927\u91cf\u7684\u6d17\u6f31\u7528\u54c1\uff0c\u8fd9\u771f\u7684\u662f\u90a3\u4e2a\u6c34\u6cd5\u70bc\u94dc\u3001\u6298\u53e0\u95e8\u9501\u4e0a\u5c31\u6253\u4e0d\u5f00\u7684 cyyz \u5417\uff0c\u4ece\u826f\u4e86\uff1f\uff1f\uff1f\n\n\u7136\u540e\u53bb\u4e86\u98df\u5802\u53d1\u73b0\u771f\u4ece\u826f\u4e86\uff0c\u4ee4\u4eba\u5b8c\u5168\u65e0\u6cd5\u5c06\u73b0\u5728\u7684 cyyz \u548c\u5c71\u4e1c\u7701\u96c6\u7684 cyyz \u626f\u4e0a\u5173\u7cfb\uff0c\u5413\u54ed\u4e86\u3002\n\n\u7136\u540e\u7531\u4e8e\u548c\u6211\u4e00\u4e2a\u5bbf\u820d\u7684 $\\color{gold}{tebiezhichu}$\u3001xzz \u662f SN \u5fd7\u613f\u8005\uff0c\u6240\u4ee5\u4e00\u5927\u6279 SN \u5165\u6765\u6211\u4eec\u5bbf\u820d\u62ff\u5fbd\u7ae0\uff0c\u7136\u540e\u6211\u5c31\u8d81\u673a\u6362\u4e86\u4e00\u6ce2\uff08\u8bdd\u8bf4\u4e3a\u4ec0\u4e48\u53ea\u6709\u6211\u7684\u5fbd\u7ae0\u662f\u7b80\u7b14\u753b\u554a\u5582\uff09\uff0c\u665a\u4e0a\u53c8\u627e ZR \u548c HZ \u7684\u540c\u5b66\u6362\u4e86\u4e00\u6ce2\uff0c\u7136\u540e\u53d1\u73b0\u4e86 zyx\uff0c\u4e8e\u662f\u7ed9\u4e86\u4ed6\u5fbd\u7ae0\u3002\n\n\u7136\u540e\u5c31\u662f\u5237\u624b\u673a\u548c\u7761\u89c9\u4e86\u3002\n\n## Day 0\n\n\u65e9\u9910\u4e5f\u5f88\u4e0d\u9519\u3002\n\n\u53c2\u52a0\u5f00\u5e55\u5f0f\uff0c\u7136\u540e\u53d1\u73b0 SN \u5c11\u4e86\u4e00\u4e2a\u4f4d\u7f6e\uff0c\u7136\u540e\u5c31\u5360\u4e86\u4e00\u4e2a SX \u7684\u5ea7\u4f4d\uff0c\u7ed3\u679c SX \u7684\u9009\u624b\u4f3c\u4e4e\u76f4\u63a5\u5750\u5230\u8d35\u5bbe\u5e2d\u4e86\uff0c\u597d\u4e8b\u554a\uff01\uff08\n\n\u4e8e\u662f\u5c31\u6709\u4e86\u5f00\u5e55\u96f7\u51fb\u4e4b\uff1a\n\n\u003E \u5927\u6d77\u554a\uff0c\u4f60\u7684\u5473\u9053\u5c31\u50cf\u6211\u7684**\u7238\u7238\u5988\u5988**\uff01\n\n\u4e4b\u540e\u7684\u5c0f\u5b66\u751f\u8868\u6f14\u4e5f\u662f\u516b\u4ed9\u8fc7\u6d77\uff0c\u5404\u663e\u795e\u901a\u4e86\uff0c\u8fd9\u5c31\u662f NOI \u7684\u5f00\u5e55\u5f0f\u5417\uff1f\n\n\u675c\u7237\u7237\u518d\u6b21\u5949\u732e\u4e86\u4f1f\u5927\u7684\u4f18\uff08chao\uff09\u5f02\uff08feng\uff09\u6f14\uff08guo\uff09\u8bb2\uff08zu\uff09\uff0c\u8868\u8fbe\u4e86\u5e0c\u671b\u638c\u7ba1\u56fd\u8db3\u7684\u5b8f\u4f1f\u5fd7\u5411\uff0c\u53ef\u559c\u53ef\u8d3a\uff0c\u53ef\u559c\u53ef\u8d3a\uff01\u8ba9\u6211\u4eec\u795d\u613f\u4e2d\u56fd\u8db3\u7403\u5728\u4fe1\u606f\u5b66\u7684\u52a0\u6301\u4e0b\u8d70\u5411\u6bd4\u5149\u660e\u66f4\u52a0\u5149\u660e\u7684\u5149\u660e\u7684\u5149\u660e\u7684\u672a\u6765\uff01\uff08\n\n\u4e0b\u5348\u8003\u7b14\u8bd5\uff0c\u8003\u524d\u901f\u901a\u4e86\u4e00\u8fb9\uff0c\u7b2c\u4e00\u904d\u5199\u5b8c\u4e4b\u540e\u89c9\u5f97\u81ea\u5df1\u6ee1\u4e86\uff0c\u7136\u540e\u7b2c\u4e8c\u904d\u53d1\u73b0\u6f0f\u4e86\u9053\u9898\uff0c\u7b2c\u4e09\u904d\u53d1\u73b0\u6709\u9053\u9898\u9519\u4e86\uff08\u57cb\u4e0b\u4f0f\u7b14\uff0c\u4e0e\u672c\u4eba UNR \u5f62\u6210\u9c9c\u660e\u5bf9\u6bd4\uff09\uff0c\u6700\u540e\u4e5f\u662f\u5b89\u7a33\u7684 AK \u4e86\u7b14\u8bd5\u4e86\u3002\n\n\u665a\u4e0a\u7a0d\u5fae\u590d\u4e60\u4e86\u4e00\u4e0b\u677f\u5b50\uff0c\u4e8b\u5b9e\u8bc1\u660e\u6ca1\u5565\u5375\u7528\u3002\n\n## Day 1\n\n\u56e0\u4e3a\u5bc6\u7801\u6761\u4e0b\u53d1\u592a\u5feb\u4e86\u6240\u4ee5\u5ef6\u4e86 5 min\u3002\n\n\u770b\u5230 T1 \u5f88\u5feb\u60f3\u5230\u601d\u8def\uff0c\u4f46\u7a7a\u95f4\u5de8\u5927\uff0c\u540e\u6765\u53d1\u73b0\u53ef\u4ee5\u6eda\u6389 K \u8fd9\u4e00\u7ef4\uff0c\u7ed3\u679c\u7531\u4e8e\u72b6\u6001\u6570\u8bbe\u6210\u4e86 $O(\\sum nm)$ \u5bfc\u81f4\u65f6\u95f4\u590d\u6742\u5ea6\u53d8\u6210\u4e86 $O(\\sum n^2k)$\uff0c\u5bfc\u81f4\u75db\u5931 8 pts\uff0c\u9669\u4e9b\u57cb\u4e0b\u4f0f\u7b14\u3002\n\n2.5h \u5f00\u59cb\u770b T2\uff0c\u5f88\u5feb\u53d1\u73b0\u7b54\u6848\u4e00\u5b9a\u662f\u5bf9\u4e8e $dep\u003Ck$ \u7684\u5f80\u6839\u8d70\uff0c\u5176\u4ed6\u968f\u673a\u8df3\uff0c\u5199\u4e86\u4e2a $O(n^2)$ \u8dd1\u8def\uff0c\u7ed3\u679c\u5b8c\u5168\u6ca1\u60f3\u5230\u53ef\u4ee5\u6dc0\u7c89\u8d28\u3002\u7136\u540e\u548c T3 \u53ae\u6740\uff0c\u60f3\u5230\u53ef\u4ee5\u6bcf\u6b21\u52a0\u4e00\u4e2a\u6570\uff0c\u8fd9\u6837\u5c31\u53ef\u4ee5\u7f29\u5c0f\u4e0d\u5c11\u8303\u56f4\uff0c\u4f46\u6ca1\u60f3\u5230\u53ef\u4ee5\u4e00\u6b21\u6254\u4e00\u5806\uff0c\u5bfc\u81f4\u53ea\u6709 25pts\u3002\n\n\u6700\u7ec8\u5f97\u5206 92+50+25=167pts\uff0c\u7ed3\u679c\u51fa\u8003\u573a\u53d1\u73b0 $\\color{gold}{tebiezhichu}$ \u76f4\u63a5 257 \u4e86\uff0cdyc \u4e5f\u662f 200+\uff0cxzz \u548c 47 \u90fd\u662f 190 \u5de6\u53f3\uff0c\u5c31\u8fde\u5931\u8bef\u8fde\u8fde\u7684 dzb \u4e5f\u6ca1\u6bd4\u6211\u4f4e\u591a\u5c11\uff0c\u6211\u7684\u6210\u7ee9\u5df2\u7ecf\u62c9\u5b8c\u4e86\u3002\n\n\u55b7\u96fe\u74f6\u59d0\u59d0\u5931\u8bef\u4e86\uff0c\u53ef\u60dc\u554a\u2026\u2026\n\n\u5f53\u65f6\u5c31\u89c9\u5f97\u81ea\u5df1\u5b8c\u86cb\u4e86\uff0c\u53ef\u80fd\u8fde\u94dc\u90fd\u6ca1\u4e86\uff0c\u4e0d\u8fc7\u5f97\u4e8f\u662f\u4e24\u5929\uff0c\u6240\u4ee5\u89c9\u5f97\u81ea\u5df1\u8fd8\u662f\u6709\u5e0c\u671b\u7684\uff0c\u6240\u4ee5\u5fc3\u6001\u5f53\u5929\u5185\u4e5f\u5c31\u8c03\u6574\u597d\u4e86\u3002\n\n## Day 1.5\n\n\u7814\u5b66\u62c9\u5b8c\u4e86\uff0c\u4e0d\u5230\u4e03\u70b9\u4e0a\u8f66\u7ed3\u679c\u6d77\u519b\u535a\u7269\u9986\u9152\u5e97\u624d\u5f00\u95e8\uff0c\u5728\u8f66\u4e0a\u5446\u4e86 3.5 h \u624d\u4e0b\u8f66\u3002\u73a9\u7684\u65f6\u5019\u8fd8\u633a\u5f00\u5fc3\u7684\uff0c\u6709\u5927\u6d77\uff0c\u4e8e\u662f\u6211\u5f00\u59cb\u64ad\u653e\uff1a\n\n\u003E \u5927\u6d77\u554a\uff0c\u4f60\u7684\u5473\u9053\u5c31\u50cf\u6211\u7684**\u7238\u7238\u5988\u5988**\uff01\n\n\u6700\u7ec8\u5728\u6211\u6821\u540c\u5b66\u7684\u529d\u8bf4\u4e0b\uff0c\u6211\u505c\u6b62\u4e86\u64ad\u653e\u3002\n\n\u4f46\u662f\u73a9\u7684\u65f6\u95f4\u9876\u591a\u4e5f\u5c31\u534a\u5c0f\u65f6\uff0c\u800c\u6211\u4eec\u4e3a\u4e86\u8fd9\u534a\u5c0f\u65f6\u6d88\u8017\u4e86\u4e94\u516d\u4e2a\u5c0f\u65f6\uff0c\u62c9\u5b8c\u4e86\u3002\n\n\u4e0d\u8fc7 47 \u7684 P \u8bdd\u5730\u4f4d\u5f97\u5230\u4e86 sry \u7684\u8ba4\u53ef\u3002\n\n\u5269\u4e0b\u65f6\u95f4\u7528\u6765\u9893\u5e9f\u3001\u7761\u89c9\u548c\u590d\u4e60\u677f\u5b50\uff08\u8fd8\u5dee\u70b9\u628a\u665a\u996d\u7761\u8fc7\u53bb\u4e86\uff09\u3002\n\n## Day 2\n\nT1 \u4e0d\u662f\u5f88\u597d\u50cf\uff0c\u4f46\u662f\uff0c\u6211\u770b\u5230\u4e86\u4e00\u4e2a\u53eb\u505a $k\u003E5$ \u7684\u4e1c\u897f\u3002\n\n\u6b64\u65f6\uff0c\u4f5c\u4e3a\u4e00\u540d\u641e\u7b11\u6905\u5b50\u7ade\u8d5b\u56e2\u961f\u51fa\u4ea7\u7684\u4f18\u79c0 ~~\u4e71\u641e~~ \u9009\u624b\uff0c\u6211\u610f\u8bc6\u5230\u4e86\u672c\u9898\u4e00\u5b9a\u5b58\u5728\u4e00\u79cd\u5bf9\u4e8e $k$ \u8f83\u5927\u7684\u60c5\u51b5\u6210\u7acb\u7684\u505a\u6cd5\uff01\u7136\u540e\u5c31\u987a\u7406\u6210\u7ae0\u5730\u60f3\u5230\u4e86 $k\\ne 2,3,5$ \u65f6\u5019\u7684\u6d88\u6d88\u4e50\u505a\u6cd5\uff0c\u518d\u7ed3\u5408 $O(kn\\log n)$ \u7684\u66b4\u529b\u901a\u8fc7\u4e86\u8fd9\u9053\u9898\uff0c\u6b64\u65f6\u624d\u8fc7\u4e86 1.5h\u3002\n\n\u7ed3\u679c\u6211\u5728\u505a T2 \u7684\u65f6\u5019\u81ea\u4fe1\u5fc3\u8fc7\u4e8e\u7206\u68da\uff0c\u5bfc\u81f4\u7528\u4e86 2h \u641e\u9519\u4e86\u7ebf\u6027\u8fd8\u539f prufer \u5e8f\u5217\u7684\u65b9\u6cd5\uff0c\u6700\u540e\u53ea\u80fd\u901f\u901a\u4e2a\u66b4\u529b\uff0c\u6700\u540e 100+20+8=128pts \u9057\u61be\u79bb\u573a\u4e86\u3002\n\n\u51fa\u8003\u573a\u5148\u9047\u5230\u4e86 dyc \u548c dzb\uff0c\u524d\u8005\u6ca1\u4e0a 110pts\uff0c\u540e\u8005 144pts\uff08\u5b9e\u5219\u7531\u4e8e pretest \u592a\u62c9\u5b9e\u9645\u4e0a\u53ea\u6709 134pts\uff09\uff0c\u611f\u89c9\u81ea\u5df1\u8fd8\u884c\uff1f\n\n\u7136\u540e\u53d1\u73b0 $\\color{gold}{tebiezhichu}$ 200pts\u2026\u2026\u641e\u7b11\u6905\u5b50\u771f\u8981\u6709\u91d1\u4e86\uff1f\n\n47 \u5927\u4eba\u4e09\u5929\u52a0\u8d77\u6765\u5f97\u6709 450pts \u5de6\u53f3\uff0c47 \u5927\u4eba\u5f3a\u5f3a\uff01\n\nbobo \u95ee\u6211\u4e09\u5929\u603b\u5206\u591a\u5c11\uff0c\u6211\u8bf4 395\uff0c\u7136\u540e\u4ed6\u8bf4\uff0c**\u8bf4\u4e0d\u5b9a\u6709\u94f6\u5462**\u3002\n\n\u7ed3\u679c\u6210\u7ee9\u51fa\u6765\u53d1\u73b0\u94f6\u7ebf\u771f\u7684\u662f 395-\uff0c\u7ed9 bobo \u8dea\u4e86\uff0c\u6211\u548c 397 \u7684 dzb \u53d1\u8a93\u518d\u4e5f\u4e0d\u9a82 bobo \u4e86\u3002\n\n\u665a\u4e0a\u5609\u5e74\u534e xjy \u4e00\u5c55\u6b4c\u5589\uff0c\u8fd8\u5c55\u793a\u4e86\u9ad8\u8d85\u7684\u559d\u6c34\u6280\u672f\uff08\u5728\u95f4\u594f\u559d\u6c34\uff09\u3002\u8fd8\u6709\u8d85\u7ea7\u544a\u767d\u54e5\u3002\n\n\u8e22\u4e86\u8e22\u7403\uff0c\u611f\u89c9\u6280\u672f\u6709\u70b9\u7cd9\u4e86\uff0c\u8fd8\u5f97\u6253\u78e8\u554a\u2026\u2026\n\n\u53d1\u73b0\u641e\u7b11\u6905\u5b50 ABDE \u52a0\u8d77\u6765 1 \u91d1 5 \u94f6\uff0c~~\u8fde\u4e2a\u94dc\u90fd\u62ff\u4e0d\u5230\uff0c\u641e\u7b11\u6905\u5b50\u73b0\u5728\u4e00\u4e2a 8 \u7ea7\u52fe\u90fd\u6ca1\u6709\uff0c\u62c9\u6210\u5565\u4e86\u8bf4\u662f\uff0c\u641e\u7b11\u6905\u5b50\u5b8c\u86cb\u4e86~~\u3002\n\n\u665a\u4e0a\u548c\u540c\u5b66\u5f7b\u591c\u957f\u8c08\uff0c\u7b2c\u4e00\u6b21\u611f\u89c9\u548c\u5fd7\u540c\u9053\u5408\u7684\u540c\u5b66\u4eec\u8bf4\u8bdd\u539f\u6765\u662f\u5982\u6b64\u653e\u677e\u8212\u9002\u7684\u4e00\u4ef6\u4e8b\u554a\u2026\u2026\n\n## Day 3\n\n\u4e0a\u5348\u4e3b\u9898\u6d3b\u52a8\u60ca\u73b0 AK \u4e86 NOI \u7684\u5927\u4f6c zxx \u7684\u6f14\u8bb2\uff0c\u5413\u54ed\u4e86\u3002\n\n47 \u59d0\u59d0\u600e\u4e48\u6210\u6e29\u5dde\u4e2d\u5b66\u7684\u4e86\uff0c\u6b38\u6b38\u6b38\u3002\u8fd8\u6709\u600e\u4e48\u957f\u98ce\u957f\u98ce\u5531\u4e86\u4e24\u904d\u554a\u3002\n\n\u7b2c\u4e00\u6b21\u542c\u4e86\u8702\u9e1f\uff0c\u5f88\u597d\u542c\uff0c\u800c\u4e14\u611f\u89c9\u6211\u4e5f\u80fd\u5531\u3002\n\n\u4e0b\u5348\u95ed\u5e55\u5f0f\uff0c\u675c\u7237\u7237\u5c55\u793a\u4e86\u60ca\u4eba\u7684\u9881\u5956\u80fd\u529b\uff0c\u5305\u62ec\u4f46\u4e0d\u9650\u4e8e\u628a\u4e00\u7fa4\u6392\u6392\u961f\u51c6\u5907\u9886\u5956\u7684\u9009\u624b\u76f4\u63a5\u4ece\u5de6\u8fb9\u6254\u5230\u53f3\u8fb9\u3001\u8ffd\u5fc6 IOI2001\uff08\u6211\u5e38\u5e38\u8ffd\u5fc6\u8fc7\u53bb.jpg\uff09\u3001\u5728\u53f0\u4e0a\u7ed9\u9009\u624b\u9881\u5b8c\u5956\u540e\u8e39\u4eba\u5bb6\u4e00\u811a\u7b49\u53cb\u597d\u64cd\u4f5c\u3002\u675c\u7237\u7237\u8fd8\u662f\u592a\u6709\u6d3b\u4e86\uff0c\u7b80\u76f4\u662f NOI \u5f00\u95ed\u5e55\u5f0f\u7684\u7075\u9b42\u554a\u2026\u2026\n\n\u9886\u5956\u7684\u65f6\u5019\u5f88\u6fc0\u52a8\uff0c\u4e0d\u8fc7\u552f\u4e00\u7684\u5f71\u50cf\u8d44\u6599\u62cd\u51fa\u4e86\u767d\u96ea\u832b\u832b\u4e4b\u611f\u3002\n\n\u8fd9\u4e2a\u5973\u4e3b\u6301\u4eba\u62c9\u5b8c\u4e86\uff0c\u6587\u76f2\u6765\u7684\uff0c\u8fd8\u62a2\u53e6\u4e00\u4e2a\u4e3b\u6301\u4eba\u7684\u8bdd\uff0c\u69fd\u70b9\u592a\u591a\u4e86\u3002\u800c\u4e14\u58f0\u97f3\u592a\u5927\uff0c\u9707\u5f97\u4eba\u4e0d\u8212\u670d\uff0c\u5fc3\u60c5\u90fd\u7ed9\u641e\u7cdf\u4e86\u3002\n\n\u95ed\u5e55\u5f0f\u5b8c\u4e4b\u540e\u6025\u901f\u6536\u62fe\u4e1c\u897f\u8d70\u4eba\u4e86\u3002\n\n## \u540e\u8bb0\n\n\u65e0\u8bba\u8fc7\u7a0b\u600e\u4e48\u6837\uff0c\u7ed3\u679c\u662f\u597d\u7684\u5c31\u597d\u3002\n\n\u65e2\u7136\u6709\u94f6\u724c\uff0c\u9ad8\u4e8c\u4f30\u8ba1\u5c31\u4e0d\u4f1a\u518d\u82b1\u4e00\u6574\u5e74\u4e13\u6ce8\u7ade\u8d5b\u4e86\uff0c\u80af\u5b9a\u4f1a\u56de\u4e00\u70b9\u6587\u5316\u8bfe\uff0c\u4ee5\u4fdd\u969c\u6700\u7ec8\u7684\u7ed3\u679c\u5427\u3002\n\n\u5176\u5b9e\u6211\u89c9\u5f97\u6211\u9ad8\u4e8c\u5b8c\u5168\u6709\u53ef\u80fd\u62ff\u91d1\u724c\uff0c\u867d\u7136\u96be\u5ea6\u5f88\u5927\uff0c\u53ef\u80fd\u6027\u5f88\u5c0f\uff0c\u4f46\u662f\u6211\u5f00\u59cb\u76f8\u4fe1\u6211\u81ea\u5df1\u4e86\u3002\n\n\u6211\u7b2c\u4e00\u6b21\u610f\u8bc6\u5230\uff0c\u50cf\u6211\u8fd9\u79cd\u5b8c\u5168\u56e0\u4e3a\u5bf9\u7ade\u8d5b\u7684\u70ed\u7231\u800c\u5f00\u59cb\u5b66\u4e60\uff0c\u5e76\u575a\u6301\u5982\u6b64\u957f\u4e00\u6bb5\u65f6\u95f4\u7684\u4eba\uff0c\u5e76\u6ca1\u6709\u6211\u60f3\u8c61\u7684\u90a3\u4e48\u591a\u554a\u3002\n\n\u65e2\u7136\u6211\u70ed\u7231\u7ade\u8d5b\uff0c\u90a3\u5c31\u8981\u5168\u529b\u4ee5\u8d74\uff0c\u67e5\u6f0f\u8865\u7f3a\uff1b\u65e2\u7136\u6211\u7684\u4eba\u751f\u4e0d\u53ea\u6709\u7ade\u8d5b\uff0c\u90a3\u5c31\u4e0d\u80fd\u653e\u5f03\u6587\u5316\u8bfe\uff0c\u5fc5\u987b\u517c\u987e\u3002\u6211\u53ef\u80fd\u73b0\u5728\u624d\u8ba4\u8bc6\u5230\u8fd9\u4ef6\u4e8b\u5427\u3002","contentFull":true,"adminNote":null},"favored":false,"voted":null,"canReply":false,"canEdit":false},"user":null,"time":1794745824.802697}</script>            <script src="https://fecdn.luogu.com.cn/columba/loader.20261113-2335.js" charset="utf-8" defer></script>
+    <link rel="stylesheet" href="https://fecdn.luogu.com.cn/columba/loader.20261113-2335.css" />
+    <script src="https://fecdn.luogu.com.cn/columba/vendor.20261113-2335.js" charset="utf-8" defer></script>
+        <link rel="canonical" href="https://www.luogu.com.cn/article/y81ojhkb" />
+    <script type="application/ld+json">{"@context":"https:\/\/schema.org","@type":"Article","name":"NOI 2026 \u6e38\u8bb0","description":"NOI2026 \u6e38\u8bb0\n\u524d\u8a00\n\u5c18\u57c3\u843d\u5b9a\uff0c\u662f\u4e2a\u8ba9\u4eba\u5f88\u96be\u4e0d\u6ee1\u610f\u7684\u6210\u7ee9\uff0c\u4f46\u662f\u786e\u5b9e\u66b4\u9732\u51fa\u4e86\u592a\u591a\u95ee\u9898\u554a\u2026\u2026\nDay -1\n\u5230\u8fbe cyyz \u4e86\uff0c\u7136\u540e\u53d1\u73b0\u4f4f\u5bbf\u6761\u4ef6\u610f\u5916\u7684\u597d\uff0c\u800c\u4e14\u597d\u7684\u79bb\u8c31\u4e86\uff0c\u751a\u81f3\u8fd8\u6709\u868a\u5e10\u548c\u5927\u91cf\u7684\u6d17\u6f31\u7528\u54c1\uff0c\u8fd9\u771f\u7684\u662f\u90a3\u4e2a\u6c34\u6cd5\u70bc\u94dc\u3001\u6298\u53e0\u95e8\u9501\u4e0a\u5c31\u6253\u4e0d\u5f00\u7684\u2026","genre":"\u751f\u6d3b\u00b7\u6e38\u8bb0","author":{"@type":"Person","name":"white_tiger_yyyy"},"datePublished":"2026-07-24T13:46:55+08:00"}</script>
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content="NOI 2026 游记" />
+    <meta property="og:description" content="NOI2026 游记
+前言
+尘埃落定，是个让人很难不满意的成绩，但是确实暴露出了太多问题啊……
+Day -1
+到达 cyyz 了，然后发现住宿条件意外的好，而且好的离谱了，甚至还有蚊帐和大量的洗漱用品，这真的是那个水法炼铜、折叠门锁上就打不开的…" />
+    <meta property="article:section" content="生活·游记" />
+    <meta property="article:author" content="white_tiger_yyyy" />
+    <meta property="article:published_time" content="2026-07-24T13:46:55+08:00" />
+    <meta property="og:url" content="https://www.luogu.com.cn/article/y81ojhkb" />
+    <meta property="og:site_name" content="洛谷专栏" />
+        <script id="luogu-theme" type="application/json">{"id":1,"lNavi":{"back":"#ffffff","fore":"#262626","logo":null},"lBody":{"back":"#f0f4fa","blur":1000,"fade":1000,"image":"https:\/\/cdn.luogu.com.cn\/images\/bg\/fe\/luogu4-bg-l.jpg","midOpts":{"size":"cover"}},"dNavi":{"back":"#1d2025","fore":"#ffffff","logo":"#ffffff"},"dBody":{"back":"#0d1018","blur":1000,"fade":1000,"image":"https:\/\/cdn.luogu.com.cn\/images\/bg\/fe\/luogu4-bg-d.jpg","midOpts":{"size":"cover"}}}</script>
+    <style></style>
+</head>
+<body>
+<div id="app">
+    <noscript>
+        <h3>请<b style="color:#f00;">不要禁用</b>脚本，否则网页无法正常加载</h3>
+    </noscript>
+        <article>
+        <h1>NOI 2026 游记</h1>
+        <p style="font-size: .75em;">
+            <a rel="author">white_tiger_yyyy</a>
+            ·
+            <time datetime="2026-07-24T13:46:55+08:00">2026-07-24 13:46:55</time>
+            ·
+            <a href="/article?category=5">生活·游记</a>
+        </p>
+
+        <h1>NOI2026 游记</h1>
+<h2>前言</h2>
+<p>尘埃落定，是个让人很难不满意的成绩，但是确实暴露出了太多问题啊……</p>
+<h2>Day -1</h2>
+<p>到达 cyyz 了，然后发现住宿条件意外的好，而且好的离谱了，甚至还有蚊帐和大量的洗漱用品，这真的是那个水法炼铜、折叠门锁上就打不开的 cyyz 吗，从良了？？？</p>
+<p>然后去了食堂发现真从良了，令人完全无法将现在的 cyyz 和山东省集的 cyyz 扯上关系，吓哭了。</p>
+<p>然后由于和我一个宿舍的 <la-tex display="inline">\color{gold}{tebiezhichu}</la-tex>、xzz 是 SN 志愿者，所以一大批 SN 入来我们宿舍拿徽章，然后我就趁机换了一波（话说为什么只有我的徽章是简笔画啊喂），晚上又找 ZR 和 HZ 的同学换了一波，然后发现了 zyx，于是给了他徽章。</p>
+<p>然后就是刷手机和睡觉了。</p>
+<h2>Day 0</h2>
+<p>早餐也很不错。</p>
+<p>参加开幕式，然后发现 SN 少了一个位置，然后就占了一个 SX 的座位，结果 SX 的选手似乎直接坐到贵宾席了，好事啊！（</p>
+<p>于是就有了开幕雷击之：</p>
+<blockquote>
+<p>大海啊，你的味道就像我的<strong>爸爸妈妈</strong>！</p>
+</blockquote>
+<p>之后的小学生表演也是八仙过海，各显神通了，这就是 NOI 的开幕式吗？</p>
+<p>杜爷爷再次奉献了伟大的优（chao）异（feng）演（guo）讲（zu），表达了希望掌管国足的宏伟志向，可喜可贺，可喜可贺！让我们祝愿中国足球在信息学的加持下走向比光明更加光明的光明的光明的未来！（</p>
+<p>下午考笔试，考前速通了一边，第一遍写完之后觉得自己满了，然后第二遍发现漏了道题，第三遍发现有道题错了（埋下伏笔，与本人 UNR 形成鲜明对比），最后也是安稳的 AK 了笔试了。</p>
+<p>晚上稍微复习了一下板子，事实证明没啥卵用。</p>
+<h2>Day 1</h2>
+<p>因为密码条下发太快了所以延了 5 min。</p>
+<p>看到 T1 很快想到思路，但空间巨大，后来发现可以滚掉 K 这一维，结果由于状态数设成了 <la-tex display="inline">O(\sum nm)</la-tex> 导致时间复杂度变成了 <la-tex display="inline">O(\sum n^2k)</la-tex>，导致痛失 8 pts，险些埋下伏笔。</p>
+<p>2.5h 开始看 T2，很快发现答案一定是对于 <la-tex display="inline">dep&lt;k</la-tex> 的往根走，其他随机跳，写了个 <la-tex display="inline">O(n^2)</la-tex> 跑路，结果完全没想到可以淀粉质。然后和 T3 厮杀，想到可以每次加一个数，这样就可以缩小不少范围，但没想到可以一次扔一堆，导致只有 25pts。</p>
+<p>最终得分 92+50+25=167pts，结果出考场发现 <la-tex display="inline">\color{gold}{tebiezhichu}</la-tex> 直接 257 了，dyc 也是 200+，xzz 和 47 都是 190 左右，就连失误连连的 dzb 也没比我低多少，我的成绩已经拉完了。</p>
+<p>喷雾瓶姐姐失误了，可惜啊……</p>
+<p>当时就觉得自己完蛋了，可能连铜都没了，不过得亏是两天，所以觉得自己还是有希望的，所以心态当天内也就调整好了。</p>
+<h2>Day 1.5</h2>
+<p>研学拉完了，不到七点上车结果海军博物馆酒店才开门，在车上呆了 3.5 h 才下车。玩的时候还挺开心的，有大海，于是我开始播放：</p>
+<blockquote>
+<p>大海啊，你的味道就像我的<strong>爸爸妈妈</strong>！</p>
+</blockquote>
+<p>最终在我校同学的劝说下，我停止了播放。</p>
+<p>但是玩的时间顶多也就半小时，而我们为了这半小时消耗了五六个小时，拉完了。</p>
+<p>不过 47 的 P 话地位得到了 sry 的认可。</p>
+<p>剩下时间用来颓废、睡觉和复习板子（还差点把晚饭睡过去了）。</p>
+<h2>Day 2</h2>
+<p>T1 不是很好像，但是，我看到了一个叫做 <la-tex display="inline">k&gt;5</la-tex> 的东西。</p>
+<p>此时，作为一名搞笑椅子竞赛团队出产的优秀 <del>乱搞</del> 选手，我意识到了本题一定存在一种对于 <la-tex display="inline">k</la-tex> 较大的情况成立的做法！然后就顺理成章地想到了 <la-tex display="inline">k\ne 2,3,5</la-tex> 时候的消消乐做法，再结合 <la-tex display="inline">O(kn\log n)</la-tex> 的暴力通过了这道题，此时才过了 1.5h。</p>
+<p>结果我在做 T2 的时候自信心过于爆棚，导致用了 2h 搞错了线性还原 prufer 序列的方法，最后只能速通个暴力，最后 100+20+8=128pts 遗憾离场了。</p>
+<p>出考场先遇到了 dyc 和 dzb，前者没上 110pts，后者 144pts（实则由于 pretest 太拉实际上只有 134pts），感觉自己还行？</p>
+<p>然后发现 <la-tex display="inline">\color{gold}{tebiezhichu}</la-tex> 200pts……搞笑椅子真要有金了？</p>
+<p>47 大人三天加起来得有 450pts 左右，47 大人强强！</p>
+<p>bobo 问我三天总分多少，我说 395，然后他说，<strong>说不定有银呢</strong>。</p>
+<p>结果成绩出来发现银线真的是 395-，给 bobo 跪了，我和 397 的 dzb 发誓再也不骂 bobo 了。</p>
+<p>晚上嘉年华 xjy 一展歌喉，还展示了高超的喝水技术（在间奏喝水）。还有超级告白哥。</p>
+<p>踢了踢球，感觉技术有点糙了，还得打磨啊……</p>
+<p>发现搞笑椅子 ABDE 加起来 1 金 5 银，<del>连个铜都拿不到，搞笑椅子现在一个 8 级勾都没有，拉成啥了说是，搞笑椅子完蛋了</del>。</p>
+<p>晚上和同学彻夜长谈，第一次感觉和志同道合的同学们说话原来是如此放松舒适的一件事啊……</p>
+<h2>Day 3</h2>
+<p>上午主题活动惊现 AK 了 NOI 的大佬 zxx 的演讲，吓哭了。</p>
+<p>47 姐姐怎么成温州中学的了，欸欸欸。还有怎么长风长风唱了两遍啊。</p>
+<p>第一次听了蜂鸟，很好听，而且感觉我也能唱。</p>
+<p>下午闭幕式，杜爷爷展示了惊人的颁奖能力，包括但不限于把一群排排队准备领奖的选手直接从左边扔到右边、追忆 IOI2001（我常常追忆过去.jpg）、在台上给选手颁完奖后踹人家一脚等友好操作。杜爷爷还是太有活了，简直是 NOI 开闭幕式的灵魂啊……</p>
+<p>领奖的时候很激动，不过唯一的影像资料拍出了白雪茫茫之感。</p>
+<p>这个女主持人拉完了，文盲来的，还抢另一个主持人的话，槽点太多了。而且声音太大，震得人不舒服，心情都给搞糟了。</p>
+<p>闭幕式完之后急速收拾东西走人了。</p>
+<h2>后记</h2>
+<p>无论过程怎么样，结果是好的就好。</p>
+<p>既然有银牌，高二估计就不会再花一整年专注竞赛了，肯定会回一点文化课，以保障最终的结果吧。</p>
+<p>其实我觉得我高二完全有可能拿金牌，虽然难度很大，可能性很小，但是我开始相信我自己了。</p>
+<p>我第一次意识到，像我这种完全因为对竞赛的热爱而开始学习，并坚持如此长一段时间的人，并没有我想象的那么多啊。</p>
+<p>既然我热爱竞赛，那就要全力以赴，查漏补缺；既然我的人生不只有竞赛，那就不能放弃文化课，必须兼顾。我可能现在才认识到这件事吧。</p>
+    </article>
+</div>
+<script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a5ae445b3c8b9b9c',t:'MTc5NDc0NTgyNA=='};var l=window.parent.location,o;try{o=new URL(l.origin).origin}catch(e){try{o=new URL(new URL(l.href).origin).origin}catch(e){o=''}}var u='/cdn-cgi/challenge-platform/scripts/jsd/main.js?ray=a5ae445b3c8b9b9c',a=document.createElement('script');a.src=o?new URL(u,o).href:u;document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

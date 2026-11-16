@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="no-js">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta name="csrf-token" content="1794832245:N+l3ot3+2pr9ol99JAdk06kccHi9kMnuAPOoBecMm10=">
+    <meta name="renderer" content="webkit">
+    <script>
+        window.__feInitLocalTime = new Date().getTime() / 1000;
+        window.__feConfigVersion = '74d532c6c7861bfe'; window.__feConfigRequest = '\/_lfe\/config'; window.__fePhoneHomeCall = 'https\u003A\/\/moshimoshi\u003Aagltb3noatpwohhuenb5ag1tc2jsnnl3\u0040errtrack.luogu.com.cn\/lotlp1';        window.__luoguTagVersion = 'zh\u002DCN\/2026111520'; window.__luoguTagRequest = '\/_lfe\/tags';
+    </script>
+    <title>APIO2026 有纪 - 洛谷专栏</title>
+    <link rel="icon" href="https://fecdn.luogu.com.cn/favicon.ico">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'unsafe-eval' 'unsafe-inline' luogu.com *.luogu.com luogu.com.cn *.luogu.com.cn luogu.org *.luogu.org wss: blob: luoguprivate.oss-cn-hangzhou.aliyuncs.com luogu.oss-cn-hangzhou.aliyuncs.com https://challenges.cloudflare.com https://*.dun.163yun.com https://*.dun.163.com https://*.nosdn.126.net https://*.nosdn.127.net https://nos.netease.com https://cstaticdun.126.net https://cstaticdun1.126.net https://cstaticdun-v6.126.net https://acstatic-dun.126.net; img-src * data:; font-src * data:; worker-src data: blob:; frame-src https://fecdn.luogu.com.cn https://player.bilibili.com https://www.bilibili.com https://challenges.cloudflare.com">
+        <script id="lentille-context" type="application/json">{"instance":"main","template":"article.show","status":200,"locale":"zh-CN","data":{"article":{"lid":"erfra1lc","title":"APIO2026 \u6709\u7eaa","category":5,"time":1778723981,"author":{"uid":546441,"avatar":"https:\/\/cdn.luogu.com.cn\/upload\/usericon\/546441.png","name":"white_tiger_yyyy","slogan":"Dust to Dust, Ash to Ash, \u5f7c\u65b9\u3078","badge":null,"isAdmin":false,"isBanned":false,"color":"Red","ccfLevel":9,"xcpcLevel":0,"background":"https:\/\/cdn.luogu.com.cn\/upload\/image_hosting\/6we7gypp.png"},"upvote":16,"replyCount":1,"favorCount":2,"status":2,"solutionFor":null,"promoteStatus":2,"collection":{"id":227,"name":"APIO 2026 \u6e38\u8bb0"},"content":"# \u524d\u8a00\n\u5f00\u59cb\u5199\u8fd9\u7bc7\u6587\u7ae0\u65f6\u662f 5.11\uff0c\u7ed3\u675f\u65f6\u95f4\u6682\u65f6\u8fd8\u4e0d\u77e5\u9053\uff0c\u5e0c\u671b\u548c\u5f00\u59cb\u65f6\u95f4\u662f\u540c\u4e00\u5929\u5427\u3002\n\n\u4eba\u751f\u4e2d\u7b2c\u4e00\u6b21\u9700\u8981\u4f4f\u5bbf\u7684 NOI \u7cfb\u5217\u8d5b\u4e8b\u5c31\u80fd\u83b7\u5f97\u4e00\u4e2a\u8fd8\u4e0d\u9519\u7684\u6210\u7ee9\uff0c\u8fd8\u662f\u5f88\u610f\u5916\u7684\u3002\u8d5b\u540e\u4e5f\u975e\u5e38\u6fc0\u52a8\uff0c\u4f46\u540e\u6765\u60f3\u4e86\u60f3\uff0c\u679c\u7136\u8fd8\u662f\u8fd0\u6c14\u6210\u5206\u5360\u4e3b\u8981\u3002\n\n\u4e00\u4e2a\u4eba\u7684\u65f6\u5019\u5c31\u4f1a\u6709\u70b9\u5bc2\u5bde\uff0c\u679c\u7136\u6211\u8fd8\u662f\u4e0d\u592a\u79bb\u5f97\u5f00\u4eba\u7fa4\u5462\u3002\u4f46\u5374\u4e0d\u64c5\u957f\u4ea4\u6d89\uff0c\u6211\u771f\u662f\u77db\u76fe\u5462\u3002\n\n\u6709\u70b9\u4e0d\u60f3\u5b66\u6587\u5316\u8bfe\uff0c\u5c31\u5199\u4f1a\u513f\u6e38\u8bb0\u5427\u3002\n\n# \u6d41\u6c34\u8d26\n\u51fa\u53d1\u524d\u548c\u6211\u7684\u6bcd\u4eb2\u5236\u5b9a\u4e86\u65e9\u4e0a 7 \u70b9\u8d77\u7684\u8ba1\u5212\uff0c\u6700\u540e\u6210\u4e3a\u4e86\u4e00\u4e2a\u8ba1\u5212\u3002\n\n\u5230\u897f\u5b89\u5317\u4e4b\u540e\u4e70\u4e86\u4e2a\u51c9\u76ae\u5f53\u5348\u9910\uff0c\u548c\u641e\u7b11\u6905\u5b50\u7684\u5176\u4ed6\u6210\u5458\u4f1a\u5408\uff0c\u5305\u62ec OIer\u300147\u3001\u77e5\u64ad\u3001\u732b\u516d\u548c cq*\u3002\u5728\u8f66\u4e0a\u5199\u4e86\u4f1a\u513f\u6587\u5316\u8bfe\u4e4b\u540e\u5c31\u5f00\u59cb\u53d1\u5446 + \u542c\u6b4c\uff0c\u996d\u70b9\u7684\u65f6\u5019\u53d1\u5e03\u4e86 APIO \u524d\u6700\u540e\u4e00\u4e2a\u670b\u53cb\u5708\uff0c\u7ed3\u679c\u7b2c\u4e00\u4e2a\u70b9\u8d5e\u7684\u662f\u7ed9\u6211\u8865\u8bfe\u7684\u8bed\u6587\u8001\u5e08\uff0c\u7b2c\u4e8c\u4e2a\u662f\u8868\u59d0\uff0c\u6211\u7684\u6bcd\u4eb2\u70b9\u8d5e\u5df2\u7ecf\u662f 2 \u5929\u540e\u4e86\uff0c\u7cd6\u5b8c\u4e86\u3002\n\n\u5728\u6211\u4eec\u8ba8\u8bba\u6211\u4eec\u7684\u9152\u5e97\u957f\u5565\u6837\u5b50\u7684\u65f6\u5019\uff0c\u6211\u4eec\u53d1\u73b0\u6211\u4eec\u7684\u9152\u5e97\u5927\u7684\u79bb\u8c31\uff08CCF \u4eba\u5bb6\u8d77\u7801\u62ff\u94b1\u529e\u4e8b\uff0c\u8fd9\u94b1\u8d5a\u7684\u6709\u7406\u554a\uff0c\u4e0d\u50cf\u6709\u4e9b\u5b66\u6821\u62ff\u94b1\u5efa\u8bbe\u7535\u68af\u95f4\uff0cdddd\uff09\uff0c\u9707\u60ca\u5230\u4e86\u3002\n\n\u5230\u4e86\u4e4b\u540e\u53d1\u73b0\u624b\u63d0\u5305\u5341\u5206\u62bd\u8c61\uff0c\u7136\u540e\u53d1\u73b0\u6211\u88ab\u5b64\u7acb\u4e86 qwq\u3002\n\n\u4f4f\u5728\u656c\u5bbe539\uff0c\u5230\u95e8\u53e3\u4e00\u770b\u8fd8\u6709\u4e2a\u5e78\u8fd0\u89c2\u4f17\uff0c\u4e8e\u662f\u8be2\u95ee\u59d3\u540d\uff0c\u53d1\u73b0\u662f SN \u526f\u961f\u957f\uff0c\u7136\u540e\u53d1\u73b0\u6211\u4eec\u4e24\u4e2a\u7684\u95e8\u5361\u90fd\u5f00\u4e0d\u4e86\u95e8\u3002\n\n\u8fdb\u53bb\u4e4b\u540e\u5f00\u59cb\u4f11\u606f\uff0c\u7b49\u5230\u8981\u51fa\u53bb\u5403\u665a\u996d\u7684\u65f6\u5019\u53d1\u73b0\u6211\u7684\u95e8\u5361\u53c8\u574f\u4e86\uff0c\u539f\u56e0\u7adf\u662f\u88ab\u6211\u624b\u673a\u6d88\u78c1\u4e86\uff0c\u7cd6\u5b8c\u4e86\u3002\n\n\u9047\u5230\u4e86 bjt \u5927\u4eba\uff0cbjt \u5927\u4eba\u9001\u6211\u4e86\u4e00\u4e2a\u5fbd\u7ae0\uff0c\u7136\u540e\u53d1\u73b0\u6211\u8fd8\u6ca1\u6709\u8ba2\u3002\u53ea\u80fd NOI \u518d\u8fd8\u4e86\u3002\n\n\u641e\u7b11\u6905\u5b50\u96c6\u4f53\u6ca1\u62a2\u4e0a\u7b2c\u4e00\u73ed\u8f66\uff0c\u4f46\u662f\u62a2\u4e0a\u4e86\u7b2c\u4e8c\u73ed\uff0c\u5f00\u5fc3\u634f\u3002\n\n\u665a\u9910\u5403\u5f97\u6dee\u5357\u725b\u8089\u6c64\uff0c\u53d1\u73b0\u641e\u7b11\u6905\u5b50\u679c\u7136\u662f\u6eda\u6728\u4e2d\u7684\u6eda\u6728\uff0c\u540c\u65f6\u4e3a\u81ea\u5df1\u7684 NOI \u671f\u95f4\u4f4f\u5bbf\u7b49\u4e8b\u60c5\u634f\u4e86\u628a\u6c57\uff0c~~\u6bd5\u7adf\u6709\u4eba\u8bc4\u4ef7\u4e0d\u5982\u641e\u7b11\u6905\u5b50\uff0c\u4f60\u8bf4\u5bf9\u5427\uff0c@\u7279\u522b\u4e4b\u5904~~\u3002\n\n\u53d1\u73b0\u6709\u8d85\u5927\u7684\u534a\u4e2a\u8db3\u7403\u573a\uff0c\u96be\u5d29\uff0c\u4e0d\u8fc7\u8e22\u51fa\u4e00\u4e2a\u4e5d\u5206\u89d2\uff0c\u5f00\u5fc3\u3002\n\n\u56de\u53bb\u4e4b\u540e\u590d\u4e60\u4e86\u4e00\u4f1a\u513f\uff0c\u7136\u540e\u6446\u70c2\uff0c\u7136\u540e\u5c31\u7761\u89c9\u4e86\u3002\n\n---\n\u65e9\u9910\u5012\u6ca1\u5565\u8bf4\u7684\uff0c\u633a\u666e\u901a\u7684\uff0c\u5c31\u4e00\u822c\u9152\u5e97\u7684\u9910\u3002\u4e0d\u8fc7\u9999\u80a0\u4e00\u76f4\u90fd\u8fdc\u8d85\u4e00\u822c\u6c34\u5e73\uff0c\u7ed9\u4eba\u5403\u723d\u4e86\u3002\n\n\u65e9\u4e0a\u6709 zsh \u5927\u4eba\u548c\u4e2d\u56fd\u961f\u957f\u5927\u4eba\u7684\u8bb2\u8bfe\u3002\u524d\u8005\u5012\u8fd8\u597d\uff0c\u4f46\u540e\u8005\u561b\uff1a\n\n![](https:\/\/cdn.luogu.com.cn\/upload\/image_hosting\/u2nn3155.png)\n\n\u4e2d\u5348\u5c1d\u8bd5\u4e86\u9aa8\u6c64\u5192\u83dc\uff0c\u5f88\u597d\u5403\uff0c\u751a\u81f3\u8ba9\u6211\u5403\u4e86\u51ac\u74dc\uff0c\u582a\u79f0\u5947\u8ff9\u3002\n\n\u4e0b\u5348\u5219\u662f\u53e6\u5916\u4e24\u4f4d\u56fd\u5bb6\u961f\u5927\u795e\uff0c\u800c hyx \u66f4\u662f\u5c55\u793a\u795e\u529b\uff0c\u76f4\u63a5\u4e0a\u4e03\u5b97\u7f6a\uff0c~~\u4f46\u662f\u6211\u771f\u7684\u597d\u60f3\u597d\u60f3\u548c\u5c0f\u9ca8\u9c7c\u73a9\u554a\uff01\uff01\uff01\u597d\u60f3\u517b\u4e00\u53ea\u9999\u9999\u8f6f\u8f6f\u7684\u5c0f\u9ca8\u9c7c\u554a\uff01\uff01\uff01~~\n\n\u665a\u9910\u5403\u9999\u9505\uff0c\u7136\u540e\u88ab\u87f9\u8089\u68d2\u51fb\u5760\u4e86\uff0c\u843d\u4e0b\u4e86\u5fc3\u7406\u9634\u5f71\uff0c\u6211\u5ba3\u5e03\u87f9\u8089\u68d2\u8d85\u8d8a\u51ac\u74dc\u6210\u4e3a\u6211\u6700\u8ba8\u538c\u7684\u98df\u7269 top3\uff08\u53e6\u5916\u4e24\u4e2a\u662f\u9752\u6912\u548c\u6d0b\u8471\uff09\uff01\n\n\u665a\u4e0a\u5f00\u5e55\u5f0f\u6ca1\u6709\u809a\u5b50\u5927\uff0c\u72c2\u6012\uff01\uff01\uff01\uff01\uff01\uff01\uff01\n\n~~\u4f46\u6211\u4eec\u7406\u8bba\u6765\u8bf4\u5df2\u7ecf\u6709\u809a\u5b50\u5927\u7684\u8089\u4f53\uff08myg \u6821\u957f\uff09\u548c\u809a\u5b50\u5927\u7684\u7075\u9b42\uff08dxy \u4e3b\u5e2d\uff09\u4e86\uff0c\u5df2\u7ecf\u4e0d\u9700\u8981\u4e00\u4e2a\u591a\u4f59\u7684\u809a\u5b50\u5927\u4e86\uff01~~\n\n\u56de\u623f\u95f4\u4e4b\u540e\u590d\u4e60\u4e86\u4e00\u4e0b\u5c31\u7761\u4e86\u3002\n\n---\n\n~~\u6b63\u6b63\u7247\u5f00\u59cb\u4e86\uff01\uff01\uff01~~\n\n\u65e9\u4e0a\u76f4\u63a5\u767e\u4e07\u5df4\u58eb\u8fc7\u9a6c\u8def\uff0c\u5c55\u793a CCF \u5510\u529b\u3002\n\n\u5230\u4e86\u4e4b\u540e\u5728\u8003\u573a\u5916\u7f5a\u5750 inf \u5206\u949f\u540e\u8fdb\u5165\u8003\u573a\uff0c\u53d1\u73b0\u4e86\u6c34\u3001\u82cf\u6253\u997c\u5e72\u548c\u957f\u5d0e\u86cb\u7cd5\uff0c\u4ee5\u53ca\u4e00\u4e2a\u9999\u8549\u3002\n\n\u5f00\u8d5b\u540e\u53d1\u73b0\u6253\u4e0d\u5f00 linux\uff0c\u4e00\u95ee\u8bf4\u5ef6\u540e\u5341\u5206\u949f\uff1fnb\u3002\n\n\u6253\u5f00\u8bd5\u9898\uff0cT1 \u4e0d\u50cf\u662f\u7ed9\u6211\u505a\u7684\uff0c\u76f4\u63a5\u8df3 T2\u3002\u8fd9\u65f6\uff0c\u6211\u731b\u7136\u60f3\u8d77\u8d5b\u524d\u67d0\u4e2a\u4eba\u8bf4\u7684\u4e00\u53e5\u8bdd\uff1a\n\n\u003E APIO \u9898\u76ee\u96be\u5ea6\u4e0d\u4e00\u5b9a\u662f\u5347\u5e8f\u7684\u3002\n\n\u4e00\u8bed\u60ca\u9192\u68a6\u4e2d\u4eba\uff01\u7ed3\u5408 T2 \u9898\u601d\u8def\u5f88\u660e\u663e\u7684\u7279\u70b9\uff0c\u6211\u76f4\u63a5\u8ba4\u5b9a T2 \u662f easy \u7684\uff08\u4e8b\u5b9e\u8bc1\u660e\uff0c\u8fd9\u662f\u4e00\u5207\u80dc\u5229\u7684\u5f00\u59cb\uff09\u3002\n\n\u770b\u9898\u76ee\uff0c\u4e00\u4e09\u662f\u5bb9\u6613\u7684\uff0c\u76f4\u63a5\u4ee5\u8f83\u4e3a\u5de7\u5999\u5730\u65b9\u5f0f\u4e8c\u5206\u5373\u53ef\uff0c\u518d\u7ed3\u5408 123 \u6784\u9020\u8fc7\u6389\u4e8c\uff0c\u62ff\u5230 56 \u5206\u3002\n\n\u89c2\u5bdf\u5230 $\\lceil\\log_3 2000\\rceil=7$\uff0c\u4e8e\u662f\u8003\u8651\u4e09\u5206\u3002\u5f88\u663e\u7136\u7684\u601d\u8def\u662f\u628a $1-W$ \u5168\u90e8\u585e\u8fdb\u53bb\uff0c\u7528 $2000-2200$ \u5f53\u5e38\u6570\u9879\u3002\u6700\u5f00\u59cb\u7684\u60f3\u6cd5\u662f\u50cf\u7ecf\u5178\u7684\u627e\u552f\u4e00\u8d28\u91cf\u6709\u8bef\u7269\u54c1\u7684\u505a\u6cd5\uff0c\u5206\u4e09\u4efd\uff0c\u6bd4\u4e24\u4efd\uff0c\u4f46\u53d1\u73b0\u662f\u5047\u7684\uff0c\u9042\u6539\u53d8\u601d\u8def\uff0c\u4e0d\u8fc7\u8fd9\u4e2a\u65f6\u5019\u610f\u8bc6\u5230\u4e86\u53ef\u4ee5\u5728\u9884\u671f\u548c\u5b9e\u9645\u4e0a\u505a\u6587\u7ae0\u3002\n\n\u7136\u540e\u53d1\u73b0\u5206\u6210\u4e09\u6bb5\u540e\uff0c\u5047\u5982\u6211\u4eec\u8003\u8651\u9884\u671f\u5934\u5c3e\u6bb5\u548c\u548c\u5b9e\u9645\u5934\u5c3e\u6bb5\u548c\u4e4b\u5dee\uff0c\u90a3\u4e48\u5c31\u53ef\u4ee5\u4ee5\u5c3e\u6bb5\u957f\u5ea6\u4e3a\u5206\u754c\uff0c\u4ece\u800c\u786e\u5b9a\u95ee\u9898\u6240\u5728\u3002\u5199\u4e86\u4e00\u4f1a\u513f\u8fc7\u4e86\uff0c\u6b64\u65f6\u8fc7\u4e86\u5feb 3h\u3002\n\n\u4f46\u6211\u8fd8\u6ca1\u653e\u677e\u4e0b\u6765\uff0c\u56e0\u4e3a\u6211\u5f53\u65f6\u4ee5\u4e3a T2 \u53ef\u80fd\u662f\u5165\u5747\u9898\uff0c\u5e94\u8be5\u5165\u5165\u90fd\u4f1a\u505a\uff0c\u4e8e\u662f\u6211\u8d76\u7d27\u770b T3\uff0c\u7136\u540e\u5199\u4e86\u4e2a 40pts \u8dd1\u8def\uff0c\u5269\u4e0b\u65f6\u95f4\u5199 T1\uff0c\u6700\u540e\u662f 20+100+40=160\u3002\n\n\u5f53\u65f6\u6709\u70b9\u614c\uff0c\u4f46\u4e00\u51fa\u8003\u573a\u53d1\u73b0\u5176\u4ed6\u51e0\u4e2a\u4e0d\u662f\u57fa\u672c\u6ca1\u60f3 T2 \u5c31\u662f\u57fa\u672c\u6ca1\u5199 T3\uff0c\u6211\u53cd\u800c\u6210\u641e\u7b11\u6905\u5b50\u6700\u9ad8\u5206\u4e86\uff0c\u90a3\u6211\u4e0d\u662f\u7a33\u94dc\u4e86\uff1f\n\n\u7531\u4e8e\u9999\u9505\u4e0a\u7684\u5931\u8d25\uff0c\u6211\u4e4b\u540e\u90fd\u662f\u5403\u725b\u8089\u6c64\u52a0\u70e7\u997c\u4e86\u3002\u4e00\u95ee\u53d1\u73b0\u6709\u5165\u6ca1\u4e0a 100\uff1f\uff01\u77ac\u95f4\u611f\u89c9\u81ea\u5df1\u53c8\u884c\u4e86\u3002\n\n\u4e00\u770b\u597d\u50cf\u94f6\u7ebf\u53ef\u80fd\u5728\u6211\u5206\u6570\u5468\u56f4\uff0c\u4e8e\u662f\u6211\u548c 120 \u7684 47 \u5c31\u5c06\u6210\u4e3a\u6700\u540e\u4ece\u70ed\u9505\u4e0a\u4e0b\u6765\u7684\u4e24\u53ea\u8682\u8681\u3002\n\n\u5609\u5e74\u534e 6\/8\uff0c\u6362\u4e86\u4e2a\u597d\u770b\u7684\u5fbd\u7ae0\uff0c\u98a0\u4e52\u4e53\u7403\u7684\u65f6\u5019\u901f\u5ea6\u592a\u5feb\u628a\u8001\u5e08\u5413\u5230\u4e86\uff08\u8001\u5e08\uff1a\u4f60\u771f\u98a0\u5b8c\u4e86\uff1f\uff1f\uff1f\uff09\u3002\n\n\u8bb2\u9898\u4eba\u53d1\u8868\u4e86\u5b87\u5b99\u5b89\u5168\u58f0\u660e\uff0c666\u3002\n\n\u51fa\u9898\u4eba\u4e5f\u662f\u61d2\u5230\u4e00\u5b9a\u7a0b\u5ea6\u4e86\uff0cT1 \u5bb9\u65a5\u60f3\u4e00\u534a\u4e0d\u60f3\u4e86\uff08bobo\uff1astd \u91cd\u8981\u5417\uff1f\uff1f\uff1f\uff09\u3002\n\n\u56de\u5bbf\u820d\u5f00\u59cb\u6446\u70c2\uff0c\u5229\u7fa4\u4e0e\u9752\u5c9b\u597d\u770b\u634f\u3002\n\n---\n\n\u65e9\u4e0a\u76f4\u63a5\u6709\u4e09\u4e2a\u8bb2\u8005\uff0c\u66f4\u6709\u8bb2\u91d1\u878d\u7684\u5927\u4f6c\uff0c\u751a\u81f3\u6709\u4f1f\u5927\u7684\u5df1\u5df3\u5df1\u7ebf\u6bb5\u6811\u590d\u6742\u5ea6\u8bc1\u660e\uff0c\u65f6\u9694 10 \u5e74\u7684\u56de\u7b54\u554a\u2026\u2026\n\n\u4e0b\u5348\u53bb\u4e86\u5317\u5927\u71d5\u5357\u56ed\u548c\u4e2d\u5173\u6751\uff0c\u53d1\u73b0\u4e86\u88f9\u6ee1\u4e86\u5982\u96ea\u4e00\u822c\u7684\u67f3\u7d6e\u7684\u677e\u6811\u548c\u7d2b\u8272\u7684\u7389\u7c73\u79cd\u5b50\u3002\n\n\u665a\u4e0a\u95ed\u5e55\u5f0f\u8ba9\u6211\u4eec\u7f5a\u5750\u4e86 1h+\uff0c\u65e0\u8bed\u5b50\u3002\u3001\n\n\u8fdb\u53bb\u53d1\u73b0\u6709\u4f1f\u5927\u7684\u809a\u5b50\u5927\uff01\uff01\uff01\u6211\u7684\u5929\u54ea IOI \u4e3b\u5e2d\u5927\u4eba\uff01\uff01\uff01\n\nAg \u7ebf 155\uff0c\u9996\u6b21\u51fa\u5f81\u5c31\u6709 Ag \u5927\u5927\u51fa\u4e4e\u4e86\u6211\u7684\u610f\u6599\u5427~~\u4e0d\u8fc7\u4f3c\u4e4e\u6ca1\u6709\u51fa\u4e4e bobo \u7684\u610f\u6599\u5c31\u662f\u4e86\uff0c\u751a\u81f3\u4f4e\u4e8e bobo \u7684\u9884\u671f\u8bf4\u662f~~\u3002\n\nQ\uff1a\u4e3a\u4ec0\u4e48\u809a\u5b50\u5927\u662f NOI \u4e3b\u5e2d\uff0c\u800c zqy \u53ea\u80fd\u5f53\u79d1\u5b66\u59d4\u5458\u4f1a\u4e3b\u5e2d\uff1f\n\nA\uff1a\u56e0\u4e3a zqy \u4f1a\u9a73\u56de\u6240\u6709\u7533\u8bc9\uff0c\u800c\u809a\u5b50\u5927\u4f1a\u5168\u90e8\u63a5\u53d7\uff0c\u6bd4\u5982\u4ed6\u5728\u95ed\u5e55\u5f0f\u4e0a\u8865\u4e0a\u4e86\u81ea\u5df1\u7684\u6f14\u8bb2\uff0c\u5305\u62ec\u4f46\u4e0d\u9650\u4e8e\u6211\u662f IOI \u4e3b\u5e2d\u3001\u5f53\u9762\u95ee\u522b\u56fd\u603b\u7edf\u4e3a\u4ec0\u4e48\u4ed6\u4eec\u6ca1\u6709\u6d88\u706d\u4e24\u73ed\u5012\u3001\u4ed6\u7684\u8001\u5e08\u662f\u9ec4\u57d4\u7684\u4e14\u5728 **\u6587\u5316\u5927\u9769\u547d** \u65f6\u671f\u201c\u8bf4\u7684\u4e5f\u5168\u662f\u771f\u8bdd\u201d\u7b49\u5999\u8da3\u6a2a\u751f\u7684\u5185\u5bb9\u3002\n\n\u5317\u5927\u9644\u4e2d\u7684\u5408\u5531\u56e2\u5728\u5408\u5531\u671f\u95f4\u653e\u58f0\u5927\u7b11\uff0c\u6211\u4e5f\u8981\u7b11\u5417\uff1f\n\n![](https:\/\/cdn.luogu.com.cn\/upload\/image_hosting\/h3l8sbct.png)\n\n\u665a\u4e0a\u56de\u6765\u72ec\u5b88\u7a7a\u623f\uff0c\u5b66\u4e86\u4f1a\uff0c\u73a9\u4e86\u4f1a\uff0c\u7761\u4e86\u3002\n# \u540e\u8bb0\n\u94f6\u724c\u5bf9\u6211\u6765\u8bf4\u8fd8\u662f\u592a\u9707\u60ca\u4e86\uff0c\u4ece\u6765\u6ca1\u60f3\u8fc7\u4f1a\u5982\u6b64\u7684\u987a\u9042\u3002\n\n\u6211\u77e5\u9053\uff0c\u8fd9\u5176\u4e2d\u8fd0\u6c14\u6210\u5206\u5360\u4e86\u592a\u591a\uff0c\u4f46\u6211\u76f8\u4fe1\uff0c\u8fd9\u4e00\u5b9a\u4e0d\u662f\u6211\u6b64\u751f\u7684\u4e0a\u9650\u3002\n\n\u518d\u89c1\u4e86\uff0cAPIO\uff01\n\n![](https:\/\/cdn.luogu.com.cn\/upload\/image_hosting\/pn8c4hp9.png)","contentFull":true,"adminNote":null},"favored":false,"voted":null,"canReply":false,"canEdit":false},"user":null,"time":1794745845.641007}</script>            <script src="https://fecdn.luogu.com.cn/columba/loader.20261113-2335.js" charset="utf-8" defer></script>
+    <link rel="stylesheet" href="https://fecdn.luogu.com.cn/columba/loader.20261113-2335.css" />
+    <script src="https://fecdn.luogu.com.cn/columba/vendor.20261113-2335.js" charset="utf-8" defer></script>
+        <link rel="canonical" href="https://www.luogu.com.cn/article/erfra1lc" />
+    <script type="application/ld+json">{"@context":"https:\/\/schema.org","@type":"Article","name":"APIO2026 \u6709\u7eaa","description":"\u524d\u8a00\n\u5f00\u59cb\u5199\u8fd9\u7bc7\u6587\u7ae0\u65f6\u662f 5.11\uff0c\u7ed3\u675f\u65f6\u95f4\u6682\u65f6\u8fd8\u4e0d\u77e5\u9053\uff0c\u5e0c\u671b\u548c\u5f00\u59cb\u65f6\u95f4\u662f\u540c\u4e00\u5929\u5427\u3002\n\u4eba\u751f\u4e2d\u7b2c\u4e00\u6b21\u9700\u8981\u4f4f\u5bbf\u7684 NOI \u7cfb\u5217\u8d5b\u4e8b\u5c31\u80fd\u83b7\u5f97\u4e00\u4e2a\u8fd8\u4e0d\u9519\u7684\u6210\u7ee9\uff0c\u8fd8\u662f\u5f88\u610f\u5916\u7684\u3002\u8d5b\u540e\u4e5f\u975e\u5e38\u6fc0\u52a8\uff0c\u4f46\u540e\u6765\u60f3\u4e86\u60f3\uff0c\u679c\u7136\u8fd8\u662f\u8fd0\u6c14\u6210\u5206\u5360\u4e3b\u8981\u3002\n\u4e00\u4e2a\u4eba\u7684\u65f6\u5019\u5c31\u4f1a\u6709\u70b9\u5bc2\u5bde\uff0c\u679c\u7136\u6211\u8fd8\u662f\u4e0d\u592a\u79bb\u5f97\u5f00\u4eba\u7fa4\u5462\u3002\u4f46\u5374\u4e0d\u64c5\u957f\u4ea4\u6d89\uff0c\u6211\u771f\u662f\u77db\u76fe\u5462\u3002\u2026","genre":"\u751f\u6d3b\u00b7\u6e38\u8bb0","author":{"@type":"Person","name":"white_tiger_yyyy"},"datePublished":"2026-05-14T09:59:41+08:00"}</script>
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content="APIO2026 有纪" />
+    <meta property="og:description" content="前言
+开始写这篇文章时是 5.11，结束时间暂时还不知道，希望和开始时间是同一天吧。
+人生中第一次需要住宿的 NOI 系列赛事就能获得一个还不错的成绩，还是很意外的。赛后也非常激动，但后来想了想，果然还是运气成分占主要。
+一个人的时候就会有点寂寞，果然我还是不太离得开人群呢。但却不擅长交涉，我真是矛盾呢。…" />
+    <meta property="article:section" content="生活·游记" />
+    <meta property="article:author" content="white_tiger_yyyy" />
+    <meta property="article:published_time" content="2026-05-14T09:59:41+08:00" />
+    <meta property="og:url" content="https://www.luogu.com.cn/article/erfra1lc" />
+    <meta property="og:site_name" content="洛谷专栏" />
+        <script id="luogu-theme" type="application/json">{"id":1,"lNavi":{"back":"#ffffff","fore":"#262626","logo":null},"lBody":{"back":"#f0f4fa","blur":1000,"fade":1000,"image":"https:\/\/cdn.luogu.com.cn\/images\/bg\/fe\/luogu4-bg-l.jpg","midOpts":{"size":"cover"}},"dNavi":{"back":"#1d2025","fore":"#ffffff","logo":"#ffffff"},"dBody":{"back":"#0d1018","blur":1000,"fade":1000,"image":"https:\/\/cdn.luogu.com.cn\/images\/bg\/fe\/luogu4-bg-d.jpg","midOpts":{"size":"cover"}}}</script>
+    <style></style>
+</head>
+<body>
+<div id="app">
+    <noscript>
+        <h3>请<b style="color:#f00;">不要禁用</b>脚本，否则网页无法正常加载</h3>
+    </noscript>
+        <article>
+        <h1>APIO2026 有纪</h1>
+        <p style="font-size: .75em;">
+            <a rel="author">white_tiger_yyyy</a>
+            ·
+            <time datetime="2026-05-14T09:59:41+08:00">2026-05-14 09:59:41</time>
+            ·
+            <a href="/article?category=5">生活·游记</a>
+        </p>
+
+        <h1>前言</h1>
+<p>开始写这篇文章时是 5.11，结束时间暂时还不知道，希望和开始时间是同一天吧。</p>
+<p>人生中第一次需要住宿的 NOI 系列赛事就能获得一个还不错的成绩，还是很意外的。赛后也非常激动，但后来想了想，果然还是运气成分占主要。</p>
+<p>一个人的时候就会有点寂寞，果然我还是不太离得开人群呢。但却不擅长交涉，我真是矛盾呢。</p>
+<p>有点不想学文化课，就写会儿游记吧。</p>
+<h1>流水账</h1>
+<p>出发前和我的母亲制定了早上 7 点起的计划，最后成为了一个计划。</p>
+<p>到西安北之后买了个凉皮当午餐，和搞笑椅子的其他成员会合，包括 OIer、47、知播、猫六和 cq*。在车上写了会儿文化课之后就开始发呆 + 听歌，饭点的时候发布了 APIO 前最后一个朋友圈，结果第一个点赞的是给我补课的语文老师，第二个是表姐，我的母亲点赞已经是 2 天后了，糖完了。</p>
+<p>在我们讨论我们的酒店长啥样子的时候，我们发现我们的酒店大的离谱（CCF 人家起码拿钱办事，这钱赚的有理啊，不像有些学校拿钱建设电梯间，dddd），震惊到了。</p>
+<p>到了之后发现手提包十分抽象，然后发现我被孤立了 qwq。</p>
+<p>住在敬宾539，到门口一看还有个幸运观众，于是询问姓名，发现是 SN 副队长，然后发现我们两个的门卡都开不了门。</p>
+<p>进去之后开始休息，等到要出去吃晚饭的时候发现我的门卡又坏了，原因竟是被我手机消磁了，糖完了。</p>
+<p>遇到了 bjt 大人，bjt 大人送我了一个徽章，然后发现我还没有订。只能 NOI 再还了。</p>
+<p>搞笑椅子集体没抢上第一班车，但是抢上了第二班，开心捏。</p>
+<p>晚餐吃得淮南牛肉汤，发现搞笑椅子果然是滚木中的滚木，同时为自己的 NOI 期间住宿等事情捏了把汗，<del>毕竟有人评价不如搞笑椅子，你说对吧，@特别之处</del>。</p>
+<p>发现有超大的半个足球场，难崩，不过踢出一个九分角，开心。</p>
+<p>回去之后复习了一会儿，然后摆烂，然后就睡觉了。</p>
+
+<p>早餐倒没啥说的，挺普通的，就一般酒店的餐。不过香肠一直都远超一般水平，给人吃爽了。</p>
+<p>早上有 zsh 大人和中国队长大人的讲课。前者倒还好，但后者嘛：</p>
+<p></p>
+<p>中午尝试了骨汤冒菜，很好吃，甚至让我吃了冬瓜，堪称奇迹。</p>
+<p>下午则是另外两位国家队大神，而 hyx 更是展示神力，直接上七宗罪，<del>但是我真的好想好想和小鲨鱼玩啊！！！好想养一只香香软软的小鲨鱼啊！！！</del></p>
+<p>晚餐吃香锅，然后被蟹肉棒击坠了，落下了心理阴影，我宣布蟹肉棒超越冬瓜成为我最讨厌的食物 top3（另外两个是青椒和洋葱）！</p>
+<p>晚上开幕式没有肚子大，狂怒！！！！！！！</p>
+<p><del>但我们理论来说已经有肚子大的肉体（myg 校长）和肚子大的灵魂（dxy 主席）了，已经不需要一个多余的肚子大了！</del></p>
+<p>回房间之后复习了一下就睡了。</p>
+
+<p><del>正正片开始了！！！</del></p>
+<p>早上直接百万巴士过马路，展示 CCF 唐力。</p>
+<p>到了之后在考场外罚坐 inf 分钟后进入考场，发现了水、苏打饼干和长崎蛋糕，以及一个香蕉。</p>
+<p>开赛后发现打不开 linux，一问说延后十分钟？nb。</p>
+<p>打开试题，T1 不像是给我做的，直接跳 T2。这时，我猛然想起赛前某个人说的一句话：</p>
+<blockquote>
+<p>APIO 题目难度不一定是升序的。</p>
+</blockquote>
+<p>一语惊醒梦中人！结合 T2 题思路很明显的特点，我直接认定 T2 是 easy 的（事实证明，这是一切胜利的开始）。</p>
+<p>看题目，一三是容易的，直接以较为巧妙地方式二分即可，再结合 123 构造过掉二，拿到 56 分。</p>
+<p>观察到 <la-tex display="inline">\lceil\log_3 2000\rceil=7</la-tex>，于是考虑三分。很显然的思路是把 <la-tex display="inline">1-W</la-tex> 全部塞进去，用 <la-tex display="inline">2000-2200</la-tex> 当常数项。最开始的想法是像经典的找唯一质量有误物品的做法，分三份，比两份，但发现是假的，遂改变思路，不过这个时候意识到了可以在预期和实际上做文章。</p>
+<p>然后发现分成三段后，假如我们考虑预期头尾段和和实际头尾段和之差，那么就可以以尾段长度为分界，从而确定问题所在。写了一会儿过了，此时过了快 3h。</p>
+<p>但我还没放松下来，因为我当时以为 T2 可能是入均题，应该入入都会做，于是我赶紧看 T3，然后写了个 40pts 跑路，剩下时间写 T1，最后是 20+100+40=160。</p>
+<p>当时有点慌，但一出考场发现其他几个不是基本没想 T2 就是基本没写 T3，我反而成搞笑椅子最高分了，那我不是稳铜了？</p>
+<p>由于香锅上的失败，我之后都是吃牛肉汤加烧饼了。一问发现有入没上 100？！瞬间感觉自己又行了。</p>
+<p>一看好像银线可能在我分数周围，于是我和 120 的 47 就将成为最后从热锅上下来的两只蚂蚁。</p>
+<p>嘉年华 6/8，换了个好看的徽章，颠乒乓球的时候速度太快把老师吓到了（老师：你真颠完了？？？）。</p>
+<p>讲题人发表了宇宙安全声明，666。</p>
+<p>出题人也是懒到一定程度了，T1 容斥想一半不想了（bobo：std 重要吗？？？）。</p>
+<p>回宿舍开始摆烂，利群与青岛好看捏。</p>
+
+<p>早上直接有三个讲者，更有讲金融的大佬，甚至有伟大的己巳己线段树复杂度证明，时隔 10 年的回答啊……</p>
+<p>下午去了北大燕南园和中关村，发现了裹满了如雪一般的柳絮的松树和紫色的玉米种子。</p>
+<p>晚上闭幕式让我们罚坐了 1h+，无语子。、</p>
+<p>进去发现有伟大的肚子大！！！我的天哪 IOI 主席大人！！！</p>
+<p>Ag 线 155，首次出征就有 Ag 大大出乎了我的意料吧<del>不过似乎没有出乎 bobo 的意料就是了，甚至低于 bobo 的预期说是</del>。</p>
+<p>Q：为什么肚子大是 NOI 主席，而 zqy 只能当科学委员会主席？</p>
+<p>A：因为 zqy 会驳回所有申诉，而肚子大会全部接受，比如他在闭幕式上补上了自己的演讲，包括但不限于我是 IOI 主席、当面问别国总统为什么他们没有消灭两班倒、他的老师是黄埔的且在 <strong>文化大革命</strong> 时期“说的也全是真话”等妙趣横生的内容。</p>
+<p>北大附中的合唱团在合唱期间放声大笑，我也要笑吗？</p>
+<p></p>
+<p>晚上回来独守空房，学了会，玩了会，睡了。</p>
+<h1>后记</h1>
+<p>银牌对我来说还是太震惊了，从来没想过会如此的顺遂。</p>
+<p>我知道，这其中运气成分占了太多，但我相信，这一定不是我此生的上限。</p>
+<p>再见了，APIO！</p>
+<p></p>
+    </article>
+</div>
+<script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a5ae44dd782cd25b',t:'MTc5NDc0NTg0NQ=='};var l=window.parent.location,o;try{o=new URL(l.origin).origin}catch(e){try{o=new URL(new URL(l.href).origin).origin}catch(e){o=''}}var u='/cdn-cgi/challenge-platform/scripts/jsd/main.js?ray=a5ae44dd782cd25b',a=document.createElement('script');a.src=o?new URL(u,o).href:u;document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

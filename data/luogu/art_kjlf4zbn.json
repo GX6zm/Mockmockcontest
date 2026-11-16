@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="no-js">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta name="csrf-token" content="1794832696:JFJrOWqHXpT+Fa1xvVvYZWgsl/83EBJqUdLDzQtHNO0=">
+    <meta name="renderer" content="webkit">
+    <script>
+        window.__feInitLocalTime = new Date().getTime() / 1000;
+        window.__feConfigVersion = '74d532c6c7861bfe'; window.__feConfigRequest = '\/_lfe\/config'; window.__fePhoneHomeCall = 'https\u003A\/\/moshimoshi\u003Aagltb3noatpwohhuenb5ag1tc2jsnnl3\u0040errtrack.luogu.com.cn\/lotlp1';        window.__luoguTagVersion = 'zh\u002DCN\/2026111520'; window.__luoguTagRequest = '\/_lfe\/tags';
+    </script>
+    <title>从夯到拉锐评所有活动+面积游记 - 洛谷专栏</title>
+    <link rel="icon" href="https://fecdn.luogu.com.cn/favicon.ico">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'unsafe-eval' 'unsafe-inline' luogu.com *.luogu.com luogu.com.cn *.luogu.com.cn luogu.org *.luogu.org wss: blob: luoguprivate.oss-cn-hangzhou.aliyuncs.com luogu.oss-cn-hangzhou.aliyuncs.com https://challenges.cloudflare.com https://*.dun.163yun.com https://*.dun.163.com https://*.nosdn.126.net https://*.nosdn.127.net https://nos.netease.com https://cstaticdun.126.net https://cstaticdun1.126.net https://cstaticdun-v6.126.net https://acstatic-dun.126.net; img-src * data:; font-src * data:; worker-src data: blob:; frame-src https://fecdn.luogu.com.cn https://player.bilibili.com https://www.bilibili.com https://challenges.cloudflare.com">
+        <script id="lentille-context" type="application/json">{"instance":"main","template":"article.show","status":200,"locale":"zh-CN","data":{"article":{"lid":"kjlf4zbn","title":"\u4ece\u592f\u5230\u62c9\u9510\u8bc4\u6240\u6709\u6d3b\u52a8+\u9762\u79ef\u6e38\u8bb0","category":5,"time":1778474968,"author":{"uid":773813,"avatar":"https:\/\/cdn.luogu.com.cn\/upload\/usericon\/773813.png","name":"xzz_cat6","slogan":"1+1!=1\u003C\u003C1 || \u4ece 2025.11.26 \u5f00\u59cb \u4e0d\u53d1\u7287\u7287\uff08\u6ca1\u575a\u6301\u4f4f\uff09 || 2026.1.10\u65e5\u6253\u5361500\u5929","badge":null,"isAdmin":false,"isBanned":false,"color":"Red","ccfLevel":9,"xcpcLevel":0,"background":""},"upvote":45,"replyCount":14,"favorCount":5,"status":2,"solutionFor":null,"promoteStatus":2,"collection":{"id":227,"name":"APIO 2026 \u6e38\u8bb0"},"content":"\u672c\u6587\u5206\u4e3a\u4e09\u5927\u90e8\u5206\uff0c\u4e3b\u7ebf\uff08\u9762\u79ef\uff09\uff0c\u652f\u7ebf\uff08\u6bd4\u8d5b\uff09\uff0c\u4ece\u592f\u5230\u62c9\u9510\u8bc4\u6240\u6709\u6d3b\u52a8\uff0c**\u5982\u82e5\u6211\u9886\u8fc7\u4f60\u7684\u514d\u8d39\u5fbd\u7ae0\uff0c\u8bf7\u5728 NOI \u627e\u6211 qq \u9886\u5fbd\u7ae0**\uff0c\u672c\u4eba\u548c\u6bcf\u4e2a\u6362\u5fbd\u7ae0\u7684\u4eba\u90fd\u52a0\u4e86 qq\u3002\n\n\u672c\u6587\u6587\u7ae0\u5185\u5bb9\u4e30\u5bcc\uff0c\u7ed9\u4e2a\u70b9\u8d5e\u5427\uff0c\u5c31\u5f53\u6211\u6c42\u4f60\u4e86\u3002\n\nNOI \u60f3\u8981\u9762\u79ef\u897f\u5b89 gxyz \u7684\u540c\u5b66\u8bf7\u52a0 qq \u7fa4\uff1a1093149224\u3002\n\n\u6240\u6709\u56fe\u7247\u7a7a\u95f4\u592a\u5927\uff0c\u6d1b\u8c37\u4e0a\u4f20\u4e0d\u4e0a\u53bb\uff0c\u53ef\u4ee5\u53bb[\u535a\u5ba2\u56ed](https:\/\/www.cnblogs.com\/xzz-cat6\/p\/20012646)\u3002\n\n# \u4e3b\u7ebf\n\u4f17\u6240\u5468\u77e5\uff0cAPIO \u8fd9\u4e2a\u6bd4\u8d5b\u5c31\u662f~~\u6c34\u7fa4~~\u9762\u79ef\u5927\u8d5b\uff0c\u6240\u4ee5\u5c06\u4e3b\u7ebf\u8bbe\u4e3a\u9762\u79ef\uff0c\u652f\u7ebf\u8bbe\u4e3a\u6bd4\u8d5b\uff0c\u8fd9\u91cc\u4e0d\u4f1a\u8c08\u8bba\u4efb\u4f55\u5206\u6570\uff0c\u8bf7\u653e\u5fc3\u98df\u7528\u3002\n\n## Day before\n\u53bb\u3001\u7ec8\u4e8e\u53ef\u4ee5\u53bb APIO \u4e86\u3002\u9274\u4e8e\u8ba4\u8bc6\u7684\u4eba\u592a\u5c11\uff0c\u6240\u4ee5\u6ca1\u641e\u5fbd\u7ae0\uff08\u9519\u8bef\u7684\u51b3\u5b9a\uff09\u3002\u897f\u5b89 gxyz \u4e00\u5171\u53bb\u4e86 6 \u4e2a\u4eba\uff0c\u5206\u522b\u662f @OIer_Automation\u3001@UKE_Automation\u3001@xzz_cat6\u3001@white_tiger_yyyy\u3001@No0Chenquanlin\u3001@wangsiqi2010916\uff0c\u53ef\u60dc\u7684\u662f SN E \u961f\u961f\u957f @te_bie_zhi_chu \u4e0d\u53bb\u3002\n\n\u53bb\u4e4b\u524d\u5728\u963f\u65af\u987f\u8981\u4e86\u4e2a tag\uff0c\u5929\u5929\u6c34\u7fa4\uff0c\u5e76\u4e14\u5236\u5b9a\u9762\u79ef\u540d\u5355\uff1a@picha\u3001@PPPxcy\u3001@ARIS2_0\u3001@ax_by_c\u3001@sbno333\u3001@OrangeEye\u3001@Heartquakes\u3002\n\n# Day 5.7\n\u672c\u6765\u662f\u6700\u9002\u5408\u9762\u79ef\u7684\u4e00\u5929\uff0c\u7ed3\u679c\u8981\u548c @UKE_Automation \u6253\u94a2\u56db\uff0c\u6240\u4ee5\u62d6\u4e86\u3002\u51b3\u5b9a\u660e\u5929\u9762\u4e00\u4e9b\u4eba\u3002\n\n# Day 5.8\n\u4e2d\u5348\u8054\u7cfb @ax_by_c \u9762\u79ef\uff0c\u5728\u793c\u5802\u7684\u4e25\u683c\u53f3\u4e0b\u89d2\u3002\u4e24\u4eba\u76f8\u89c1\u751a\u6b22\uff0c\u9042\u804a\u4e86\u4e00\u4e2d\u5348\uff0c\u5728\u8fd9\u671f\u95f4\u8ba4\u8bc6\u4e86 @Neuro_MLE\uff0c\u5e76\u4e14\u62ff\u5230\u4e86\u7b2c\u4e00\u679a\u5fbd\u7ae0\uff0c\u8fd8\u548c\u4e00\u4e2a\u8def\u4eba\u6362\u4e86\u5fbd\u7ae0\u3002\n\n\u8c8c\u4f3c\u662f\u8fd9\u5929\u4e0b\u5348\u5403\u996d\u7684\u65f6\u5019\uff0c\u89c1\u5230\u4e86 @PPPxcy\uff0c\u9042\u8fdb\u884c\u95ee\u5019\u5e76\u62ff\u5230\u4e86\u7b2c\u4e8c\u679a\u5fbd\u7ae0\u3002\n\n\u5f00\u5e55\u5f0f\u89c1\u4e86 @Heartquakes\uff0c\u53ef\u60dc\u6ca1\u6709\u5fbd\u7ae0\u3002\n\n\u665a\u4e0a\u60f3\u53bb\u9762 @picha\uff0c\u5f97\u77e5\u5728\u5916\u9762\uff0c\u9042\u672a\u679c\u3002\n\n\u7761\u89c9\u65f6\u95f4\uff1a23:40\u3002\n\n# Day 5.9\n\u6bd4\u8d5b\u65e5\u65e9\u4e0a\u6ca1\u4ec0\u4e48\u673a\u4f1a\uff0c\u51fa\u8003\u573a\u627e @picha \u548c @PPPxcy \u804a\u5929\uff0c\u7a81\u7136\u6709\u4e2a\u4eba\u67b6\u7740\u6444\u50cf\u673a\u524d\u6765\u91c7\u8bbf\uff0c\u4e8e\u662f\u63a8\u8350 @PPPxcy \u540e\u548c @picha \u5f00\u6da6\u3002\n\n\u4e0b\u5348\u542c\u8bb2\u9898\u7684\u65f6\u5019\u627e\u5230 @Neuro_MLE \u8865\u4e0a\u4e86\u5fbd\u7ae0\uff0c\u548c @wangsiqi2010916 \u6bd4\u5fbd\u7ae0\u4e2a\u6570\u5931\u8d25\u3002\n\n\u98de\u884c\u68cb\u548c\u6597\u5730\u4e3b\u771f\u597d\u73a9\u3002\n\n\u665a\u4e0a\u60f3\u53bb\u9762 @picha\uff0c\u5f97\u77e5\u5728\u5916\u9762\uff0c\u9042\u672a\u679c\u3002\n\n\u6253\u94a2\u56db\uff0c\u7761\u89c9\u65f6\u95f4\uff1a11:00\u3002\n\n# Day 5.10\n\n\u4e0a\u5348\u8bb2\u7684\u90fd\u662f\u5565\uff0c\u4e0d\u7ba1\u4e86\uff0c\u98de\u884c\u68cb+\u6597\u5730\u4e3b\u3002\n\n\u4e2d\u5348\u9762\u4e86 @OrangeEye\uff0c\u89c1\u5230 @picha \u7684\u65f6\u5019\u8981\u4e86\u4e00\u679a\u5fbd\u7ae0\uff0c\u5e76\u8c08\u8bba\u94a2\u56db\u8fdb\u5ea6\u3002\u4e86\u89e3\u5230\u6709\u623f\u95f4\u665a\u4e0a\u5f00 party\u3002\n\n\u4e0b\u5348\u793e\u4f1a\u5b9e\u8df5\u6210\u8d1f\u91cd\u5f92\u6b65\u4e86\uff0c\u5728\u6b64\u671f\u95f4\u5076\u7136\u8ba4\u8bc6\u4e86 @Little_Cart\u3002\n\n\u95ed\u5e55\u5f0f\u524d\u9762\u4e86 @Little_Cart\uff0c\u804a\u4e86\u5f88\u591a\u5173\u4e8e\u7403\u5708\u7684\u4e8b\u60c5\uff0c\u62ff\u5230\u4e86\u5fbd\u7ae0\u3002\n\n\u95ed\u5e55\u5f0f\u7684\u7f51\u597d\u5361\uff0c\u4e8e\u662f\u5728\u5916\u9762\u73bb\u7483\u524d\u7ad9\u7740\uff0c\u78b0\u89c1\u4e86 @MoCaRabbit\uff0c\u9042\u8fdb\u884c\u9762\u79ef\uff0c\u6210\u529f\u62ff\u5230\u5fbd\u7ae0\u3002\u5728\u6b64\u671f\u95f4\u78b0\u89c1\u8def\u8fc7\u7684 @MrPython\uff0c\u53c8\u62ff\u5230\u4e00\u679a\u5fbd\u7ae0\u3002\n\n\u770b\u89c1 @MoCaRabbit \u7684\u624b\u673a\u6ca1\u7535\u4e86\uff0c\u4e8e\u662f\u5e2e\u4ed6\u547c\u53eb @sbno333 \u51fa\u6765\u9762\uff0c\u6210\u529f\u62ff\u5230\u5fbd\u7ae0\uff0c\u6b64\u65f6 @sbno333 \u7684\u624b\u673a\u4e5f\u6ca1\u7535\u4e86\uff0c\u8fd8\u597d\u6211\u5728\u793e\u4f1a\u5b9e\u8df5\u7684\u65f6\u5019\u79df\u5145\u7535\u5b9d\u4e86\u3002\n\n\u8fd9\u65f6\u5019\uff0c\u6211\u9886\u5230\u4e86 8 \u679a\u5fbd\u7ae0\u3002APIO \u7ed3\u675f\u4e86\uff0c\u672c\u6587\u4e5f\u8be5\u7ed3\u675f\u4e86\uff0c\u5417?\n\n# Day 5.10\u665a\n\u6211\u6293\u4f4f\u6700\u540e\u7684\u65f6\u673a\uff0c\u548c\u6bcf\u4e00\u4e2a\u60f3\u6362\u5fbd\u7ae0\u7684\u4eba\u6362\u5fbd\u7ae0\uff0c\u671f\u95f4\u514d\u8d39\u9886\u4e86\u5f88\u591a\u8def\u4eba\u7684\u5fbd\u7ae0\uff0c\u5e76\u4e14\u548c @ARIS2_0 \u9762\u79ef\uff0c\u9886\u5230\u4e86\u5fbd\u7ae0\u3002\u7ec8\u4e8e\u9762\u5b8c\u4e86\u9762\u79ef\u8ba1\u5212\u540d\u5355\uff0c\u6b64\u65f6\u5fbd\u7ae0\u6570\u6765\u5230\u4e86 16 \u679a\u3002\n\n\u7b49\u5230 23 \u70b9\uff0c\u96c6\u5b9d\u697c\u5927\u5385\u6ca1\u4eba\u4e86\uff0c\u9042\u56de\u53bb\u7761\u89c9\uff0c\u4e3b\u7ebf\u6b63\u5f0f\u5b8c\u7ed3\u4e86\uff0c\u5417\uff1f\n\n# Day 5.11\n\n\u665a\u4e0a 0:30 \u5206\uff0c\u4e8b\u60c5\u51fa\u73b0\u8f6c\u673a\uff0c\u4e86\u89e3\u5230 20510 \u5728 ktv\uff0c\u9042\u524d\u5f80\uff0c\u867d\u7136\u4e00\u4e2a\u8ba4\u8bc6\u7684\u90fd\u6ca1\u6709\uff0c\u4f46\u662f\u73a9\u7684\u597d\u5f00\u5fc3\uff0c\u76f8\u4e92\u52a0\u4e86\u597d\u53cb\uff0c\u53c8\u767d\u5ad6\u4e86\u4e00\u4e9b\u5fbd\u7ae0\uff0c\u671f\u95f4 @Little_Cart \u4e5f\u6765\u4e86\uff0c\u6700\u540e\u5408\u5531\u8702\u9e1f\u3002\u7531\u4e8e\u4eba\u592a\u591a\u4e5f\u4e0d\u719f\uff0c\u8fd9\u91cc\u5c31\u4e0d\u5217\u4e3e\u4e86\uff0c\u8be6\u89c1\u4e0b\u56fe\u3002\n\n\u4e0b\u56fe\u4e3a 23 \u70b9\u7684\u5408\u7167\uff0c\u6b64\u65f6\u6211\u8fd8\u6ca1\u6709\u6765\uff0c\u9042\u5728\u53f3\u4e0a\u89d2\u5360\u4f4d\uff1a\n\n\u7761\u89c9\u65f6\u95f4\uff1a2:00\uff0c\u5230\u6b64\uff0c\u4e3b\u7ebf\u6b63\u5f0f\u5b8c\u7ed3\u3002\n\n**\u656c\u8bf7\u671f\u5f85 NOI 2026 \u9762\u57fa\u8bb0**\u3002\n\n# \u652f\u7ebf\n\nwarning\uff1a\u672c\u90e8\u5206\u6709\u5206\u6570\u51fa\u73b0\uff0c\u5982\u6709\u4e0d\u9002\uff0c\u8bf7\u5c3d\u5feb\u8df3\u8f6c\u4e0b\u4e00\u90e8\u5206\u3002\n\n## Day Before\n\nNOIP \u6253\u4e86 196 \u5206\uff0c\u8be2\u95ee\u4e86\u8c37\u6c11\uff0c\u5e94\u8be5\u80fd\u53bb APIO\uff0c\u9042\u5728 APIO \u62a5\u540d\u622a\u81f3\u524d 3 \u65f6\u62a5\u4e0a\u3002\n\n\u8fc7\u4e86\u51e0\u5929\uff0c\u5f97\u77e5\u81ea\u5df1\u62a5\u4e0a\u4e86\u3002SN \u7684\u5206\u6570\u7ebf\u4e3a 146 \u5206\u3002\u503c\u5f97\u6ce8\u610f\uff0c\u672c\u6821\u6709\u521d\u4e00\u5c0f\u670b\u53cb @Stuart220_Chen \u672c\u8eab\u80fd\u62a5\u4e0a\uff0c\u4f46\u662f\u62a5\u540d\u65f6\u5374\u6ca1\u6709\u5728\u3002\n\n## Day 1\n\u6ca1\u5565\u597d\u8bf4\u7684\uff0c\u7528\u7684\u4fdd\u94dc\u6253\u6cd5\uff0c\u5f00\u9898\u987a\u5e8f T3\uff0cT1\uff0cT2\uff0c\u4ee5\u90e8\u5206\u5206\u4e3a\u4e3b\u300235+56+40=131 \u5206\u3002\n\n\u8fdb\u884c\u5609\u5e74\u534e\u6d3b\u52a8\uff0c\u6210\u529f\u62ff\u5230 4 \u679a\u5370\u7ae0\uff0c\u6362\u4e86\u4e2a\u952e\u5e3d\uff0c\u5609\u5e74\u534e\u6253\u94dc\u3002\n\n## Day 2\n\u9881\u5956\u5178\u793c\u9886\u5230\u94dc\u724c\uff0c\u4e0b\u56fe\u4e3a gxyz \u5927\u5408\u7167\u3002\u4ece\u5de6\u5230\u53f3\u4f9d\u6b21\uff1a@white_tiger_yyyy\u3001@UKE_Automation\u3001@xzz_cat6\u3001@OIer_Automation\u3001@wangsiqi2010916\uff0c\u94f6\u94dc\u94dc\u94dc\u94dc\uff1a\n\n\u5230\u6b64\uff0c\u652f\u7ebf\u5b8c\u7ed3\u3002\n\n# \u4ece\u592f\u5230\u62c9\u9510\u8bc4\u6240\u6709\u6d3b\u52a8\n\u7eaf\u4e3b\u89c2\uff0c\u65e0\u5ba2\u89c2\uff0c\u53ef\u4ee5\u5728\u8bc4\u8bba\u533a\u63d0\u5efa\u8bae\u3002\n\n- \u5348\u9910\u4e0e\u665a\u9910\uff1a\u8fd9\u4e2a\u98df\u5802\u662f\u771f\u53ef\u4ee5\uff0c\u996d\u5f88\u597d\u5403\uff0c\u8fd8\u80fd\u514d\u8d39\u5728\u5176\u4ed6\u7a97\u53e3\u52a0\uff0c\u76f8\u6bd4\u4e8e cyyz \u7b97\u662f\u56fd\u5bb4\u7ea7\u522b\u7684\uff0c\u4e3b\u63a8\u70e4\u8089\u996d\u548c\u5170\u5dde\u62c9\u9762\u3002\u6211\u4eec\u897f\u5b89 gxyz \u5b66\u7740\u70b9\u3002**\u5728\u6b64\u7ed9\u5230\u592f**\u3002\n\n- \u65e9\u9910\uff1a\u6807\u51c6\u9152\u5e97\u9910\uff0c\u4e0d\u8fc7\u8fd9\u4e00\u70b9\u5c31\u6bd4 cyyz \u548c gxyz \u597d\u5230\u4e0d\u77e5\u9053\u54ea\u91cc\u53bb\u4e86\uff0c\u867d\u7136\u6709\u70b9\u666e\u901a\uff0c\u4e0d\u8fc7\u4e0d\u5f71\u54cd\u3002\u5efa\u8bae\u6a59\u6c41\u4e0d\u8981\u90a3\u4e48\u51b0\uff0c\u5bb9\u6613\u62c9\u809a\u5b50\u3002**\u5728\u6b64\u7ed9\u5230\u9876\u7ea7**\u3002\n\n- 5.8 \u7684\u8bb2\u8bfe\uff1a\u7b2c\u4e00\u8282\u8bfe\u611f\u89c9\u9009\u7684\u9898\u4e0d\u9519\uff0c\u6709\u542f\u53d1\u6027\uff0c\u8bfe\u7a0b\u4e5f\u4e0d\u662f\u5f88\u8d76\uff0c\u9664\u4e86\u6709\u70b9\u542c\u4e0d\u61c2\u3002**\u7ed9\u5230\u9876\u7ea7**\u3002\u7b2c\u4e8c\u8282\u8bfe\u4e2d\u56fd\u961f\u957f\u5c55\u73b0\u5b9e\u529b\uff0c\u5230\u7b2c\u4e09\u9875\u5c31\u5f00\u59cb\u4e0a\u96be\u5ea6\uff0c\u542c\u4e86\u534a\u8282\u8bfe\u5c31\u7761\u4e86\uff0c**\u5728\u6b64\u7ed9\u5230 NPC**\u3002\u7b2c\u4e09\u8282\u8bfe\u7406\u8bba\u8bfe\uff0c\u611f\u89c9\u6ca1\u5565\u7528\uff0c\u4e5f\u6ca1\u542f\u53d1\uff0c\u8ddf\u5230\u4e24\u4e2a\u5b57\u6bcd\u6811\u5c31\u8ddf\u4e0d\u4e0b\u53bb\u4e86\uff0c**\u5728\u6b64\u7ed9\u5230 NPC**\u3002\u7b2c\u56db\u8282\u8bfe\u6709\u610f\u601d\uff0c\u80fd\u542c\u61c2\uff0c\u4e5f\u6709\u542f\u53d1\uff0c**\u5728\u6b64\u7ed9\u5230\u592f**\u3002\n\n- \u5f00\u5e55\u5f0f\uff1a\u867d\u7136 dzd \u6ca1\u6765\uff0c\u4f46\u662f\u4ee3\u66ff\u81f4\u8f9e\u7684\u4e00\u6837\u6709\u6d3b\uff0c\u4e0d\u8fc7\u4f60\u7ec8\u7a76\u4e0d\u662f\u4ed6\u3002\u8fc7\u7a0b\u6709\u70b9\u65e0\u804a\u4e86\u3002**\u5728\u6b64\u7ed9\u5230\u4eba\u4e0a\u4eba**\u3002\n\n- \u6bd4\u8d5b\uff1a\u8fd9\u73a9\u610f\u771f\u5c31\u770b\u4e3b\u89c2\u4e86\uff0c\u4e0d\u8fc7\u9898\u76ee\u8d28\u91cf\u4e0d\u9519\uff0c\u5f88\u7efc\u5408\uff0c\u5c31\u662f\u6ca1\u6709\u5b57\u7b26\u4e32\u3002**\u5728\u6b64\u7ed9\u5230\u4eba\u4e0a\u4eba**\u3002\n\n- \u5609\u5e74\u534e\uff1a\u6d3b\u52a8\u672c\u8eab\u5f88\u597d\uff0c\u4e0d\u8fc7\u6392\u961f\u65f6\u95f4\u5f88\u591a\uff0c\u5728\u4e00\u8fb9\u770b\u624b\u673a\u4e5f\u4e0d\u9519\u3002**\u5728\u6b64\u7ed9\u5230\u9876\u7ea7**\u3002\n\n- \u793e\u4f1a\u5b9e\u8df5\uff1a\u6539\u540d\u5f92\u6b65\u8d1f\u91cd\u5427\uff0c\u7ed9\u6211\u8bb2\u8fd9\u4e9b\u6709\u5565\u7528\uff0c\u4e0d\u8fc7\u80fd\u73a9\u624b\u673a\u3002**\u5728\u6b64\u7ed9\u5230 NPC**\u3002\n\n- \u95ed\u5e55\u5f0f\uff1a\u7ec8\u4e8e\u7b49\u5230\u4e86 dzd\uff0c\u8bb2\u8bdd\u5f88\u6709\u610f\u601d\uff0c\u7206\u4e86\u5f88\u591a\u5c0f\u70b9\uff0c\u82b1 3000 \u542c\u8bb2\u8bdd\u503c\u4e86\u3002\u8282\u76ee\u4e2a\u4eba\u611f\u89c9\u53ef\u4ee5\uff0c\u4e3b\u6301\u4e00\u770b\u5c31\u662f\u7ec3\u8fc7\uff0c\u4e0d\u50cf\u67d0 cyyz\u3002**\u5728\u6b64\u7ed9\u5230\u592f**\u3002\n\n- APIO\uff1a\u4e0d\u591a\u8bf4\u4ec0\u4e48\uff0c**\u76f4\u63a5\u7ed9\u5230\u592f**\uff0c\u8c01\u6709\u610f\u89c1\uff1f","contentFull":true,"adminNote":null},"favored":false,"voted":null,"canReply":false,"canEdit":false},"user":null,"time":1794746296.909984}</script>            <script src="https://fecdn.luogu.com.cn/columba/loader.20261113-2335.js" charset="utf-8" defer></script>
+    <link rel="stylesheet" href="https://fecdn.luogu.com.cn/columba/loader.20261113-2335.css" />
+    <script src="https://fecdn.luogu.com.cn/columba/vendor.20261113-2335.js" charset="utf-8" defer></script>
+        <link rel="canonical" href="https://www.luogu.com.cn/article/kjlf4zbn" />
+    <script type="application/ld+json">{"@context":"https:\/\/schema.org","@type":"Article","name":"\u4ece\u592f\u5230\u62c9\u9510\u8bc4\u6240\u6709\u6d3b\u52a8+\u9762\u79ef\u6e38\u8bb0","description":"\u672c\u6587\u5206\u4e3a\u4e09\u5927\u90e8\u5206\uff0c\u4e3b\u7ebf\uff08\u9762\u79ef\uff09\uff0c\u652f\u7ebf\uff08\u6bd4\u8d5b\uff09\uff0c\u4ece\u592f\u5230\u62c9\u9510\u8bc4\u6240\u6709\u6d3b\u52a8\uff0c\u5982\u82e5\u6211\u9886\u8fc7\u4f60\u7684\u514d\u8d39\u5fbd\u7ae0\uff0c\u8bf7\u5728 NOI \u627e\u6211 qq \u9886\u5fbd\u7ae0\uff0c\u672c\u4eba\u548c\u6bcf\u4e2a\u6362\u5fbd\u7ae0\u7684\u4eba\u90fd\u52a0\u4e86 qq\u3002\n\u672c\u6587\u6587\u7ae0\u5185\u5bb9\u4e30\u5bcc\uff0c\u7ed9\u4e2a\u70b9\u8d5e\u5427\uff0c\u5c31\u5f53\u6211\u6c42\u4f60\u4e86\u3002\nNOI \u60f3\u8981\u9762\u79ef\u897f\u5b89 gxyz\u2026","genre":"\u751f\u6d3b\u00b7\u6e38\u8bb0","author":{"@type":"Person","name":"xzz_cat6"},"datePublished":"2026-05-11T12:49:28+08:00"}</script>
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content="从夯到拉锐评所有活动+面积游记" />
+    <meta property="og:description" content="本文分为三大部分，主线（面积），支线（比赛），从夯到拉锐评所有活动，如若我领过你的免费徽章，请在 NOI 找我 qq 领徽章，本人和每个换徽章的人都加了 qq。
+本文文章内容丰富，给个点赞吧，就当我求你了。
+NOI 想要面积西安 gxyz…" />
+    <meta property="article:section" content="生活·游记" />
+    <meta property="article:author" content="xzz_cat6" />
+    <meta property="article:published_time" content="2026-05-11T12:49:28+08:00" />
+    <meta property="og:url" content="https://www.luogu.com.cn/article/kjlf4zbn" />
+    <meta property="og:site_name" content="洛谷专栏" />
+        <script id="luogu-theme" type="application/json">{"id":1,"lNavi":{"back":"#ffffff","fore":"#262626","logo":null},"lBody":{"back":"#f0f4fa","blur":1000,"fade":1000,"image":"https:\/\/cdn.luogu.com.cn\/images\/bg\/fe\/luogu4-bg-l.jpg","midOpts":{"size":"cover"}},"dNavi":{"back":"#1d2025","fore":"#ffffff","logo":"#ffffff"},"dBody":{"back":"#0d1018","blur":1000,"fade":1000,"image":"https:\/\/cdn.luogu.com.cn\/images\/bg\/fe\/luogu4-bg-d.jpg","midOpts":{"size":"cover"}}}</script>
+    <style></style>
+</head>
+<body>
+<div id="app">
+    <noscript>
+        <h3>请<b style="color:#f00;">不要禁用</b>脚本，否则网页无法正常加载</h3>
+    </noscript>
+        <article>
+        <h1>从夯到拉锐评所有活动+面积游记</h1>
+        <p style="font-size: .75em;">
+            <a rel="author">xzz_cat6</a>
+            ·
+            <time datetime="2026-05-11T12:49:28+08:00">2026-05-11 12:49:28</time>
+            ·
+            <a href="/article?category=5">生活·游记</a>
+        </p>
+
+        <p>本文分为三大部分，主线（面积），支线（比赛），从夯到拉锐评所有活动，<strong>如若我领过你的免费徽章，请在 NOI 找我 qq 领徽章</strong>，本人和每个换徽章的人都加了 qq。</p>
+<p>本文文章内容丰富，给个点赞吧，就当我求你了。</p>
+<p>NOI 想要面积西安 gxyz 的同学请加 qq 群：1093149224。</p>
+<p>所有图片空间太大，洛谷上传不上去，可以去博客园。</p>
+<h1>主线</h1>
+<p>众所周知，APIO 这个比赛就是<del>水群</del>面积大赛，所以将主线设为面积，支线设为比赛，这里不会谈论任何分数，请放心食用。</p>
+<h2>Day before</h2>
+<p>去、终于可以去 APIO 了。鉴于认识的人太少，所以没搞徽章（错误的决定）。西安 gxyz 一共去了 6 个人，分别是 @OIer_Automation、@UKE_Automation、@xzz_cat6、@white_tiger_yyyy、@No0Chenquanlin、@wangsiqi2010916，可惜的是 SN E 队队长 @te_bie_zhi_chu 不去。</p>
+<p>去之前在阿斯顿要了个 tag，天天水群，并且制定面积名单：@picha、@PPPxcy、@ARIS2_0、@ax_by_c、@sbno333、@OrangeEye、@Heartquakes。</p>
+<h1>Day 5.7</h1>
+<p>本来是最适合面积的一天，结果要和 @UKE_Automation 打钢四，所以拖了。决定明天面一些人。</p>
+<h1>Day 5.8</h1>
+<p>中午联系 @ax_by_c 面积，在礼堂的严格右下角。两人相见甚欢，遂聊了一中午，在这期间认识了 @Neuro_MLE，并且拿到了第一枚徽章，还和一个路人换了徽章。</p>
+<p>貌似是这天下午吃饭的时候，见到了 @PPPxcy，遂进行问候并拿到了第二枚徽章。</p>
+<p>开幕式见了 @Heartquakes，可惜没有徽章。</p>
+<p>晚上想去面 @picha，得知在外面，遂未果。</p>
+<p>睡觉时间：23:40。</p>
+<h1>Day 5.9</h1>
+<p>比赛日早上没什么机会，出考场找 @picha 和 @PPPxcy 聊天，突然有个人架着摄像机前来采访，于是推荐 @PPPxcy 后和 @picha 开润。</p>
+<p>下午听讲题的时候找到 @Neuro_MLE 补上了徽章，和 @wangsiqi2010916 比徽章个数失败。</p>
+<p>飞行棋和斗地主真好玩。</p>
+<p>晚上想去面 @picha，得知在外面，遂未果。</p>
+<p>打钢四，睡觉时间：11:00。</p>
+<h1>Day 5.10</h1>
+<p>上午讲的都是啥，不管了，飞行棋+斗地主。</p>
+<p>中午面了 @OrangeEye，见到 @picha 的时候要了一枚徽章，并谈论钢四进度。了解到有房间晚上开 party。</p>
+<p>下午社会实践成负重徒步了，在此期间偶然认识了 @Little_Cart。</p>
+<p>闭幕式前面了 @Little_Cart，聊了很多关于球圈的事情，拿到了徽章。</p>
+<p>闭幕式的网好卡，于是在外面玻璃前站着，碰见了 @MoCaRabbit，遂进行面积，成功拿到徽章。在此期间碰见路过的 @MrPython，又拿到一枚徽章。</p>
+<p>看见 @MoCaRabbit 的手机没电了，于是帮他呼叫 @sbno333 出来面，成功拿到徽章，此时 @sbno333 的手机也没电了，还好我在社会实践的时候租充电宝了。</p>
+<p>这时候，我领到了 8 枚徽章。APIO 结束了，本文也该结束了，吗?</p>
+<h1>Day 5.10晚</h1>
+<p>我抓住最后的时机，和每一个想换徽章的人换徽章，期间免费领了很多路人的徽章，并且和 @ARIS2_0 面积，领到了徽章。终于面完了面积计划名单，此时徽章数来到了 16 枚。</p>
+<p>等到 23 点，集宝楼大厅没人了，遂回去睡觉，主线正式完结了，吗？</p>
+<h1>Day 5.11</h1>
+<p>晚上 0:30 分，事情出现转机，了解到 20510 在 ktv，遂前往，虽然一个认识的都没有，但是玩的好开心，相互加了好友，又白嫖了一些徽章，期间 @Little_Cart 也来了，最后合唱蜂鸟。由于人太多也不熟，这里就不列举了，详见下图。</p>
+<p>下图为 23 点的合照，此时我还没有来，遂在右上角占位：</p>
+<p>睡觉时间：2:00，到此，主线正式完结。</p>
+<p><strong>敬请期待 NOI 2026 面基记</strong>。</p>
+<h1>支线</h1>
+<p>warning：本部分有分数出现，如有不适，请尽快跳转下一部分。</p>
+<h2>Day Before</h2>
+<p>NOIP 打了 196 分，询问了谷民，应该能去 APIO，遂在 APIO 报名截至前 3 时报上。</p>
+<p>过了几天，得知自己报上了。SN 的分数线为 146 分。值得注意，本校有初一小朋友 @Stuart220_Chen 本身能报上，但是报名时却没有在。</p>
+<h2>Day 1</h2>
+<p>没啥好说的，用的保铜打法，开题顺序 T3，T1，T2，以部分分为主。35+56+40=131 分。</p>
+<p>进行嘉年华活动，成功拿到 4 枚印章，换了个键帽，嘉年华打铜。</p>
+<h2>Day 2</h2>
+<p>颁奖典礼领到铜牌，下图为 gxyz 大合照。从左到右依次：@white_tiger_yyyy、@UKE_Automation、@xzz_cat6、@OIer_Automation、@wangsiqi2010916，银铜铜铜铜：</p>
+<p>到此，支线完结。</p>
+<h1>从夯到拉锐评所有活动</h1>
+<p>纯主观，无客观，可以在评论区提建议。</p>
+<ul>
+<li>
+<p>午餐与晚餐：这个食堂是真可以，饭很好吃，还能免费在其他窗口加，相比于 cyyz 算是国宴级别的，主推烤肉饭和兰州拉面。我们西安 gxyz 学着点。<strong>在此给到夯</strong>。</p>
+</li>
+<li>
+<p>早餐：标准酒店餐，不过这一点就比 cyyz 和 gxyz 好到不知道哪里去了，虽然有点普通，不过不影响。建议橙汁不要那么冰，容易拉肚子。<strong>在此给到顶级</strong>。</p>
+</li>
+<li>
+<p>5.8 的讲课：第一节课感觉选的题不错，有启发性，课程也不是很赶，除了有点听不懂。<strong>给到顶级</strong>。第二节课中国队长展现实力，到第三页就开始上难度，听了半节课就睡了，<strong>在此给到 NPC</strong>。第三节课理论课，感觉没啥用，也没启发，跟到两个字母树就跟不下去了，<strong>在此给到 NPC</strong>。第四节课有意思，能听懂，也有启发，<strong>在此给到夯</strong>。</p>
+</li>
+<li>
+<p>开幕式：虽然 dzd 没来，但是代替致辞的一样有活，不过你终究不是他。过程有点无聊了。<strong>在此给到人上人</strong>。</p>
+</li>
+<li>
+<p>比赛：这玩意真就看主观了，不过题目质量不错，很综合，就是没有字符串。<strong>在此给到人上人</strong>。</p>
+</li>
+<li>
+<p>嘉年华：活动本身很好，不过排队时间很多，在一边看手机也不错。<strong>在此给到顶级</strong>。</p>
+</li>
+<li>
+<p>社会实践：改名徒步负重吧，给我讲这些有啥用，不过能玩手机。<strong>在此给到 NPC</strong>。</p>
+</li>
+<li>
+<p>闭幕式：终于等到了 dzd，讲话很有意思，爆了很多小点，花 3000 听讲话值了。节目个人感觉可以，主持一看就是练过，不像某 cyyz。<strong>在此给到夯</strong>。</p>
+</li>
+<li>
+<p>APIO：不多说什么，<strong>直接给到夯</strong>，谁有意见？</p>
+</li>
+</ul>
+    </article>
+</div>
+<script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a5ae4fe20d780a10',t:'MTc5NDc0NjI5Ng=='};var l=window.parent.location,o;try{o=new URL(l.origin).origin}catch(e){try{o=new URL(new URL(l.href).origin).origin}catch(e){o=''}}var u='/cdn-cgi/challenge-platform/scripts/jsd/main.js?ray=a5ae4fe20d780a10',a=document.createElement('script');a.src=o?new URL(u,o).href:u;document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

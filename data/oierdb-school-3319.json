@@ -1,0 +1,242 @@
+[
+ {
+  "idx": 1,
+  "name": "吕明栩",
+  "grade": "初三",
+  "national": 344,
+  "score": 29528.13,
+  "ccf": 7
+ },
+ {
+  "idx": 2,
+  "name": "王思琦",
+  "grade": "高一",
+  "national": 618,
+  "score": 20596.91,
+  "ccf": 7
+ },
+ {
+  "idx": 3,
+  "name": "丁一宸",
+  "grade": "高二",
+  "national": 943,
+  "score": 15118.48,
+  "ccf": 9
+ },
+ {
+  "idx": 4,
+  "name": "刘昱合",
+  "grade": "高二",
+  "national": 1010,
+  "score": 14353.38,
+  "ccf": 9
+ },
+ {
+  "idx": 5,
+  "name": "肖子卓",
+  "grade": "初三",
+  "national": 1058,
+  "score": 13972.98,
+  "ccf": 7
+ },
+ {
+  "idx": 6,
+  "name": "丁子博",
+  "grade": "高一",
+  "national": 1085,
+  "score": 13683.1,
+  "ccf": 8
+ },
+ {
+  "idx": 7,
+  "name": "周逸然",
+  "grade": "高一",
+  "national": 2825,
+  "score": 7146.63,
+  "ccf": 7
+ },
+ {
+  "idx": 8,
+  "name": "夏菁阳",
+  "grade": "高二",
+  "national": 2901,
+  "score": 7038.91,
+  "ccf": 7
+ },
+ {
+  "idx": 9,
+  "name": "张顺凯",
+  "grade": "高一",
+  "national": 3384,
+  "score": 6408.57,
+  "ccf": 7
+ },
+ {
+  "idx": 10,
+  "name": "陈泉林",
+  "grade": "高二",
+  "national": 3455,
+  "score": 6339.53,
+  "ccf": 7
+ },
+ {
+  "idx": 11,
+  "name": "王苗而",
+  "grade": "高三",
+  "national": 3618,
+  "score": 6187.39,
+  "ccf": 8
+ },
+ {
+  "idx": 12,
+  "name": "张笑语",
+  "grade": "高三",
+  "national": 3699,
+  "score": 6114.31,
+  "ccf": 7
+ },
+ {
+  "idx": 13,
+  "name": "周炜恒",
+  "grade": "高一",
+  "national": 3795,
+  "score": 6031.93,
+  "ccf": 7
+ },
+ {
+  "idx": 14,
+  "name": "陈逸阳",
+  "grade": "高一",
+  "national": 3934,
+  "score": 5911.99,
+  "ccf": 7
+ },
+ {
+  "idx": 15,
+  "name": "柏鹭鸣",
+  "grade": "高二",
+  "national": 4107,
+  "score": 5755.88,
+  "ccf": 7
+ },
+ {
+  "idx": 16,
+  "name": "王梓乔",
+  "grade": "高二",
+  "national": 4967,
+  "score": 5094.42,
+  "ccf": 6
+ },
+ {
+  "idx": 17,
+  "name": "王一乐",
+  "grade": "初三",
+  "national": 5202,
+  "score": 4928.67,
+  "ccf": 7
+ },
+ {
+  "idx": 18,
+  "name": "陈钰婉",
+  "grade": "高二",
+  "national": 5377,
+  "score": 4815.95,
+  "ccf": 6
+ },
+ {
+  "idx": 19,
+  "name": "陈怡嘉",
+  "grade": "高一",
+  "national": 5674,
+  "score": 4657.26,
+  "ccf": 6
+ },
+ {
+  "idx": 20,
+  "name": "张宸华",
+  "grade": "高一",
+  "national": 6837,
+  "score": 4105.99,
+  "ccf": 6
+ },
+ {
+  "idx": 21,
+  "name": "邓友康",
+  "grade": "高三",
+  "national": 6856,
+  "score": 4096.65,
+  "ccf": 6
+ },
+ {
+  "idx": 22,
+  "name": "禹奕成",
+  "grade": "高二",
+  "national": 7090,
+  "score": 4006.12,
+  "ccf": 6
+ },
+ {
+  "idx": 23,
+  "name": "李金潼",
+  "grade": "初三",
+  "national": 7441,
+  "score": 3874.22,
+  "ccf": 6
+ },
+ {
+  "idx": 24,
+  "name": "苗淇",
+  "grade": "初三",
+  "national": 8040,
+  "score": 3653.89,
+  "ccf": 7
+ },
+ {
+  "idx": 25,
+  "name": "王鼎翼",
+  "grade": "高一",
+  "national": 9117,
+  "score": 3316.61,
+  "ccf": 6
+ },
+ {
+  "idx": 26,
+  "name": "周檬轩",
+  "grade": "初三",
+  "national": 9370,
+  "score": 3246.47,
+  "ccf": 7
+ },
+ {
+  "idx": 27,
+  "name": "张轩程",
+  "grade": "初三",
+  "national": 9464,
+  "score": 3220.56,
+  "ccf": 5
+ },
+ {
+  "idx": 28,
+  "name": "谭意铭",
+  "grade": "高中毕业 2 年",
+  "national": 10909,
+  "score": 2875.8,
+  "ccf": 5
+ },
+ {
+  "idx": 29,
+  "name": "李君泽",
+  "grade": "初三",
+  "national": 14419,
+  "score": 2260.78,
+  "ccf": 5
+ },
+ {
+  "idx": 30,
+  "name": "王玧琪",
+  "grade": "初三",
+  "national": 14485,
+  "score": 2253.38,
+  "ccf": 5
+ }
+]

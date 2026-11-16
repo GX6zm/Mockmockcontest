@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="no-js">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta name="csrf-token" content="1794833740:PVbT38IJk8V8lucwXl5PLkFhdMqw56A9J/JbvhnbjLw=">
+    <meta name="renderer" content="webkit">
+    <script>
+        window.__feInitLocalTime = new Date().getTime() / 1000;
+        window.__feConfigVersion = '74d532c6c7861bfe'; window.__feConfigRequest = '\/_lfe\/config'; window.__fePhoneHomeCall = 'https\u003A\/\/moshimoshi\u003Aagltb3noatpwohhuenb5ag1tc2jsnnl3\u0040errtrack.luogu.com.cn\/lotlp1';        window.__luoguTagVersion = 'zh\u002DCN\/2026111520'; window.__luoguTagRequest = '\/_lfe\/tags';
+    </script>
+    <title>[CSP2026] 胜败乃兵家常事？ - 洛谷专栏</title>
+    <link rel="icon" href="https://fecdn.luogu.com.cn/favicon.ico">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'unsafe-eval' 'unsafe-inline' luogu.com *.luogu.com luogu.com.cn *.luogu.com.cn luogu.org *.luogu.org wss: blob: luoguprivate.oss-cn-hangzhou.aliyuncs.com luogu.oss-cn-hangzhou.aliyuncs.com https://challenges.cloudflare.com https://*.dun.163yun.com https://*.dun.163.com https://*.nosdn.126.net https://*.nosdn.127.net https://nos.netease.com https://cstaticdun.126.net https://cstaticdun1.126.net https://cstaticdun-v6.126.net https://acstatic-dun.126.net; img-src * data:; font-src * data:; worker-src data: blob:; frame-src https://fecdn.luogu.com.cn https://player.bilibili.com https://www.bilibili.com https://challenges.cloudflare.com">
+        <script id="lentille-context" type="application/json">{"instance":"main","template":"article.show","status":200,"locale":"zh-CN","data":{"article":{"lid":"wij4lwj1","title":"[CSP2026] \u80dc\u8d25\u4e43\u5175\u5bb6\u5e38\u4e8b\uff1f","category":5,"time":1793611351,"author":{"uid":732804,"avatar":"https:\/\/cdn.luogu.com.cn\/upload\/usericon\/732804.png","name":"Zctf1088","slogan":"\u5c31\u50cf\u98de\u7fd4\u5728\u8fbd\u9614\u5929\u7a7a","badge":null,"isAdmin":false,"isBanned":false,"color":"Orange","ccfLevel":7,"xcpcLevel":0,"background":"https:\/\/cdn.luogu.com.cn\/upload\/image_hosting\/6m17kfx6.webp"},"upvote":5,"replyCount":0,"favorCount":0,"status":2,"solutionFor":null,"promoteStatus":2,"collection":{"id":230,"name":"CSP2026 \u6e38\u8bb0\u5408\u96c6"},"content":"68 \u5206\u5417\uff1f\u6bd4\u8d85\u901f\u68c0\u6d4b\u9ad8\u4e86 28 \u5206\u8bf6\u2014\u2014\n\n\u88ab\u5730\u94c1\u649e\u4e86\u6709\u6d3b\u7740\u7684\u98ce\u9669\u5417\u3002\n\n\u4eca\u5929\u662f 2026 \u5e74 11 \u6708 2 \u65e5\uff0c\u524d\u5929\u4e0b\u5348\u662f CSP2026\u3002\u8d5b\u65f6\u505a\u4e86\u8bb8\u4e45 T2 \u65e0\u679c\uff0c\u5199\u4e86 84\uff0cT3 \u5199\u4e86 40\uff0cT4 \u6ca1\u8c03\u5b8c\uff0c\u53ea\u6709 15\u3002\u8d5b\u540e\u53d1\u73b0 T2 \u4e0d\u96be\uff0c\u6765\u5b66\u6821\u53d1\u73b0 T2 \u88ab\u5207\u7a7f\u4e86\u3002\u54e6\uff0c\u6211\u7684 B \u6027\u8d28\u8fd8\u88ab\u5361\u5e38\u4e86\u3002T3 \u8fd8\u6302\u6210\u4e86 24\uff0c\u624b\u6b20\u591a\u52a0\u4e86\u4e00\u884c\u65e0\u5173\u4ee3\u7801\u3002\n\n\u600e\u4e48\uff0c\u53c8\u662f\u8fd9\u6837\u5417\uff1f\u4e00\u4f17\u201c100\u201d\u4e2d\u4e00\u4e2a\u9c9c\u660e\u7684\u201c68\u201d\u3002\u5475\uff0c\u53c8\u662f\u505a\u4e0d\u51fa\u88ab\u522b\u4eba\u5207\u7a7f\u7684\u9898\u3002\u540c\u5b66\u5728\u8ba8\u8bba\u7684\u65f6\u5019\uff0c\u597d\u50cf\u4e0d\u77e5\u9053\u8be5\u8bf4\u4ec0\u4e48\u3002\n\n\u6211\u600e\u4e48\u5b66\u4e86 4 \u5e74 OI \u4e86\u8fd8\u505a\u4e0d\u51fa\u7eff\u9898\u3002\n\n---\n\n\u4e24\u5e74\u524d\uff0c\u96e8\u5929\u3002\u6dc5\u6dc5\u6ca5\u6ca5\u5730\u4e0b\u7740\u3002\u96e8\u6c34\u843d\u5230\u673a\u623f\u91cc\u662f\u567c\u567c\u556a\u556a\u7684\u952e\u76d8\u58f0\uff0c\u70e6\u5fc3\u3002\u4e0d\u65ad\u5730 RE\uff0cWA\uff0cTLE\u3002\u90a3\u65f6\u5019\u771f\u7684\u662f\u8fde\u6700\u5c0f\u70b9\u8986\u76d6\u8fd9\u4e48\u7b80\u5355\u7684\u4e00\u4e2a\u8d2a\u5fc3\u90fd\u4e0d\u4f1a\u505a\uff0c\u7801\u529b\u5f31\u7684\u79bb\u8c31\uff0c\u66f4\u662f\u5c06 $O(n^2\\log^2n)$ \u7684\u590d\u6742\u5ea6\u7b97\u4e3a $O(n\\log n)$\u3002\u662f\u5427\uff0c\u8d85\u901f\u68c0\u6d4b\u3002\n\n\u003E \u4f60\u8fd9\u5730\u94c1\u662f\u4e0d\u662f\u8d85\u901f\u4e86\u54c7\uff0c\u600e\u4e48\u628a\u6211\u649e\u4e86\u3002\u4eba\u88ab\u5730\u94c1\u649e\u4e86\u662f\u4e0d\u662f\u4f1a\u6b7b\u554a\u3002\u8fd9\u7535\u8111\u5c4f\u5e55\u4e0a\u90fd\u5168\u662f\u7ea2\u7684\u3002\n\n\u6696\u6696\u7684\u9633\u5149\u5728\u7a7a\u6c14\u4e2d\u5f25\u6f2b\uff0c\u6211\u5c31\u7ad9\u5728\u7a97\u6237\u65c1\u8fb9\uff0c\u60f3\u7740\u4e24\u5e74\u524d\u7684\u4e00\u5207\uff0c\u5982\u4eca\u6211\u7ec8\u4e8e\u4e0d\u662f\u5f53\u521d\u90a3\u5e45\u5f31\u7206\u4e86\u7684\u6a21\u6837\u5427\uff0c\u8fd9\u4e00\u8def\u8d70\u6765\u7ecf\u5386\u4e86\u90a3\u4e48\u591a\u8d77\u8d77\u843d\u843d\u3002\n\n\u8fd9\u662f\u6211\u5f85\u4e86\u8bb8\u4e45\u7684\u673a\u623f\uff0c\u6709\u591a\u4e45\u5462\uff0c\u4e45\u5230\u6700\u521d\u5728\u6211\u8eab\u8fb9\u7684\u540c\u5b66\u90fd\u9000\u5f79\u4e86\u6216\u8005\u5df2\u7ecf\u4e0d\u5728\u8fd9\u91cc\u8bad\u7ec3\uff0c\u8eab\u8fb9\u5df2\u7ecf\u90fd\u662f\u540e\u6765\u624d\u8ba4\u8bc6\u7684\u540c\u5b66\u3002\n\n\u4eca\u5929\u662f 2026 \u5e74 10 \u6708 30 \u65e5\uff0c\u660e\u5929\u5c31\u662f CSP \u4e86\u3002\n\n\u53c8\u662f\u4e00\u5e74 CSP\u3002\n\n\u53c8\u662f\u4e00\u5e74\u79cb\u5929\u3002\n\n\u53c8\u662f\u4e00\u9635\u79cb\u98ce\u3002\n\n\u770b\u770b\u697c\u4e0b\u7684\u90a3\u6761\u8def\uff0c\u8def\u4e24\u65c1\u7684\u6a31\u82b1\u6811\u5230\u4e86\u8fd9\u4e2a\u5b63\u8282\uff0c\u53c8\u662f\u88ab\u98ce\u5439\u5f97\u2026\u2026\u8bf4\u6765\u4e5f\u662f\u5947\u5999\uff0c\u6625\u5929\u5927\u5bb6\u4e00\u8d77\u5f00\u82b1\uff0c\u590f\u5929\u4e00\u8d77\u8302\u76db\uff0c\u51ac\u5929\u4e00\u8d77\u51cb\u843d\uff0c\u504f\u504f\u662f\u8fd9\u79cb\u5929\uff0c\u90a3\u6811\u53f6\u5b50\u7ea2\u7684\u7ea2\uff0c\u9ec4\u7684\u9ec4\uff0c\u7eff\u7684\u7eff\u3002\u7eff\u7684\u8fd8\u662f\u90a3\u4e48\u9c9c\u6d3b\uff0c\u751f\u547d\u529b\u65e0\u9650\u5450\u3002\u9ec4\u7684\u53f6\u5b50\u5462\uff1f\u7ea2\u7684\u53f6\u5b50\u662f\u4e0d\u662f\u5df2\u7ecf\u8981\u6b7b\u6389\u4e86\u54c7\uff1f\n\n\u8def\u5bf9\u9762\u697c\u7684\u4f4d\u7f6e\u4fee\u5f97\u597d\uff0c\u4e0d\u4f1a\u6321\u4f4f\u89c6\u91ce\u3002\u4ece\u7a97\u6237\u5411\u5916\u671b\u6709\u5f88\u5927\u4e00\u7247\u7a7a\u65f7\u7684\u533a\u57df\uff0c\u7eff\u5316\u5f88\u597d\uff0c\u5f88\u6e05\u65b0\uff0c\u5e03\u6ee1\u6696\u6696\u7684\u9633\u5149\u3002\u597d\u660e\u4eae\uff0c\u597d\u6e29\u6696\u3002\n\n\u597d\u6e29\u6696\u2026\u2026\n\n---\n\n\u6211\u597d\u51b7\u3002\n\n\u53bb\u5e74\u5206\u660e\u5df2\u7ecf\u6253\u5f97\u5f88\u597d\u4e86\uff0c\u6a21\u62df\u8d5b\u4e5f\u6253\u5f97\u4e0d\u9519\u4e86\uff0c\u6709\u7740\u8f83\u4e3a\u7a33\u5b9a\u7684\u6210\u7ee9\u3002\u5417\uff1f\n\n\u4e3a\u4ec0\u4e48\u6211\u5b66\u4e86 4 \u5e74 OI \u8fd8\u662f\u505a\u4e0d\u51fa\u7eff\u9898\u3002\n\n\u6211\u4e0d\u77e5\u9053\u4eca\u5929\u662f\u54ea\u4e00\u5929\uff0c\u5e94\u8be5\u662f 2026 \u5e74 10 \u6708\u7684\u67d0\u4e00\u5929\u5427\uff0c\u4e5f\u53ef\u80fd\u662f 11 \u6708\u67d0\u4e00\u5929\u3002\u4e5f\u53ef\u80fd\u662f\u6bcf\u4e00\u5929\u5427\u3002\n\n\u597d\u51b7\uff0c\u6d51\u8eab\u90fd\u5728\u53d1\u6296\u3002\u5206\u660e\u51e0\u5929\u524d\u8fd8\u5bf9\u672a\u6765\u5145\u6ee1\u5411\u5f80\uff0c\u5374\u4e00\u6b21\u6b21\u7ed9\u6211\u8fce\u5934\u4e00\u68d2\u3002\u4e00\u7ad6\u5217\u7684 100 \u5206\u53ea\u6709\u6211\u4e00\u4e2a\u4eba\u6ca1\u6709\u505a\u51fa\u6765\u662f\u8fd9\u6837\u5417\uff1f\n\n\u54c8\u54c8\uff0c\u597d\u83dc\u554a\u3002\n\n\u96be\u9053\u6211\u771f\u7684\u662f\u5e9f\u7269\u5417\uff0c\u4e3a\u4ec0\u4e48\u7b80\u5355\u9898\u4e00\u76f4\u505a\u4e0d\u51fa\u6765\u3002\n\n\u4f60\u4ed4\u7ec6\u53bb\u60f3\u554a\uff0c\u7b80\u5355\u9898\u505a\u4e0d\u51fa\u6765\u53c8\u4e0d\u662f\u4e00\u6b21\u4e24\u6b21\u4e86\uff01\u771f\u7684\u662f\u5076\u7136\u5417\uff1f\n\n\u4e3a\u4ec0\u4e48\u8fd9\u4e48\u51b7\u3002\n\n---\n\n\u4eca\u5929\u662f 2026 \u5e74 11 \u6708 2 \u65e5\u3002\n\n\u6211\u5728\u7287\u7287\u91cc\u8fb1\u9a82\u81ea\u5df1\u53d1\u7262\u9a9a\u3002\u6253\u5f00 QQ \u53d1\u73b0\u540c\u5b66\u5728\u8fb1\u9a82\u81ea\u5df1\u53d1\u7262\u9a9a\uff0c\u9042\u5b89\u6170\uff1a\u201c\u80dc\u8d25\u4e43\u5175\u5bb6\u5e38\u4e8b\u3002\u201d\n\n\u6014\u4f4f\u4e86\u3002\u6211\u628a\u6211\u521a\u53d1\u7684\u7287\u7287\u5220\u6389\u4e86\u3002\n\n\u80dc\u8d25\u4e43\u5175\u5bb6\u5e38\u4e8b\uff1f\u6240\u4ee5\u6211\u6a21\u62df\u8d5b\u6253\u7684\u597d\u6216\u4e0d\u597d\uff0cCSP \u6253\u7684\u597d\u6216\u4e0d\u597d\uff0c\u90fd\u5e94\u5f53\u662f\u5e38\u4e8b\uff1f\u7b54\u6848\u662f\u80af\u5b9a\u7684\u54c7\uff01\u6211\u5df2\u7ecf\u544a\u8bc9\u8fc7\u6211\u81ea\u5df1\u65e0\u6570\u6b21\u8fd9\u4e2a\u7ed3\u8bba\u4e86\u54c7\uff01\u4f60\u4e0d\u662f\u5468\u516d\u5468\u5929\u4e24\u5929\u90fd\u6ca1\u6709\u4e3a\u6b64\u96be\u8fc7\u62c5\u5fe7\u5417\uff1f\u4f60\u4e0d\u662f\u5468\u516d\u8003\u5b8c\u5df2\u7ecf\u201c\u770b\u5f00\u4e86\u201d\u5417\uff1f\u5c31\u53ea\u662f\u56e0\u4e3a\u522b\u4eba\u5168\u8fc7\u4e86\u5c31\u4f60\u6ca1\u8fc7\u5417\uff1f\u4f60\u771f\u7684\u5c31\u8fd9\u4e48\u60f3\u8bc1\u660e\u81ea\u5df1\u4e0d\u6bd4\u522b\u4eba\u5f31\u5417\u2014\u2014\u5bf9\u5427\u2026\u2026\n\n\u80dc\u8d25\u4e43\u5175\u5bb6\u5e38\u4e8b\uff0c\u6216\u8bb8\u5427\u3002\n\n\u4e5f\u8bb8\u5927\u795e\u5e76\u4e0d\u4f1a\u5728\u7b80\u5355\u95ee\u9898\u4e0a\u5931\u8d25\uff0c\u53ef\u6211\u53c8\u4e0d\u662f\u5927\u795e\u3002\n\n\u6211\u6210\u4e3a\u4e0d\u4e86\u5927\u795e\u3002\u4e0d\u4f1a\u505a\u5230\u7684\u3002\n\n\u53ef\u662f\u6211\u53ea\u662f\u60f3\u8d62\u4e00\u56de\u3002\n\n---\n\n\u597d\u51b7\u3002\u88f9\u7d27\u8863\u670d\u3002","contentFull":true,"adminNote":null},"favored":false,"voted":null,"canReply":false,"canEdit":false},"user":null,"time":1794747340.293209}</script>            <script src="https://fecdn.luogu.com.cn/columba/loader.20261113-2335.js" charset="utf-8" defer></script>
+    <link rel="stylesheet" href="https://fecdn.luogu.com.cn/columba/loader.20261113-2335.css" />
+    <script src="https://fecdn.luogu.com.cn/columba/vendor.20261113-2335.js" charset="utf-8" defer></script>
+        <link rel="canonical" href="https://www.luogu.com.cn/article/wij4lwj1" />
+    <script type="application/ld+json">{"@context":"https:\/\/schema.org","@type":"Article","name":"[CSP2026] \u80dc\u8d25\u4e43\u5175\u5bb6\u5e38\u4e8b\uff1f","description":"68 \u5206\u5417\uff1f\u6bd4\u8d85\u901f\u68c0\u6d4b\u9ad8\u4e86 28 \u5206\u8bf6\u2014\u2014\n\u88ab\u5730\u94c1\u649e\u4e86\u6709\u6d3b\u7740\u7684\u98ce\u9669\u5417\u3002\n\u4eca\u5929\u662f 2026 \u5e74 11 \u6708 2 \u65e5\uff0c\u524d\u5929\u4e0b\u5348\u662f CSP2026\u3002\u8d5b\u65f6\u505a\u4e86\u8bb8\u4e45 T2 \u65e0\u679c\uff0c\u5199\u4e86 84\uff0cT3 \u5199\u4e86 40\uff0cT4 \u6ca1\u8c03\u5b8c\uff0c\u53ea\u6709 15\u3002\u8d5b\u540e\u53d1\u73b0 T2 \u4e0d\u96be\uff0c\u6765\u5b66\u6821\u53d1\u73b0\u2026","genre":"\u751f\u6d3b\u00b7\u6e38\u8bb0","author":{"@type":"Person","name":"Zctf1088"},"datePublished":"2026-11-02T17:22:31+08:00"}</script>
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content="[CSP2026] 胜败乃兵家常事？" />
+    <meta property="og:description" content="68 分吗？比超速检测高了 28 分诶——
+被地铁撞了有活着的风险吗。
+今天是 2026 年 11 月 2 日，前天下午是 CSP2026。赛时做了许久 T2 无果，写了 84，T3 写了 40，T4 没调完，只有 15。赛后发现 T2 不难，来学校发现…" />
+    <meta property="article:section" content="生活·游记" />
+    <meta property="article:author" content="Zctf1088" />
+    <meta property="article:published_time" content="2026-11-02T17:22:31+08:00" />
+    <meta property="og:url" content="https://www.luogu.com.cn/article/wij4lwj1" />
+    <meta property="og:site_name" content="洛谷专栏" />
+        <script id="luogu-theme" type="application/json">{"id":1,"lNavi":{"back":"#ffffff","fore":"#262626","logo":null},"lBody":{"back":"#f0f4fa","blur":1000,"fade":1000,"image":"https:\/\/cdn.luogu.com.cn\/images\/bg\/fe\/luogu4-bg-l.jpg","midOpts":{"size":"cover"}},"dNavi":{"back":"#1d2025","fore":"#ffffff","logo":"#ffffff"},"dBody":{"back":"#0d1018","blur":1000,"fade":1000,"image":"https:\/\/cdn.luogu.com.cn\/images\/bg\/fe\/luogu4-bg-d.jpg","midOpts":{"size":"cover"}}}</script>
+    <style></style>
+</head>
+<body>
+<div id="app">
+    <noscript>
+        <h3>请<b style="color:#f00;">不要禁用</b>脚本，否则网页无法正常加载</h3>
+    </noscript>
+        <article>
+        <h1>[CSP2026] 胜败乃兵家常事？</h1>
+        <p style="font-size: .75em;">
+            <a rel="author">Zctf1088</a>
+            ·
+            <time datetime="2026-11-02T17:22:31+08:00">2026-11-02 17:22:31</time>
+            ·
+            <a href="/article?category=5">生活·游记</a>
+        </p>
+
+        <p>68 分吗？比超速检测高了 28 分诶——</p>
+<p>被地铁撞了有活着的风险吗。</p>
+<p>今天是 2026 年 11 月 2 日，前天下午是 CSP2026。赛时做了许久 T2 无果，写了 84，T3 写了 40，T4 没调完，只有 15。赛后发现 T2 不难，来学校发现 T2 被切穿了。哦，我的 B 性质还被卡常了。T3 还挂成了 24，手欠多加了一行无关代码。</p>
+<p>怎么，又是这样吗？一众“100”中一个鲜明的“68”。呵，又是做不出被别人切穿的题。同学在讨论的时候，好像不知道该说什么。</p>
+<p>我怎么学了 4 年 OI 了还做不出绿题。</p>
+
+<p>两年前，雨天。淅淅沥沥地下着。雨水落到机房里是噼噼啪啪的键盘声，烦心。不断地 RE，WA，TLE。那时候真的是连最小点覆盖这么简单的一个贪心都不会做，码力弱的离谱，更是将 <la-tex display="inline">O(n^2\log^2n)</la-tex> 的复杂度算为 <la-tex display="inline">O(n\log n)</la-tex>。是吧，超速检测。</p>
+<blockquote>
+<p>你这地铁是不是超速了哇，怎么把我撞了。人被地铁撞了是不是会死啊。这电脑屏幕上都全是红的。</p>
+</blockquote>
+<p>暖暖的阳光在空气中弥漫，我就站在窗户旁边，想着两年前的一切，如今我终于不是当初那幅弱爆了的模样吧，这一路走来经历了那么多起起落落。</p>
+<p>这是我待了许久的机房，有多久呢，久到最初在我身边的同学都退役了或者已经不在这里训练，身边已经都是后来才认识的同学。</p>
+<p>今天是 2026 年 10 月 30 日，明天就是 CSP 了。</p>
+<p>又是一年 CSP。</p>
+<p>又是一年秋天。</p>
+<p>又是一阵秋风。</p>
+<p>看看楼下的那条路，路两旁的樱花树到了这个季节，又是被风吹得……说来也是奇妙，春天大家一起开花，夏天一起茂盛，冬天一起凋落，偏偏是这秋天，那树叶子红的红，黄的黄，绿的绿。绿的还是那么鲜活，生命力无限呐。黄的叶子呢？红的叶子是不是已经要死掉了哇？</p>
+<p>路对面楼的位置修得好，不会挡住视野。从窗户向外望有很大一片空旷的区域，绿化很好，很清新，布满暖暖的阳光。好明亮，好温暖。</p>
+<p>好温暖……</p>
+
+<p>我好冷。</p>
+<p>去年分明已经打得很好了，模拟赛也打得不错了，有着较为稳定的成绩。吗？</p>
+<p>为什么我学了 4 年 OI 还是做不出绿题。</p>
+<p>我不知道今天是哪一天，应该是 2026 年 10 月的某一天吧，也可能是 11 月某一天。也可能是每一天吧。</p>
+<p>好冷，浑身都在发抖。分明几天前还对未来充满向往，却一次次给我迎头一棒。一竖列的 100 分只有我一个人没有做出来是这样吗？</p>
+<p>哈哈，好菜啊。</p>
+<p>难道我真的是废物吗，为什么简单题一直做不出来。</p>
+<p>你仔细去想啊，简单题做不出来又不是一次两次了！真的是偶然吗？</p>
+<p>为什么这么冷。</p>
+
+<p>今天是 2026 年 11 月 2 日。</p>
+<p>我在犇犇里辱骂自己发牢骚。打开 QQ 发现同学在辱骂自己发牢骚，遂安慰：“胜败乃兵家常事。”</p>
+<p>怔住了。我把我刚发的犇犇删掉了。</p>
+<p>胜败乃兵家常事？所以我模拟赛打的好或不好，CSP 打的好或不好，都应当是常事？答案是肯定的哇！我已经告诉过我自己无数次这个结论了哇！你不是周六周天两天都没有为此难过担忧吗？你不是周六考完已经“看开了”吗？就只是因为别人全过了就你没过吗？你真的就这么想证明自己不比别人弱吗——对吧……</p>
+<p>胜败乃兵家常事，或许吧。</p>
+<p>也许大神并不会在简单问题上失败，可我又不是大神。</p>
+<p>我成为不了大神。不会做到的。</p>
+<p>可是我只是想赢一回。</p>
+
+<p>好冷。裹紧衣服。</p>
+    </article>
+</div>
+<script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a5ae695b1d8ece1d',t:'MTc5NDc0NzM0MA=='};var l=window.parent.location,o;try{o=new URL(l.origin).origin}catch(e){try{o=new URL(new URL(l.href).origin).origin}catch(e){o=''}}var u='/cdn-cgi/challenge-platform/scripts/jsd/main.js?ray=a5ae695b1d8ece1d',a=document.createElement('script');a.src=o?new URL(u,o).href:u;document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

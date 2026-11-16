@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="no-js">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta name="csrf-token" content="1794833742:M+bKCljWydYS6cc0fLjdWZxOWj/l4QkUe11aOZ1Eczo=">
+    <meta name="renderer" content="webkit">
+    <script>
+        window.__feInitLocalTime = new Date().getTime() / 1000;
+        window.__feConfigVersion = '74d532c6c7861bfe'; window.__feConfigRequest = '\/_lfe\/config'; window.__fePhoneHomeCall = 'https\u003A\/\/moshimoshi\u003Aagltb3noatpwohhuenb5ag1tc2jsnnl3\u0040errtrack.luogu.com.cn\/lotlp1';        window.__luoguTagVersion = 'zh\u002DCN\/2026111520'; window.__luoguTagRequest = '\/_lfe\/tags';
+    </script>
+    <title>CSP2026 游记 - 洛谷专栏</title>
+    <link rel="icon" href="https://fecdn.luogu.com.cn/favicon.ico">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'unsafe-eval' 'unsafe-inline' luogu.com *.luogu.com luogu.com.cn *.luogu.com.cn luogu.org *.luogu.org wss: blob: luoguprivate.oss-cn-hangzhou.aliyuncs.com luogu.oss-cn-hangzhou.aliyuncs.com https://challenges.cloudflare.com https://*.dun.163yun.com https://*.dun.163.com https://*.nosdn.126.net https://*.nosdn.127.net https://nos.netease.com https://cstaticdun.126.net https://cstaticdun1.126.net https://cstaticdun-v6.126.net https://acstatic-dun.126.net; img-src * data:; font-src * data:; worker-src data: blob:; frame-src https://fecdn.luogu.com.cn https://player.bilibili.com https://www.bilibili.com https://challenges.cloudflare.com">
+        <script id="lentille-context" type="application/json">{"instance":"main","template":"article.show","status":200,"locale":"zh-CN","data":{"article":{"lid":"p0pijhs6","title":"CSP2026 \u6e38\u8bb0","category":5,"time":1793579552,"author":{"uid":732804,"avatar":"https:\/\/cdn.luogu.com.cn\/upload\/usericon\/732804.png","name":"Zctf1088","slogan":"\u5c31\u50cf\u98de\u7fd4\u5728\u8fbd\u9614\u5929\u7a7a","badge":null,"isAdmin":false,"isBanned":false,"color":"Orange","ccfLevel":7,"xcpcLevel":0,"background":"https:\/\/cdn.luogu.com.cn\/upload\/image_hosting\/6m17kfx6.webp"},"upvote":1,"replyCount":0,"favorCount":0,"status":2,"solutionFor":null,"promoteStatus":2,"collection":{"id":230,"name":"CSP2026 \u6e38\u8bb0\u5408\u96c6"},"content":"### 2026.09.16\n\n\u5176\u5b9e\u611f\u89c9 CSP \u6e38\u8bb0\u6ca1\u5565\u5199\u7684\u3002\n\n\u8fd9\u5468\u672b\u662f\u7b2c\u4e00\u8f6e\u3002\n\n\u5e0c\u671b\u8fd9\u8d5b\u5b63\u4e0d\u8981\u6253\u5d29\u3002\n\n\u4e0d\u6253\u5d29 NOIP \u5e94\u8be5\u4e0d\u4f1a\u592a\u70c2\u3002\n\n\u770b\u80fd\u4e0d\u80fd\u51c6\u5907\u4e00\u4e0b\u7701\u9009\u3002\n\n\u9ad8\u4e2d whk \u600e\u4e48\u4f5c\u4e1a\u8fd9\u4e48\u96be\u5199\u3002\n\n\u4f5c\u4e1a\u597d\u591a\u3002\n\n### 2026.10.06\n\n:::info[\u6bd4\u8f83\u5fc3\u6d41\u7684\u4e00\u4e9b\u4e1c\u897f\uff0c\u53ef\u4ee5\u653e\u5fc3\u98df\u7528\u3002]\n\n\u5230\u4e86\u8fd9\u4e48\u4e00\u4e2a\u65f6\u95f4\u70b9\uff0c\u591a\u5c11\u7275\u626f\u5230\u4e00\u4e9b\u5173\u4e8e\u505c\u8bfe\u7684\u4e8b\u60c5\u3002\n\n\u73b0\u5728\u53bb\u770b\uff0c\u6bd4\u8f83\u4e0d\u8ba4\u540c[\u53bb\u5e74\u7684\u81ea\u5df1](https:\/\/www.cnblogs.com\/Zctf1088\/p\/19097523)\u3002\u5bf9\uff0c\u521d\u4e09\u8fd9\u4e00\u5e74\u81f3\u5c11\u8fd9\u4e9b\u4e8b\u6ca1\u767d\u7ecf\u5386\u3002\u4f60\u4e00\u79cd\u8bf4\u6cd5\u662f\u6ca1\u6709\u4e86\u90a3\u79cd\u97e7\u6027\uff0c\u5176\u5b9e\u6211\u89c9\u5f97\u5e94\u8be5\u8bf4\u662f\u4e0d\u662f\u90a3\u4e48\u50bb\u903c\u4e86\uff0c\u4e0d\u729f\u4e86\u3002\u6559\u7ec3\u5bf9\u6211\u8fd9\u4e48\u5b89\u6392\uff0c\u5b9a\u6709\u4ed6\u7684\u9053\u7406\u3002\u663e\u7136\uff0c\u6559\u7ec3\u4e0d\u4e00\u5b9a\u662f\u4eba\u7c7b\u3002\u4f46\u662f\u6211\u5fc5\u987b\u8ba4\u8bc6\u5230\uff0c\u6211\u4e5f\u4e0d\u4e00\u5b9a\u662f\u4eba\u7c7b\u3002\u7ed9\u522b\u4eba\u6240\u8c13\u8d44\u6e90\u800c\u4e0d\u7ed9\u6211\uff0c\u5fc5\u662f\u6211\u8fd8\u6709\u54ea\u91cc\u505a\u7684\u4e0d\u5982\u522b\u4eba\uff0c\u6216\u662f\u6240\u8c13\u6027\u683c\u3001\u8111\u56de\u8def\u3001\u5fc3\u6c14\u3001\u505a\u4e8b\u98ce\u683c\u3001\u4eba\u5404\u6709\u5fd7\u8bf8\u591a\u8bcd\u6c47\uff0c\u90fd\u51fa\u81ea\u6559\u7ec3\u4e4b\u53e3\uff0c\u5927\u6982\u8bf4\u7684\u90fd\u662f\u76f8\u4f3c\u7684\u610f\u601d\u3002\u6211\u5728\u8fd9\u65b9\u9762\u4e0a\u663e\u7136\u548c\u4ed6\u4eba\u5b58\u5728\u4e00\u5b9a\u5dee\u8ddd\uff0c\u8fd9\u662f\u6211\u4e0d\u5f97\u4e0d\u627f\u8ba4\u7684\u3002\u6211\u5e94\u5f53\u60f3\u7684\uff0c\u4e0d\u662f\u53bb\u62b1\u6028\uff0c\u4e0d\u662f\u53bb\u601d\u8003\u4e3a\u4ec0\u4e48\u6211\u6ca1\u6709\u8fd9\u6837\u6240\u8c13\u8d44\u6e90\uff0c\u800c\u662f\u53bb\u52aa\u529b\uff0c\u5982\u679c\u60f3\u8981\u5f97\u5230\u5c31\u53bb\u4e89\u53d6\uff0c\u5426\u5219\u5c31\u4e0d\u8981\u53bb\u65e5\u601d\u591c\u60f3\uff0c\u4e0d\u8981\u7ec8\u65e5\u505a\u4e00\u4e2a\u201c\u7a7a\u60f3\u5bb6\u201d\u3002\n\n\u55ef\uff0c\u5728\u524d\u4e9b\u65e5\u5b50\uff0c\u6559\u7ec3\u7ed9\u521d\u4e2d\u7684\u505c\u8bfe\u4e86\u4f46\u662f\u6ca1\u6709\u7ed9\u6211\u4eec\u505c\u8bfe\u3002\u4ed6\u5e94\u8be5\u662f\u60f3\u8ba9\u6211\u4eec\u53bb\u53c2\u52a0\u5b66\u6821\u7684\u8fd0\u52a8\u4f1a\u5427\u3002\u55ef\u2026\u2026\u5bf9\u5427\u3002\u5bf9\u7684\uff0c\u6211\u5176\u5b9e\u662f\u4e00\u4e2a\u5f88\u5f31\u7684\u4eba\uff0c\u6211\u5fc5\u987b\u627f\u8ba4\u5e76\u63a5\u6536\u8fd9\u4e2a\u4e8b\u5b9e\uff0c\u8868\u9762\u4e0a\u7684\u9636\u6bb5\u5185\u6bd4\u90e8\u5206\u540c\u5b66\u8981\u8868\u73b0\u5730\u5f3a\u53ea\u4e0d\u8fc7\u662f\u56e0\u4e3a\u5f00\u59cb\u5f97\u6bd4\u4ed6\u4eec\u65e9\uff0c\u5982\u4eca\u5df2\u7ecf\u88ab\u82e5\u5e72\u540c\u5b66\u53cd\u8d85\uff0c\u800c\u5c06\u6765\u4e5f\u4f1a\u88ab\u82e5\u5e72\u540c\u5b66\u53cd\u8d85\u3002\u5f53\u7136\u540c\u7406\u7684\uff0c\u4e5f\u4f1a\u6709\u4e00\u4e9b\u76ee\u524d\u8868\u73b0\u5f97\u6bd4\u6211\u5f3a\u7684\u4eba\u5728\u4e00\u5b9a\u65f6\u95f4\u540e\u4e5f\u4f1a\u88ab\u6211\u53cd\u8d85\uff0c\u73b0\u5728\u7684\u5dee\u8ddd\u4e0d\u8fc7\u662f\u5f00\u59cb\u65f6\u95f4\u7684\u5dee\u522b\u3002\n\n\u76d6\u6b64\u4e4b\u8c13\u6027\u683c\u6216\u505a\u4e8b\u98ce\u683c\u4e4b\u7c7b\u3002\n\n\u5982\u679c\u60f3\u8981\u4ece\u6839\u672c\u4e0a\u5f3a\u4e8e\u67d0\u4e2a\u4eba\uff0c\u5fc5\u5148\u4ece\u6240\u8c13\u6027\u683c\u53ca\u505a\u4e8b\u98ce\u683c\u4e0a\u5f3a\u4e8e\u5176\u3002\u8fd9\u4e2a\u662f\u53ef\u4ee5\u63d0\u5347\u7684\u3002\u81f3\u5c11\u4e8e\u6211\uff0c\u81ea\u516d\u5e74\u7ea7\u81f3\u4eca\uff0c\u63d0\u5347\u5de8\u5927\u3002\u6216\u53ef\u8c13\u4e4b\u6210\u957f\u3002\n\n\u672c\u6765\u5c31\u60f3\u778e\u626f\u51e0\u53e5\uff0c\u53c8\u8bf4\u591a\u4e86\u3002\n\n:::\n\n### 2026.10.25\n\n\u4e0b\u5468\u516d\u662f CSP\u3002\u522b\u6253\u5d29\u3002\n\n\u6700\u8fd1\u6253\u6a21\u62df\u8d5b\uff0c\u4f1a\u505a\u7684\u9898\u7ecf\u5e38\u505a\u4e0d\u51fa\u6765\u3002\u751a\u81f3\u51e0\u6b21 T1 \u90fd\u505a\u4e0d\u51fa\u6765\uff0c\u5c31\u662f\u90a3\u79cd\u522b\u4eba\u90fd\u5207\u7a7f\u7684\uff0c\u8111\u5b50\u5c31\u662f\u60f3\u4e0d\u51fa\u6765\u3002\n\nNOIP \u522b\u6253\u5d29\u3002\n\n### 2026.10.31\n\n\u5341\u6708\u7684\u6700\u540e\u4e00\u5929\uff0c\u8fdb\u884c\u4e00\u4e2a CSP \u7684\u8003\u8bd5\u3002\n\n\u6628\u5929\u665a\u4e0a\u73a9\u4e86\u4e00\u665a\u4e0a\uff0c\u65e9\u4e0a\u73a9\u4e86\u4e00\u65e9\u4e0a\uff0c\u4e0b\u5348\u5c31\u53bb\u8003\u8bd5\u4e86\u3002\n\n\u55ef\u2026\u2026\u8fd9\u4e2a\u952e\u76d8\u6bd4\u8f83\u96be\u7ef7\uff0c\u5404\u79cd\u6309\u952e\u8f6f\u786c\u7a0b\u5ea6\u90fd\u4e0d\u4e00\u6837\u3002\n\n\u55ef\u2026\u2026\u5f00\u8003 5 min \u540e\u9898\u76ee\u538b\u7f29\u5305\u624d\u53d1\u4e0b\u6765\u3002\n\n\u8bfb\u4e86\u4e00\u904d T1\uff0c\u53d1\u73b0\u662f\u663e\u7136\u7684\uff0c\u4e5f\u61d2\u5f97\u60f3\u522b\u7684\u505a\u6cd5\u4e86\uff0c\u9042\u5199\u4e86\u4e2a\u4e8c\u5206 + ST \u8868\uff0c\u4e8e 14:47 \u505a\u6389\u3002\n\n\u968f\u540e\u5957\u8def\u5316\u5730\u901a\u8bfb\u4e00\u4e0b T2 \u5230 T4\u3002T2 \u628a\u4e00\u4e2a\u5730\u94c1\u7ebf\u8def\u7f29\u6210\u4e00\u4e2a\u70b9\uff0c\u662f\u4e00\u4e2a\u4e8c\u5206\u56fe\u3002T3 \u770b\u7740\u4e0d\u592a\u53ef\u505a\uff0c\u6027\u8d28\u611f\u89c9\u6709\u70b9\u53ef\u505a\u3002T4 \u601d\u8003\u4e86\u4e00\u4e0b\u6ca1\u5565\u592a\u5927\u601d\u8def\u3002\n\n\u5148\u53bb\u5199\u4e86 T2 \u7684\u90e8\u5206\u5206\u3002$O(n(n+m)\\log (n+m))$ \u7684 dijksrta \u662f\u5bb9\u6613\u7684\u3002\u7136\u540e\u53bb\u770b\u4e86 T3\uff0c\u679a\u4e3e\u5de6\u7aef\u70b9\u5bf9\u53f3\u7aef\u70b9\u505a dp\uff0c\u6709\u4e00\u4e2a $O(n^3)$ \u7684 dp\uff0c\u6709 40pts\u3002\u4e0a\u4e2a\u5355\u8c03\u961f\u5217\u4f18\u5316\u5e94\u8be5\u6709 $O(n^2\\log n)$\u3002\u7136\u540e\u628a T4 \u7684\u6307\u6570\u7ea7\u66b4\u529b\u5199\u4e86\uff0c\u6709 15pts\u3002\n\n\u6b64\u65f6\u65f6\u95f4\u624d\u521a 16:00\u3002\u611f\u89c9\u6709\u673a\u4f1a\u51b2\u4e00\u6ce2 WC \u7684\u3002\n\n\u53bb\u505a T2\u3002\u5176\u5b9e\u8003\u540e\u53bb\u770b\uff0cT2 \u6ca1\u6709\u5207\u6389\u5df2\u7ecf\u53ef\u4ee5\u5ba3\u5e03\u6b7b\u4ea1\u4e86\u3002T2 \u601d\u8003\u826f\u4e45\u65e0\u679c\uff0c\u5199\u4e86\u4e00\u4e2a bfs \u53ef\u4ee5\u8fc7 B \u6027\u8d28\u3002\u5e94\u8be5\u6709 84pts\uff0c\u5269\u4e0b 4 \u4e2a\u70b9\u4e0d\u592a\u53ef\u505a\u3002\n\n\u540e\u9762\u5bf9\u4e8e T3 \u5269\u4e0b\u7684\u5206\u4e5f\u6ca1\u6709\u601d\u8def\uff0c\u53bb\u5199 T4 \u4e86\u3002\u679a\u4e3e\u65ad\u8fb9\u5206\u4e24\u90e8\u5206\u5904\u7406\uff0c\u5e76\u679a\u4e3e\u4e24\u8fb9\u7684 $k$\uff0c\u5bf9\u6bcf\u4e2a\u90e8\u5206\u4ece\u76f4\u5f84\u4e2d\u70b9\u5411\u5916 bfs\uff0c\u53ef\u4ee5\u505a\u5230 $O(n^2k\\log n)$\uff0c\u52a0\u4e0a\u8fd9\u4e2a\u5e94\u8be5\u6709 35pts\u3002\u53ef\u662f\u6ca1\u80fd\u8c03\u51fa\u6765\u3002\n\n\u6700\u540e\u5e94\u8be5\u662f 100+84+40+15=239pts\u3002\n\n\u4e0b\u8003\u540e\u548c\u65c1\u8fb9\u7684 gdfz \u7684\u54e5\u4eec\u4ea4\u6d41\uff0c\u88ab\u544a\u77e5 T2 \u53ef\u4ee5\u7528 FLoyd \u76f4\u63a5\u505a\u3002\u5ffd\u7136\u611f\u89c9\u81ea\u5df1\u662f\u5f31\u667a\u3002\u548c\u540c\u5b66\u4ea4\u6d41\uff0c\u53d1\u73b0\u5168\u4e16\u754c\u90fd\u5207\u6389\u4e86 T2\uff0c\u540c\u5b66\u544a\u77e5 T3 B \u6027\u8d28\u5168\u662f $0$\uff0c8pts \u662f\u9001\u7684\u3002\u540e\u6765\u53c8\u544a\u77e5\u6211\u4ed6\u60f3\u5047\u4e86\u3002\n\n\u51fa\u8003\u573a eps \u60f3\u5230 T2 $O(n^3)$ \u7684 Floyd \u505a\u6cd5\u3002\u65e0\u9700\u5efa $n+m$ \u4e2a\u70b9\uff0c\u53ea\u9700\u8981\u5efa $n$ \u4e2a\u70b9\uff0c\u5c06 $m$ \u4e2a\u5730\u94c1\u7ad9\u770b\u6210 $d^2$ \u6761\u8fb9\u5373\u53ef\u3002\n\n\u82e5\u628a T2 \u505a\u6389\uff0c\u5e76\u7528\u8282\u7701\u4e0b\u6765\u7684\u65f6\u95f4\u628a T4 \u8c03\u5b8c\u5e94\u5f53\u6709 275pts\u3002\n\n### 2026.11.02\n\n\u55ef\u2026\u2026\u81ea\u6d4b\u4e0b\u6765\u7591\u4f3c\u786e\u51ff\u662f\u6302\u4e86\u3002\u53ea\u6709100+68+24+15=207pts\u3002T2 \u7684 B \u6027\u8d28\u88ab\u5361\u5e38\u4e86\uff0cT3 \u624b\u6b20\u52a0\u4e86\u4e00\u884c\u5361\u5e38\u4f18\u5316\uff0c\u76f4\u63a5\u7ed9\u5e72 WA \u4e86\uff0c\u5220\u6389\u90a3\u4e00\u884c\u5c31\u6709 40pts\u3002\n\n\u7b97\u662f\u8003\u5d29\u4e86\u5427\u3002\n\n\u4e00\u573a CSP \u800c\u5df2\uff0c\u5176\u5b9e\u6ca1\u5565\u53ef\u5199\u7684\u3002\u8981\u662f\u653e\u5728\u4ee5\u524d\uff0c\u53ef\u80fd\u786e\u5b9e\u4f1a\u7834\u9632\u6216\u53d1\u8868\u4e00\u4e9b\u66b4\u623e\u8bed\u8a00\u3002\u6302\u5206\u5c31\u6302\u5206\u561b\uff0c\u6253\u5d29\u5c31\u6253\u5d29\u561b\uff0c\u5e73\u65f6\u6a21\u62df\u8d5b\u6253\u5d29\u7684\u8fd8\u5c11\u5417\u3002\n\n\u5176\u5b9e\u4f60\u8bf4\uff0c\u6b63\u8d5b\u6253\u5d29\u8fd9\u4e2a\u4e8b\u60c5\uff0c\u4e0d\u53ef\u907f\u514d\u7684\u561b\u3002\u4ece\u80fd\u529b\u4e0a\u53bb\u8bb2\uff0c\u4f1a\u7684\u5206\u81f3\u5c11\u6709 275 \u5427\u3002\u6ca1\u62ff\u5230\u5c31\u53ea\u80fd\u8bf4\u660e\u80fd\u529b\u4e0d\u884c\u3002\n\n\u6211\u65e0\u6cd5\u62ff\u5230\u6211\u80fd\u529b\u4e4b\u5916\u7684\u4e1c\u897f\uff0c\u4e5f\u4e0d\u4f1a\u62ff\u4e0d\u5230\u6211\u80fd\u529b\u4e4b\u5185\u7684\u4e1c\u897f\u3002\u5c31\u7b97\u5076\u7136\u5f97\u5230\u6216\u5931\u53bb\uff0c\u7ec8\u5c06\u4e5f\u4f1a\u5931\u53bb\u6216\u5f97\u5230\u3002\n\nCSP \u8003\u5b8c\u5c31\u8003\u5b8c\u4e86\uff0c\u80fd\u8fdb NOIP \u800c\u8fdb\u4e0d\u4e86 WC \u7684\u5206\u6570\u672c\u8d28\u90fd\u6ca1\u6709\u533a\u522b\u3002\u4eca\u5e74\u8fd9\u4e2a\u5c31\u7b97\u6211\u6253\u4e86 275 \u5e94\u8be5\u4e5f\u8fdb\u4e0d\u4e86 WC\u3002\n\nCSP \u6e38\u8bb0\u6709\u5565\u53ef\u5199\u7684\uff0c\u4e0d\u5c31\u662f\u4e00\u573a\u6a21\u62df\u8d5b\u5417\u3002\u82b1 660 \u5143\u4e70\u4e00\u573a\u6a21\u62df\u8d5b\u3002\n\n---\n\n\u4e0d\u77e5\u9053\u8be5\u5199\u5565\uff0c\u8003\u5b8c\u6ca1\u5565\u611f\u89c9\u3002\u70b8\u4e86\u4e5f\u597d\u60f3\u65e0\u6240\u8c13\u4f3c\u7684\u3002\n\n\u8d85\u901f\u68c0\u6d4b\uff0c\u9053\u8def\u4fee\u590d\uff0c\u5730\u94c1\u3002\u4ece\u6765\u90fd\u505a\u4e0d\u51fa T2\uff0c\u611f\u89c9\u6bd4\u8f83\u5f31\u667a\u3002","contentFull":true,"adminNote":null},"favored":false,"voted":null,"canReply":false,"canEdit":false},"user":null,"time":1794747342.361726}</script>            <script src="https://fecdn.luogu.com.cn/columba/loader.20261113-2335.js" charset="utf-8" defer></script>
+    <link rel="stylesheet" href="https://fecdn.luogu.com.cn/columba/loader.20261113-2335.css" />
+    <script src="https://fecdn.luogu.com.cn/columba/vendor.20261113-2335.js" charset="utf-8" defer></script>
+        <link rel="canonical" href="https://www.luogu.com.cn/article/p0pijhs6" />
+    <script type="application/ld+json">{"@context":"https:\/\/schema.org","@type":"Article","name":"CSP2026 \u6e38\u8bb0","description":"2026.09.16\n\u5176\u5b9e\u611f\u89c9 CSP \u6e38\u8bb0\u6ca1\u5565\u5199\u7684\u3002\n\u8fd9\u5468\u672b\u662f\u7b2c\u4e00\u8f6e\u3002\n\u5e0c\u671b\u8fd9\u8d5b\u5b63\u4e0d\u8981\u6253\u5d29\u3002\n\u4e0d\u6253\u5d29 NOIP \u5e94\u8be5\u4e0d\u4f1a\u592a\u70c2\u3002\n\u770b\u80fd\u4e0d\u80fd\u51c6\u5907\u4e00\u4e0b\u7701\u9009\u3002\n\u9ad8\u4e2d whk \u600e\u4e48\u4f5c\u4e1a\u8fd9\u4e48\u96be\u5199\u3002\n\u4f5c\u4e1a\u597d\u591a\u3002\n2026.10.06\n:::info[\u6bd4\u8f83\u5fc3\u6d41\u7684\u4e00\u4e9b\u4e1c\u897f\uff0c\u53ef\u4ee5\u653e\u5fc3\u98df\u7528\u3002]\u2026","genre":"\u751f\u6d3b\u00b7\u6e38\u8bb0","author":{"@type":"Person","name":"Zctf1088"},"datePublished":"2026-11-02T08:32:32+08:00"}</script>
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content="CSP2026 游记" />
+    <meta property="og:description" content="2026.09.16
+其实感觉 CSP 游记没啥写的。
+这周末是第一轮。
+希望这赛季不要打崩。
+不打崩 NOIP 应该不会太烂。
+看能不能准备一下省选。
+高中 whk 怎么作业这么难写。
+作业好多。
+2026.10.06
+:::info[比较心流的一些东西，可以放心食用。]…" />
+    <meta property="article:section" content="生活·游记" />
+    <meta property="article:author" content="Zctf1088" />
+    <meta property="article:published_time" content="2026-11-02T08:32:32+08:00" />
+    <meta property="og:url" content="https://www.luogu.com.cn/article/p0pijhs6" />
+    <meta property="og:site_name" content="洛谷专栏" />
+        <script id="luogu-theme" type="application/json">{"id":1,"lNavi":{"back":"#ffffff","fore":"#262626","logo":null},"lBody":{"back":"#f0f4fa","blur":1000,"fade":1000,"image":"https:\/\/cdn.luogu.com.cn\/images\/bg\/fe\/luogu4-bg-l.jpg","midOpts":{"size":"cover"}},"dNavi":{"back":"#1d2025","fore":"#ffffff","logo":"#ffffff"},"dBody":{"back":"#0d1018","blur":1000,"fade":1000,"image":"https:\/\/cdn.luogu.com.cn\/images\/bg\/fe\/luogu4-bg-d.jpg","midOpts":{"size":"cover"}}}</script>
+    <style></style>
+</head>
+<body>
+<div id="app">
+    <noscript>
+        <h3>请<b style="color:#f00;">不要禁用</b>脚本，否则网页无法正常加载</h3>
+    </noscript>
+        <article>
+        <h1>CSP2026 游记</h1>
+        <p style="font-size: .75em;">
+            <a rel="author">Zctf1088</a>
+            ·
+            <time datetime="2026-11-02T08:32:32+08:00">2026-11-02 08:32:32</time>
+            ·
+            <a href="/article?category=5">生活·游记</a>
+        </p>
+
+        <h3>2026.09.16</h3>
+<p>其实感觉 CSP 游记没啥写的。</p>
+<p>这周末是第一轮。</p>
+<p>希望这赛季不要打崩。</p>
+<p>不打崩 NOIP 应该不会太烂。</p>
+<p>看能不能准备一下省选。</p>
+<p>高中 whk 怎么作业这么难写。</p>
+<p>作业好多。</p>
+<h3>2026.10.06</h3>
+<p>:::info[比较心流的一些东西，可以放心食用。]</p>
+<p>到了这么一个时间点，多少牵扯到一些关于停课的事情。</p>
+<p>现在去看，比较不认同去年的自己。对，初三这一年至少这些事没白经历。你一种说法是没有了那种韧性，其实我觉得应该说是不是那么傻逼了，不犟了。教练对我这么安排，定有他的道理。显然，教练不一定是人类。但是我必须认识到，我也不一定是人类。给别人所谓资源而不给我，必是我还有哪里做的不如别人，或是所谓性格、脑回路、心气、做事风格、人各有志诸多词汇，都出自教练之口，大概说的都是相似的意思。我在这方面上显然和他人存在一定差距，这是我不得不承认的。我应当想的，不是去抱怨，不是去思考为什么我没有这样所谓资源，而是去努力，如果想要得到就去争取，否则就不要去日思夜想，不要终日做一个“空想家”。</p>
+<p>嗯，在前些日子，教练给初中的停课了但是没有给我们停课。他应该是想让我们去参加学校的运动会吧。嗯……对吧。对的，我其实是一个很弱的人，我必须承认并接收这个事实，表面上的阶段内比部分同学要表现地强只不过是因为开始得比他们早，如今已经被若干同学反超，而将来也会被若干同学反超。当然同理的，也会有一些目前表现得比我强的人在一定时间后也会被我反超，现在的差距不过是开始时间的差别。</p>
+<p>盖此之谓性格或做事风格之类。</p>
+<p>如果想要从根本上强于某个人，必先从所谓性格及做事风格上强于其。这个是可以提升的。至少于我，自六年级至今，提升巨大。或可谓之成长。</p>
+<p>本来就想瞎扯几句，又说多了。</p>
+<p>:::</p>
+<h3>2026.10.25</h3>
+<p>下周六是 CSP。别打崩。</p>
+<p>最近打模拟赛，会做的题经常做不出来。甚至几次 T1 都做不出来，就是那种别人都切穿的，脑子就是想不出来。</p>
+<p>NOIP 别打崩。</p>
+<h3>2026.10.31</h3>
+<p>十月的最后一天，进行一个 CSP 的考试。</p>
+<p>昨天晚上玩了一晚上，早上玩了一早上，下午就去考试了。</p>
+<p>嗯……这个键盘比较难绷，各种按键软硬程度都不一样。</p>
+<p>嗯……开考 5 min 后题目压缩包才发下来。</p>
+<p>读了一遍 T1，发现是显然的，也懒得想别的做法了，遂写了个二分 + ST 表，于 14:47 做掉。</p>
+<p>随后套路化地通读一下 T2 到 T4。T2 把一个地铁线路缩成一个点，是一个二分图。T3 看着不太可做，性质感觉有点可做。T4 思考了一下没啥太大思路。</p>
+<p>先去写了 T2 的部分分。<la-tex display="inline">O(n(n+m)\log (n+m))</la-tex> 的 dijksrta 是容易的。然后去看了 T3，枚举左端点对右端点做 dp，有一个 <la-tex display="inline">O(n^3)</la-tex> 的 dp，有 40pts。上个单调队列优化应该有 <la-tex display="inline">O(n^2\log n)</la-tex>。然后把 T4 的指数级暴力写了，有 15pts。</p>
+<p>此时时间才刚 16:00。感觉有机会冲一波 WC 的。</p>
+<p>去做 T2。其实考后去看，T2 没有切掉已经可以宣布死亡了。T2 思考良久无果，写了一个 bfs 可以过 B 性质。应该有 84pts，剩下 4 个点不太可做。</p>
+<p>后面对于 T3 剩下的分也没有思路，去写 T4 了。枚举断边分两部分处理，并枚举两边的 <la-tex display="inline">k</la-tex>，对每个部分从直径中点向外 bfs，可以做到 <la-tex display="inline">O(n^2k\log n)</la-tex>，加上这个应该有 35pts。可是没能调出来。</p>
+<p>最后应该是 100+84+40+15=239pts。</p>
+<p>下考后和旁边的 gdfz 的哥们交流，被告知 T2 可以用 FLoyd 直接做。忽然感觉自己是弱智。和同学交流，发现全世界都切掉了 T2，同学告知 T3 B 性质全是 <la-tex display="inline">0</la-tex>，8pts 是送的。后来又告知我他想假了。</p>
+<p>出考场 eps 想到 T2 <la-tex display="inline">O(n^3)</la-tex> 的 Floyd 做法。无需建 <la-tex display="inline">n+m</la-tex> 个点，只需要建 <la-tex display="inline">n</la-tex> 个点，将 <la-tex display="inline">m</la-tex> 个地铁站看成 <la-tex display="inline">d^2</la-tex> 条边即可。</p>
+<p>若把 T2 做掉，并用节省下来的时间把 T4 调完应当有 275pts。</p>
+<h3>2026.11.02</h3>
+<p>嗯……自测下来疑似确凿是挂了。只有100+68+24+15=207pts。T2 的 B 性质被卡常了，T3 手欠加了一行卡常优化，直接给干 WA 了，删掉那一行就有 40pts。</p>
+<p>算是考崩了吧。</p>
+<p>一场 CSP 而已，其实没啥可写的。要是放在以前，可能确实会破防或发表一些暴戾语言。挂分就挂分嘛，打崩就打崩嘛，平时模拟赛打崩的还少吗。</p>
+<p>其实你说，正赛打崩这个事情，不可避免的嘛。从能力上去讲，会的分至少有 275 吧。没拿到就只能说明能力不行。</p>
+<p>我无法拿到我能力之外的东西，也不会拿不到我能力之内的东西。就算偶然得到或失去，终将也会失去或得到。</p>
+<p>CSP 考完就考完了，能进 NOIP 而进不了 WC 的分数本质都没有区别。今年这个就算我打了 275 应该也进不了 WC。</p>
+<p>CSP 游记有啥可写的，不就是一场模拟赛吗。花 660 元买一场模拟赛。</p>
+
+<p>不知道该写啥，考完没啥感觉。炸了也好想无所谓似的。</p>
+<p>超速检测，道路修复，地铁。从来都做不出 T2，感觉比较弱智。</p>
+    </article>
+</div>
+<script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a5ae69681fb121d3',t:'MTc5NDc0NzM0Mg=='};var l=window.parent.location,o;try{o=new URL(l.origin).origin}catch(e){try{o=new URL(new URL(l.href).origin).origin}catch(e){o=''}}var u='/cdn-cgi/challenge-platform/scripts/jsd/main.js?ray=a5ae69681fb121d3',a=document.createElement('script');a.src=o?new URL(u,o).href:u;document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

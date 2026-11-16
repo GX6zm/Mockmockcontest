@@ -1,0 +1,11 @@
+[
+  {
+    "name": "为什么不让我叫Ciall",
+    "records": [
+      { "year": 2025, "group": "j", "award": 1, "score": 375, "rank": 1107, "total": 39205 },
+      { "year": 2025, "group": "s", "award": 1, "score": 201, "rank": 2481, "total": 30497 },
+      { "year": 2024, "group": "j", "award": 1, "score": 300, "rank": 968, "total": 40430 },
+      { "year": 2024, "group": "s", "award": 2, "score": 120, "rank": 8585, "total": 27521 }
+    ]
+  }
+]
