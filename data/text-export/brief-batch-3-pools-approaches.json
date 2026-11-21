@@ -1,0 +1,1421 @@
+{
+  "meta": {
+    "project": "OI 模拟赛 · 校赛版（教练模式网页游戏）",
+    "language": "zh-CN",
+    "version": "2026-11",
+    "audience": "中文写手（熟悉 OI 竞赛语境）",
+    "howToUse": [
+      "这是一份「文字素材 + 上下文 + 约束」清单。你只需要改写 current 字段里的中文，不要改 key、不要改结构、不要翻译。",
+      "每个 item 都标注了它出现在界面的什么位置（when）、字数上限（limit）、当前问题（issue）、改写方向（hint）。",
+      "改写后按同一 JSON 结构返回；新增条目（事件卡、多解法）照现有字段补全。",
+      "数值、机制、真实成绩都不要写；若需要表达效果，写进 effectHint（自然语言），由开发补数值。"
+    ],
+    "style": {
+      "voice": "选手心里的第一人称短句 / 教练视角的第三人称叙述",
+      "tone": "克制、具体、允许自嘲，不煽情、不用感叹号堆情绪",
+      "rules": [
+        "每句必须有具体信息（数字、复杂度、动作、场景），不要空泛建议",
+        "不出现「你」「玩家」「让我们一起」「在这个旅程中」",
+        "不用 emoji；不用英文整句（专业缩写除外：CSP-S / NOIP / APIO / NOI / LCT / NTT）",
+        "术语必须准确：挂分、卡常、对拍、打表、省一、国集、D 类、freopen、时空限制"
+      ],
+      "examples": {
+        "good": [
+          "先把暴力写出来垫着，过了大样例再想怎么砍一维",
+          "空闲时不要乱动，否则会多算一次移动",
+          "最后 15 分钟回去抢救一版，别慌到忘写 freopen"
+        ],
+        "bad": [
+          "这题需要我们认真思考，找到最优的解决方案。",
+          "让我们一起努力，攻克这道难题吧！",
+          "通过分析题目，我们可以发现……"
+        ]
+      }
+    },
+    "redLines": [
+      "不许编造真实选手的成绩或获奖（人名、学校、分数都是真事，可调侃不可杜撰）",
+      "不许改机制与数值，只写字符串",
+      "不许改 key、字段名、JSON 结构",
+      "语录（quotes.json）是选手本人的博客原话，禁止改写"
+    ],
+    "limits": "超字数会被截断或撑破布局：思维链 ≤40 字、事件正文 ≤80 字、选项 ≤16 字、播报 ≤30 字、解法名 ≤10 字。"
+  },
+  "batches": [
+    {
+      "id": "batch-3-pools-approaches",
+      "title": "通用句库（120 → 240 句）+ 多解法（16 → 24 条）",
+      "why": "通用句库决定「非算法题」的观感；多解法决定赛后复盘的厚度。",
+      "deliver": "返回同结构 JSON；pool 每类扩到 6 句；approaches 每知识点补到 3 条（新增条目照字段补全）。",
+      "items": [
+        {
+          "key": "pools.dp.observe[0]",
+          "location": "src/thinking.ts POOLS → dp → observe",
+          "when": "题名不是具体算法时（如「模拟电梯」「排队打水」）使用的通用思维句",
+          "limit": 30,
+          "current": "先看数据范围：n ≤ 2000，O(n²) 的状态是装得下的",
+          "issue": "通用句最容易空泛；需要扩到每类 6 句以减少重复。",
+          "hint": "知识点是 dp，不要绑定具体题目；可写\"看数据范围就知道是 X\"这类判断。"
+        },
+        {
+          "key": "pools.dp.observe[1]",
+          "location": "src/thinking.ts POOLS → dp → observe",
+          "when": "题名不是具体算法时（如「模拟电梯」「排队打水」）使用的通用思维句",
+          "limit": 30,
+          "current": "手推了几组小数据，发现答案只和「最后一次操作」有关",
+          "issue": "通用句最容易空泛；需要扩到每类 6 句以减少重复。",
+          "hint": "知识点是 dp，不要绑定具体题目；可写\"看数据范围就知道是 X\"这类判断。"
+        },
+        {
+          "key": "pools.dp.observe[2]",
+          "location": "src/thinking.ts POOLS → dp → observe",
+          "when": "题名不是具体算法时（如「模拟电梯」「排队打水」）使用的通用思维句",
+          "limit": 30,
+          "current": "注意到每个位置只被前一个位置影响，像个链式结构",
+          "issue": "通用句最容易空泛；需要扩到每类 6 句以减少重复。",
+          "hint": "知识点是 dp，不要绑定具体题目；可写\"看数据范围就知道是 X\"这类判断。"
+        },
+        {
+          "key": "pools.dp.transform[0]",
+          "location": "src/thinking.ts POOLS → dp → transform",
+          "when": "题名不是具体算法时（如「模拟电梯」「排队打水」）使用的通用思维句",
+          "limit": 30,
+          "current": "把「操作序列」反过来考虑：从终态倒推，每次撤销一步",
+          "issue": "通用句最容易空泛；需要扩到每类 6 句以减少重复。",
+          "hint": "知识点是 dp，不要绑定具体题目；可写\"看数据范围就知道是 X\"这类判断。"
+        },
+        {
+          "key": "pools.dp.transform[1]",
+          "location": "src/thinking.ts POOLS → dp → transform",
+          "when": "题名不是具体算法时（如「模拟电梯」「排队打水」）使用的通用思维句",
+          "limit": 30,
+          "current": "把题面里的代价拆成「每段的固定代价 + 长度 × 单价」",
+          "issue": "通用句最容易空泛；需要扩到每类 6 句以减少重复。",
+          "hint": "知识点是 dp，不要绑定具体题目；可写\"看数据范围就知道是 X\"这类判断。"
+        },
+        {
+          "key": "pools.dp.transform[2]",
+          "location": "src/thinking.ts POOLS → dp → transform",
+          "when": "题名不是具体算法时（如「模拟电梯」「排队打水」）使用的通用思维句",
+          "limit": 30,
+          "current": "把状态从「哪些点选了」压成「选到第几个 + 当前段的长度」",
+          "issue": "通用句最容易空泛；需要扩到每类 6 句以减少重复。",
+          "hint": "知识点是 dp，不要绑定具体题目；可写\"看数据范围就知道是 X\"这类判断。"
+        },
+        {
+          "key": "pools.dp.structure[0]",
+          "location": "src/thinking.ts POOLS → dp → structure",
+          "when": "题名不是具体算法时（如「模拟电梯」「排队打水」）使用的通用思维句",
+          "limit": 30,
+          "current": "设计 f[i][j]：前 i 个位置、当前段长为 j 的最小代价",
+          "issue": "通用句最容易空泛；需要扩到每类 6 句以减少重复。",
+          "hint": "知识点是 dp，不要绑定具体题目；可写\"看数据范围就知道是 X\"这类判断。"
+        },
+        {
+          "key": "pools.dp.structure[1]",
+          "location": "src/thinking.ts POOLS → dp → structure",
+          "when": "题名不是具体算法时（如「模拟电梯」「排队打水」）使用的通用思维句",
+          "limit": 30,
+          "current": "写出 O(n²) 的转移后发现它其实是一次前缀 min",
+          "issue": "通用句最容易空泛；需要扩到每类 6 句以减少重复。",
+          "hint": "知识点是 dp，不要绑定具体题目；可写\"看数据范围就知道是 X\"这类判断。"
+        },
+        {
+          "key": "pools.dp.structure[2]",
+          "location": "src/thinking.ts POOLS → dp → structure",
+          "when": "题名不是具体算法时（如「模拟电梯」「排队打水」）使用的通用思维句",
+          "limit": 30,
+          "current": "用单调队列把转移里那一层 j 的枚举摊掉",
+          "issue": "通用句最容易空泛；需要扩到每类 6 句以减少重复。",
+          "hint": "知识点是 dp，不要绑定具体题目；可写\"看数据范围就知道是 X\"这类判断。"
+        },
+        {
+          "key": "pools.dp.optimize[0]",
+          "location": "src/thinking.ts POOLS → dp → optimize",
+          "when": "题名不是具体算法时（如「模拟电梯」「排队打水」）使用的通用思维句",
+          "limit": 30,
+          "current": "转移是「前缀 max」，用线段树维护每行的最值，复杂度从 O(n³) 降到 O(n² log n)",
+          "issue": "通用句最容易空泛；需要扩到每类 6 句以减少重复。",
+          "hint": "知识点是 dp，不要绑定具体题目；可写\"看数据范围就知道是 X\"这类判断。"
+        },
+        {
+          "key": "pools.dp.optimize[1]",
+          "location": "src/thinking.ts POOLS → dp → optimize",
+          "when": "题名不是具体算法时（如「模拟电梯」「排队打水」）使用的通用思维句",
+          "limit": 30,
+          "current": "把「所有左端点」塞进一个堆里，每次取最小后只新增一个候选，复杂度 O(n log n)",
+          "issue": "通用句最容易空泛；需要扩到每类 6 句以减少重复。",
+          "hint": "知识点是 dp，不要绑定具体题目；可写\"看数据范围就知道是 X\"这类判断。"
+        },
+        {
+          "key": "pools.dp.optimize[2]",
+          "location": "src/thinking.ts POOLS → dp → optimize",
+          "when": "题名不是具体算法时（如「模拟电梯」「排队打水」）使用的通用思维句",
+          "limit": 30,
+          "current": "发现决策点单调，改成双指针，省掉一层枚举",
+          "issue": "通用句最容易空泛；需要扩到每类 6 句以减少重复。",
+          "hint": "知识点是 dp，不要绑定具体题目；可写\"看数据范围就知道是 X\"这类判断。"
+        },
+        {
+          "key": "pools.dp.corner[0]",
+          "location": "src/thinking.ts POOLS → dp → corner",
+          "when": "题名不是具体算法时（如「模拟电梯」「排队打水」）使用的通用思维句",
+          "limit": 30,
+          "current": "答案可能为负，边界的初值要设成 -inf 而不是 0",
+          "issue": "通用句最容易空泛；需要扩到每类 6 句以减少重复。",
+          "hint": "知识点是 dp，不要绑定具体题目；可写\"看数据范围就知道是 X\"这类判断。"
+        },
+        {
+          "key": "pools.dp.corner[1]",
+          "location": "src/thinking.ts POOLS → dp → corner",
+          "when": "题名不是具体算法时（如「模拟电梯」「排队打水」）使用的通用思维句",
+          "limit": 30,
+          "current": "n = 1 时没有转移，要单独返回 0",
+          "issue": "通用句最容易空泛；需要扩到每类 6 句以减少重复。",
+          "hint": "知识点是 dp，不要绑定具体题目；可写\"看数据范围就知道是 X\"这类判断。"
+        },
+        {
+          "key": "pools.dp.corner[2]",
+          "location": "src/thinking.ts POOLS → dp → corner",
+          "when": "题名不是具体算法时（如「模拟电梯」「排队打水」）使用的通用思维句",
+          "limit": 30,
+          "current": "多测要清空数组，不然上一组的残留会串进来",
+          "issue": "通用句最容易空泛；需要扩到每类 6 句以减少重复。",
+          "hint": "知识点是 dp，不要绑定具体题目；可写\"看数据范围就知道是 X\"这类判断。"
+        },
+        {
+          "key": "pools.graph.observe[0]",
+          "location": "src/thinking.ts POOLS → graph → observe",
+          "when": "题名不是具体算法时（如「模拟电梯」「排队打水」）使用的通用思维句",
+          "limit": 30,
+          "current": "图是稀疏的（m ≤ 2n），说明正解大概率是 O((n+m) log n)",
+          "issue": "通用句最容易空泛；需要扩到每类 6 句以减少重复。",
+          "hint": "知识点是 graph，不要绑定具体题目；可写\"看数据范围就知道是 X\"这类判断。"
+        },
+        {
+          "key": "pools.graph.observe[1]",
+          "location": "src/thinking.ts POOLS → graph → observe",
+          "when": "题名不是具体算法时（如「模拟电梯」「排队打水」）使用的通用思维句",
+          "limit": 30,
+          "current": "所有边权都是正的，最短路思路可以先试",
+          "issue": "通用句最容易空泛；需要扩到每类 6 句以减少重复。",
+          "hint": "知识点是 graph，不要绑定具体题目；可写\"看数据范围就知道是 X\"这类判断。"
+        },
+        {
+          "key": "pools.graph.observe[2]",
+          "location": "src/thinking.ts POOLS → graph → observe",
+          "when": "题名不是具体算法时（如「模拟电梯」「排队打水」）使用的通用思维句",
+          "limit": 30,
+          "current": "题面里「不能重复经过同一条边」暗示要拆点",
+          "issue": "通用句最容易空泛；需要扩到每类 6 句以减少重复。",
+          "hint": "知识点是 graph，不要绑定具体题目；可写\"看数据范围就知道是 X\"这类判断。"
+        },
+        {
+          "key": "pools.graph.transform[0]",
+          "location": "src/thinking.ts POOLS → graph → transform",
+          "when": "题名不是具体算法时（如「模拟电梯」「排队打水」）使用的通用思维句",
+          "limit": 30,
+          "current": "把「每个点最多用一次」拆成入点/出点，变成二分图匹配",
+          "issue": "通用句最容易空泛；需要扩到每类 6 句以减少重复。",
+          "hint": "知识点是 graph，不要绑定具体题目；可写\"看数据范围就知道是 X\"这类判断。"
+        },
+        {
+          "key": "pools.graph.transform[1]",
+          "location": "src/thinking.ts POOLS → graph → transform",
+          "when": "题名不是具体算法时（如「模拟电梯」「排队打水」）使用的通用思维句",
+          "limit": 30,
+          "current": "把「路径」转成「从超级源到超级汇的一条流」，容量为 1 就自动不重复",
+          "issue": "通用句最容易空泛；需要扩到每类 6 句以减少重复。",
+          "hint": "知识点是 graph，不要绑定具体题目；可写\"看数据范围就知道是 X\"这类判断。"
+        },
+        {
+          "key": "pools.graph.transform[2]",
+          "location": "src/thinking.ts POOLS → graph → transform",
+          "when": "题名不是具体算法时（如「模拟电梯」「排队打水」）使用的通用思维句",
+          "limit": 30,
+          "current": "给每个点建两层，层间边权为 0，跨层的边表示「用掉一次机会」",
+          "issue": "通用句最容易空泛；需要扩到每类 6 句以减少重复。",
+          "hint": "知识点是 graph，不要绑定具体题目；可写\"看数据范围就知道是 X\"这类判断。"
+        },
+        {
+          "key": "pools.graph.structure[0]",
+          "location": "src/thinking.ts POOLS → graph → structure",
+          "when": "题名不是具体算法时（如「模拟电梯」「排队打水」）使用的通用思维句",
+          "limit": 30,
+          "current": "跑一遍 Dijkstra 预处理出所有关键点对的距离",
+          "issue": "通用句最容易空泛；需要扩到每类 6 句以减少重复。",
+          "hint": "知识点是 graph，不要绑定具体题目；可写\"看数据范围就知道是 X\"这类判断。"
+        },
+        {
+          "key": "pools.graph.structure[1]",
+          "location": "src/thinking.ts POOLS → graph → structure",
+          "when": "题名不是具体算法时（如「模拟电梯」「排队打水」）使用的通用思维句",
+          "limit": 30,
+          "current": "用 Tarjan 缩点，把环压成一个点后图变成 DAG",
+          "issue": "通用句最容易空泛；需要扩到每类 6 句以减少重复。",
+          "hint": "知识点是 graph，不要绑定具体题目；可写\"看数据范围就知道是 X\"这类判断。"
+        },
+        {
+          "key": "pools.graph.structure[2]",
+          "location": "src/thinking.ts POOLS → graph → structure",
+          "when": "题名不是具体算法时（如「模拟电梯」「排队打水」）使用的通用思维句",
+          "limit": 30,
+          "current": "按拓扑序做一次 DP，同时维护「以这个点为结尾的最长路」",
+          "issue": "通用句最容易空泛；需要扩到每类 6 句以减少重复。",
+          "hint": "知识点是 graph，不要绑定具体题目；可写\"看数据范围就知道是 X\"这类判断。"
+        },
+        {
+          "key": "pools.graph.optimize[0]",
+          "location": "src/thinking.ts POOLS → graph → optimize",
+          "when": "题名不是具体算法时（如「模拟电梯」「排队打水」）使用的通用思维句",
+          "limit": 30,
+          "current": "暴力连边的边数是 O(n²)，用线段树优化建图压到 O(n log n)",
+          "issue": "通用句最容易空泛；需要扩到每类 6 句以减少重复。",
+          "hint": "知识点是 graph，不要绑定具体题目；可写\"看数据范围就知道是 X\"这类判断。"
+        },
+        {
+          "key": "pools.graph.optimize[1]",
+          "location": "src/thinking.ts POOLS → graph → optimize",
+          "when": "题名不是具体算法时（如「模拟电梯」「排队打水」）使用的通用思维句",
+          "limit": 30,
+          "current": "用可并堆把每个点的「候选集合」合并，总复杂度 O((n+m) log n)",
+          "issue": "通用句最容易空泛；需要扩到每类 6 句以减少重复。",
+          "hint": "知识点是 graph，不要绑定具体题目；可写\"看数据范围就知道是 X\"这类判断。"
+        },
+        {
+          "key": "pools.graph.optimize[2]",
+          "location": "src/thinking.ts POOLS → graph → optimize",
+          "when": "题名不是具体算法时（如「模拟电梯」「排队打水」）使用的通用思维句",
+          "limit": 30,
+          "current": "把最短路换成 0-1 BFS，去掉堆的 log",
+          "issue": "通用句最容易空泛；需要扩到每类 6 句以减少重复。",
+          "hint": "知识点是 graph，不要绑定具体题目；可写\"看数据范围就知道是 X\"这类判断。"
+        },
+        {
+          "key": "pools.graph.corner[0]",
+          "location": "src/thinking.ts POOLS → graph → corner",
+          "when": "题名不是具体算法时（如「模拟电梯」「排队打水」）使用的通用思维句",
+          "limit": 30,
+          "current": "不连通时要输出 -1，不能直接返回 dis[n]",
+          "issue": "通用句最容易空泛；需要扩到每类 6 句以减少重复。",
+          "hint": "知识点是 graph，不要绑定具体题目；可写\"看数据范围就知道是 X\"这类判断。"
+        },
+        {
+          "key": "pools.graph.corner[1]",
+          "location": "src/thinking.ts POOLS → graph → corner",
+          "when": "题名不是具体算法时（如「模拟电梯」「排队打水」）使用的通用思维句",
+          "limit": 30,
+          "current": "有自环和重边，读入时要判掉",
+          "issue": "通用句最容易空泛；需要扩到每类 6 句以减少重复。",
+          "hint": "知识点是 graph，不要绑定具体题目；可写\"看数据范围就知道是 X\"这类判断。"
+        },
+        {
+          "key": "pools.graph.corner[2]",
+          "location": "src/thinking.ts POOLS → graph → corner",
+          "when": "题名不是具体算法时（如「模拟电梯」「排队打水」）使用的通用思维句",
+          "limit": 30,
+          "current": "图可能不弱连通，多源要把所有入度为 0 的点一起塞进队列",
+          "issue": "通用句最容易空泛；需要扩到每类 6 句以减少重复。",
+          "hint": "知识点是 graph，不要绑定具体题目；可写\"看数据范围就知道是 X\"这类判断。"
+        },
+        {
+          "key": "pools.greedy.observe[0]",
+          "location": "src/thinking.ts POOLS → greedy → observe",
+          "when": "题名不是具体算法时（如「模拟电梯」「排队打水」）使用的通用思维句",
+          "limit": 30,
+          "current": "先按右端点排序试试，交换论证通常能过",
+          "issue": "通用句最容易空泛；需要扩到每类 6 句以减少重复。",
+          "hint": "知识点是 greedy，不要绑定具体题目；可写\"看数据范围就知道是 X\"这类判断。"
+        },
+        {
+          "key": "pools.greedy.observe[1]",
+          "location": "src/thinking.ts POOLS → greedy → observe",
+          "when": "题名不是具体算法时（如「模拟电梯」「排队打水」）使用的通用思维句",
+          "limit": 30,
+          "current": "手玩发现：越早结束的区间越应该先选",
+          "issue": "通用句最容易空泛；需要扩到每类 6 句以减少重复。",
+          "hint": "知识点是 greedy，不要绑定具体题目；可写\"看数据范围就知道是 X\"这类判断。"
+        },
+        {
+          "key": "pools.greedy.observe[2]",
+          "location": "src/thinking.ts POOLS → greedy → observe",
+          "when": "题名不是具体算法时（如「模拟电梯」「排队打水」）使用的通用思维句",
+          "limit": 30,
+          "current": "答案只和「当前还能用多少资源」有关，和具体选了谁无关",
+          "issue": "通用句最容易空泛；需要扩到每类 6 句以减少重复。",
+          "hint": "知识点是 greedy，不要绑定具体题目；可写\"看数据范围就知道是 X\"这类判断。"
+        },
+        {
+          "key": "pools.greedy.transform[0]",
+          "location": "src/thinking.ts POOLS → greedy → transform",
+          "when": "题名不是具体算法时（如「模拟电梯」「排队打水」）使用的通用思维句",
+          "limit": 30,
+          "current": "把「选最多区间」转成「每个时刻最多占一个资源」的匹配",
+          "issue": "通用句最容易空泛；需要扩到每类 6 句以减少重复。",
+          "hint": "知识点是 greedy，不要绑定具体题目；可写\"看数据范围就知道是 X\"这类判断。"
+        },
+        {
+          "key": "pools.greedy.transform[1]",
+          "location": "src/thinking.ts POOLS → greedy → transform",
+          "when": "题名不是具体算法时（如「模拟电梯」「排队打水」）使用的通用思维句",
+          "limit": 30,
+          "current": "把代价函数写成「每多等一分钟，多花 c 元」，变成贪心的增量",
+          "issue": "通用句最容易空泛；需要扩到每类 6 句以减少重复。",
+          "hint": "知识点是 greedy，不要绑定具体题目；可写\"看数据范围就知道是 X\"这类判断。"
+        },
+        {
+          "key": "pools.greedy.transform[2]",
+          "location": "src/thinking.ts POOLS → greedy → transform",
+          "when": "题名不是具体算法时（如「模拟电梯」「排队打水」）使用的通用思维句",
+          "limit": 30,
+          "current": "把原问题取反：最大化留下的，等于最小化删掉的",
+          "issue": "通用句最容易空泛；需要扩到每类 6 句以减少重复。",
+          "hint": "知识点是 greedy，不要绑定具体题目；可写\"看数据范围就知道是 X\"这类判断。"
+        },
+        {
+          "key": "pools.greedy.structure[0]",
+          "location": "src/thinking.ts POOLS → greedy → structure",
+          "when": "题名不是具体算法时（如「模拟电梯」「排队打水」）使用的通用思维句",
+          "limit": 30,
+          "current": "用堆维护当前已选区间的结束时间，冲突时弹掉最晚的",
+          "issue": "通用句最容易空泛；需要扩到每类 6 句以减少重复。",
+          "hint": "知识点是 greedy，不要绑定具体题目；可写\"看数据范围就知道是 X\"这类判断。"
+        },
+        {
+          "key": "pools.greedy.structure[1]",
+          "location": "src/thinking.ts POOLS → greedy → structure",
+          "when": "题名不是具体算法时（如「模拟电梯」「排队打水」）使用的通用思维句",
+          "limit": 30,
+          "current": "把所有候选按收益排序，能拿就拿",
+          "issue": "通用句最容易空泛；需要扩到每类 6 句以减少重复。",
+          "hint": "知识点是 greedy，不要绑定具体题目；可写\"看数据范围就知道是 X\"这类判断。"
+        },
+        {
+          "key": "pools.greedy.structure[2]",
+          "location": "src/thinking.ts POOLS → greedy → structure",
+          "when": "题名不是具体算法时（如「模拟电梯」「排队打水」）使用的通用思维句",
+          "limit": 30,
+          "current": "用并查集维护「下一个可用的位置」，跳过已经占掉的",
+          "issue": "通用句最容易空泛；需要扩到每类 6 句以减少重复。",
+          "hint": "知识点是 greedy，不要绑定具体题目；可写\"看数据范围就知道是 X\"这类判断。"
+        },
+        {
+          "key": "pools.greedy.optimize[0]",
+          "location": "src/thinking.ts POOLS → greedy → optimize",
+          "when": "题名不是具体算法时（如「模拟电梯」「排队打水」）使用的通用思维句",
+          "limit": 30,
+          "current": "每次弹堆是 O(log n)，总复杂度 O(n log n)",
+          "issue": "通用句最容易空泛；需要扩到每类 6 句以减少重复。",
+          "hint": "知识点是 greedy，不要绑定具体题目；可写\"看数据范围就知道是 X\"这类判断。"
+        },
+        {
+          "key": "pools.greedy.optimize[1]",
+          "location": "src/thinking.ts POOLS → greedy → optimize",
+          "when": "题名不是具体算法时（如「模拟电梯」「排队打水」）使用的通用思维句",
+          "limit": 30,
+          "current": "排序是瓶颈，改成计数排序后 O(n + V)",
+          "issue": "通用句最容易空泛；需要扩到每类 6 句以减少重复。",
+          "hint": "知识点是 greedy，不要绑定具体题目；可写\"看数据范围就知道是 X\"这类判断。"
+        },
+        {
+          "key": "pools.greedy.optimize[2]",
+          "location": "src/thinking.ts POOLS → greedy → optimize",
+          "when": "题名不是具体算法时（如「模拟电梯」「排队打水」）使用的通用思维句",
+          "limit": 30,
+          "current": "把逐次判断改成差分前缀，省掉一层循环",
+          "issue": "通用句最容易空泛；需要扩到每类 6 句以减少重复。",
+          "hint": "知识点是 greedy，不要绑定具体题目；可写\"看数据范围就知道是 X\"这类判断。"
+        },
+        {
+          "key": "pools.greedy.corner[0]",
+          "location": "src/thinking.ts POOLS → greedy → corner",
+          "when": "题名不是具体算法时（如「模拟电梯」「排队打水」）使用的通用思维句",
+          "limit": 30,
+          "current": "区间端点重合时算不算相交，要按题面来",
+          "issue": "通用句最容易空泛；需要扩到每类 6 句以减少重复。",
+          "hint": "知识点是 greedy，不要绑定具体题目；可写\"看数据范围就知道是 X\"这类判断。"
+        },
+        {
+          "key": "pools.greedy.corner[1]",
+          "location": "src/thinking.ts POOLS → greedy → corner",
+          "when": "题名不是具体算法时（如「模拟电梯」「排队打水」）使用的通用思维句",
+          "limit": 30,
+          "current": "答案可能爆 int，用 long long",
+          "issue": "通用句最容易空泛；需要扩到每类 6 句以减少重复。",
+          "hint": "知识点是 greedy，不要绑定具体题目；可写\"看数据范围就知道是 X\"这类判断。"
+        },
+        {
+          "key": "pools.greedy.corner[2]",
+          "location": "src/thinking.ts POOLS → greedy → corner",
+          "when": "题名不是具体算法时（如「模拟电梯」「排队打水」）使用的通用思维句",
+          "limit": 30,
+          "current": "输入可能不保证有序，别忘了先 sort",
+          "issue": "通用句最容易空泛；需要扩到每类 6 句以减少重复。",
+          "hint": "知识点是 greedy，不要绑定具体题目；可写\"看数据范围就知道是 X\"这类判断。"
+        },
+        {
+          "key": "pools.ds.observe[0]",
+          "location": "src/thinking.ts POOLS → ds → observe",
+          "when": "题名不是具体算法时（如「模拟电梯」「排队打水」）使用的通用思维句",
+          "limit": 30,
+          "current": "操作是「区间加 + 区间求和」，树状数组套一下就行",
+          "issue": "通用句最容易空泛；需要扩到每类 6 句以减少重复。",
+          "hint": "知识点是 ds，不要绑定具体题目；可写\"看数据范围就知道是 X\"这类判断。"
+        },
+        {
+          "key": "pools.ds.observe[1]",
+          "location": "src/thinking.ts POOLS → ds → observe",
+          "when": "题名不是具体算法时（如「模拟电梯」「排队打水」）使用的通用思维句",
+          "limit": 30,
+          "current": "注意到只有单点修改，没有必要上线段树",
+          "issue": "通用句最容易空泛；需要扩到每类 6 句以减少重复。",
+          "hint": "知识点是 ds，不要绑定具体题目；可写\"看数据范围就知道是 X\"这类判断。"
+        },
+        {
+          "key": "pools.ds.observe[2]",
+          "location": "src/thinking.ts POOLS → ds → observe",
+          "when": "题名不是具体算法时（如「模拟电梯」「排队打水」）使用的通用思维句",
+          "limit": 30,
+          "current": "n, q ≤ 2e5，必须带 log",
+          "issue": "通用句最容易空泛；需要扩到每类 6 句以减少重复。",
+          "hint": "知识点是 ds，不要绑定具体题目；可写\"看数据范围就知道是 X\"这类判断。"
+        },
+        {
+          "key": "pools.ds.transform[0]",
+          "location": "src/thinking.ts POOLS → ds → transform",
+          "when": "题名不是具体算法时（如「模拟电梯」「排队打水」）使用的通用思维句",
+          "limit": 30,
+          "current": "把「区间第 k 小」转成「在值域上二分 + 统计 ≤ mid 的个数」",
+          "issue": "通用句最容易空泛；需要扩到每类 6 句以减少重复。",
+          "hint": "知识点是 ds，不要绑定具体题目；可写\"看数据范围就知道是 X\"这类判断。"
+        },
+        {
+          "key": "pools.ds.transform[1]",
+          "location": "src/thinking.ts POOLS → ds → transform",
+          "when": "题名不是具体算法时（如「模拟电梯」「排队打水」）使用的通用思维句",
+          "limit": 30,
+          "current": "把树上的路径查询拆成「根到 x + 根到 y − 2 × 根到 lca」",
+          "issue": "通用句最容易空泛；需要扩到每类 6 句以减少重复。",
+          "hint": "知识点是 ds，不要绑定具体题目；可写\"看数据范围就知道是 X\"这类判断。"
+        },
+        {
+          "key": "pools.ds.transform[2]",
+          "location": "src/thinking.ts POOLS → ds → transform",
+          "when": "题名不是具体算法时（如「模拟电梯」「排队打水」）使用的通用思维句",
+          "limit": 30,
+          "current": "把「颜色段」的合并抽象成「相同颜色的连续段」",
+          "issue": "通用句最容易空泛；需要扩到每类 6 句以减少重复。",
+          "hint": "知识点是 ds，不要绑定具体题目；可写\"看数据范围就知道是 X\"这类判断。"
+        },
+        {
+          "key": "pools.ds.structure[0]",
+          "location": "src/thinking.ts POOLS → ds → structure",
+          "when": "题名不是具体算法时（如「模拟电梯」「排队打水」）使用的通用思维句",
+          "limit": 30,
+          "current": "树状数组维护差分数组，区间加变成两次单点加",
+          "issue": "通用句最容易空泛；需要扩到每类 6 句以减少重复。",
+          "hint": "知识点是 ds，不要绑定具体题目；可写\"看数据范围就知道是 X\"这类判断。"
+        },
+        {
+          "key": "pools.ds.structure[1]",
+          "location": "src/thinking.ts POOLS → ds → structure",
+          "when": "题名不是具体算法时（如「模拟电梯」「排队打水」）使用的通用思维句",
+          "limit": 30,
+          "current": "线段树每个节点存「左端颜色、右端颜色、段数」",
+          "issue": "通用句最容易空泛；需要扩到每类 6 句以减少重复。",
+          "hint": "知识点是 ds，不要绑定具体题目；可写\"看数据范围就知道是 X\"这类判断。"
+        },
+        {
+          "key": "pools.ds.structure[2]",
+          "location": "src/thinking.ts POOLS → ds → structure",
+          "when": "题名不是具体算法时（如「模拟电梯」「排队打水」）使用的通用思维句",
+          "limit": 30,
+          "current": "主席树按版本建，每个版本只加一条链",
+          "issue": "通用句最容易空泛；需要扩到每类 6 句以减少重复。",
+          "hint": "知识点是 ds，不要绑定具体题目；可写\"看数据范围就知道是 X\"这类判断。"
+        },
+        {
+          "key": "pools.ds.optimize[0]",
+          "location": "src/thinking.ts POOLS → ds → optimize",
+          "when": "题名不是具体算法时（如「模拟电梯」「排队打水」）使用的通用思维句",
+          "limit": 30,
+          "current": "把线段树的递归改成迭代，常数能小一半",
+          "issue": "通用句最容易空泛；需要扩到每类 6 句以减少重复。",
+          "hint": "知识点是 ds，不要绑定具体题目；可写\"看数据范围就知道是 X\"这类判断。"
+        },
+        {
+          "key": "pools.ds.optimize[1]",
+          "location": "src/thinking.ts POOLS → ds → optimize",
+          "when": "题名不是具体算法时（如「模拟电梯」「排队打水」）使用的通用思维句",
+          "limit": 30,
+          "current": "查询只有 O(q) 次，预处理 O(n log n) 反而更划算",
+          "issue": "通用句最容易空泛；需要扩到每类 6 句以减少重复。",
+          "hint": "知识点是 ds，不要绑定具体题目；可写\"看数据范围就知道是 X\"这类判断。"
+        },
+        {
+          "key": "pools.ds.optimize[2]",
+          "location": "src/thinking.ts POOLS → ds → optimize",
+          "when": "题名不是具体算法时（如「模拟电梯」「排队打水」）使用的通用思维句",
+          "limit": 30,
+          "current": "用 ODT 均摊，随机数据下总复杂度 O((n+q) log n)",
+          "issue": "通用句最容易空泛；需要扩到每类 6 句以减少重复。",
+          "hint": "知识点是 ds，不要绑定具体题目；可写\"看数据范围就知道是 X\"这类判断。"
+        },
+        {
+          "key": "pools.ds.corner[0]",
+          "location": "src/thinking.ts POOLS → ds → corner",
+          "when": "题名不是具体算法时（如「模拟电梯」「排队打水」）使用的通用思维句",
+          "limit": 30,
+          "current": "下标从 1 开始，树状数组的 lowbit 别越界",
+          "issue": "通用句最容易空泛；需要扩到每类 6 句以减少重复。",
+          "hint": "知识点是 ds，不要绑定具体题目；可写\"看数据范围就知道是 X\"这类判断。"
+        },
+        {
+          "key": "pools.ds.corner[1]",
+          "location": "src/thinking.ts POOLS → ds → corner",
+          "when": "题名不是具体算法时（如「模拟电梯」「排队打水」）使用的通用思维句",
+          "limit": 30,
+          "current": "区间加之后查询要 pushdown，或者干脆用标记永久化",
+          "issue": "通用句最容易空泛；需要扩到每类 6 句以减少重复。",
+          "hint": "知识点是 ds，不要绑定具体题目；可写\"看数据范围就知道是 X\"这类判断。"
+        },
+        {
+          "key": "pools.ds.corner[2]",
+          "location": "src/thinking.ts POOLS → ds → corner",
+          "when": "题名不是具体算法时（如「模拟电梯」「排队打水」）使用的通用思维句",
+          "limit": 30,
+          "current": "long long 的懒标记在取模时要先模再加",
+          "issue": "通用句最容易空泛；需要扩到每类 6 句以减少重复。",
+          "hint": "知识点是 ds，不要绑定具体题目；可写\"看数据范围就知道是 X\"这类判断。"
+        },
+        {
+          "key": "pools.string.observe[0]",
+          "location": "src/thinking.ts POOLS → string → observe",
+          "when": "题名不是具体算法时（如「模拟电梯」「排队打水」）使用的通用思维句",
+          "limit": 30,
+          "current": "先求一遍 next 数组，很多性质直接就有了",
+          "issue": "通用句最容易空泛；需要扩到每类 6 句以减少重复。",
+          "hint": "知识点是 string，不要绑定具体题目；可写\"看数据范围就知道是 X\"这类判断。"
+        },
+        {
+          "key": "pools.string.observe[1]",
+          "location": "src/thinking.ts POOLS → string → observe",
+          "when": "题名不是具体算法时（如「模拟电梯」「排队打水」）使用的通用思维句",
+          "limit": 30,
+          "current": "字符串长度 1e6，只能 O(n) 或 O(n log n)",
+          "issue": "通用句最容易空泛；需要扩到每类 6 句以减少重复。",
+          "hint": "知识点是 string，不要绑定具体题目；可写\"看数据范围就知道是 X\"这类判断。"
+        },
+        {
+          "key": "pools.string.observe[2]",
+          "location": "src/thinking.ts POOLS → string → observe",
+          "when": "题名不是具体算法时（如「模拟电梯」「排队打水」）使用的通用思维句",
+          "limit": 30,
+          "current": "注意到答案和「前缀 = 后缀」有关，往 border 上想",
+          "issue": "通用句最容易空泛；需要扩到每类 6 句以减少重复。",
+          "hint": "知识点是 string，不要绑定具体题目；可写\"看数据范围就知道是 X\"这类判断。"
+        },
+        {
+          "key": "pools.string.transform[0]",
+          "location": "src/thinking.ts POOLS → string → transform",
+          "when": "题名不是具体算法时（如「模拟电梯」「排队打水」）使用的通用思维句",
+          "limit": 30,
+          "current": "把「循环同构」转成「s + s 上跑匹配」",
+          "issue": "通用句最容易空泛；需要扩到每类 6 句以减少重复。",
+          "hint": "知识点是 string，不要绑定具体题目；可写\"看数据范围就知道是 X\"这类判断。"
+        },
+        {
+          "key": "pools.string.transform[1]",
+          "location": "src/thinking.ts POOLS → string → transform",
+          "when": "题名不是具体算法时（如「模拟电梯」「排队打水」）使用的通用思维句",
+          "limit": 30,
+          "current": "把「本质不同子串数」转成「每个后缀贡献的新子串数」",
+          "issue": "通用句最容易空泛；需要扩到每类 6 句以减少重复。",
+          "hint": "知识点是 string，不要绑定具体题目；可写\"看数据范围就知道是 X\"这类判断。"
+        },
+        {
+          "key": "pools.string.transform[2]",
+          "location": "src/thinking.ts POOLS → string → transform",
+          "when": "题名不是具体算法时（如「模拟电梯」「排队打水」）使用的通用思维句",
+          "limit": 30,
+          "current": "把匹配失败的回跳全部记下来，就是一棵 fail 树",
+          "issue": "通用句最容易空泛；需要扩到每类 6 句以减少重复。",
+          "hint": "知识点是 string，不要绑定具体题目；可写\"看数据范围就知道是 X\"这类判断。"
+        },
+        {
+          "key": "pools.string.structure[0]",
+          "location": "src/thinking.ts POOLS → string → structure",
+          "when": "题名不是具体算法时（如「模拟电梯」「排队打水」）使用的通用思维句",
+          "limit": 30,
+          "current": "建 SAM，每个状态的 endpos 大小就是出现次数",
+          "issue": "通用句最容易空泛；需要扩到每类 6 句以减少重复。",
+          "hint": "知识点是 string，不要绑定具体题目；可写\"看数据范围就知道是 X\"这类判断。"
+        },
+        {
+          "key": "pools.string.structure[1]",
+          "location": "src/thinking.ts POOLS → string → structure",
+          "when": "题名不是具体算法时（如「模拟电梯」「排队打水」）使用的通用思维句",
+          "limit": 30,
+          "current": "后缀数组 + height 数组，用单调栈统计每个 height 的贡献",
+          "issue": "通用句最容易空泛；需要扩到每类 6 句以减少重复。",
+          "hint": "知识点是 string，不要绑定具体题目；可写\"看数据范围就知道是 X\"这类判断。"
+        },
+        {
+          "key": "pools.string.structure[2]",
+          "location": "src/thinking.ts POOLS → string → structure",
+          "when": "题名不是具体算法时（如「模拟电梯」「排队打水」）使用的通用思维句",
+          "limit": 30,
+          "current": "把模式串拼起来建 AC 自动机，文本串在上面跑",
+          "issue": "通用句最容易空泛；需要扩到每类 6 句以减少重复。",
+          "hint": "知识点是 string，不要绑定具体题目；可写\"看数据范围就知道是 X\"这类判断。"
+        },
+        {
+          "key": "pools.string.optimize[0]",
+          "location": "src/thinking.ts POOLS → string → optimize",
+          "when": "题名不是具体算法时（如「模拟电梯」「排队打水」）使用的通用思维句",
+          "limit": 30,
+          "current": "fail 树上做一次子树和，把「每个串出现几次」一次算完",
+          "issue": "通用句最容易空泛；需要扩到每类 6 句以减少重复。",
+          "hint": "知识点是 string，不要绑定具体题目；可写\"看数据范围就知道是 X\"这类判断。"
+        },
+        {
+          "key": "pools.string.optimize[1]",
+          "location": "src/thinking.ts POOLS → string → optimize",
+          "when": "题名不是具体算法时（如「模拟电梯」「排队打水」）使用的通用思维句",
+          "limit": 30,
+          "current": "用基数排序替代快排，后缀数组建到 O(n log n)",
+          "issue": "通用句最容易空泛；需要扩到每类 6 句以减少重复。",
+          "hint": "知识点是 string，不要绑定具体题目；可写\"看数据范围就知道是 X\"这类判断。"
+        },
+        {
+          "key": "pools.string.optimize[2]",
+          "location": "src/thinking.ts POOLS → string → optimize",
+          "when": "题名不是具体算法时（如「模拟电梯」「排队打水」）使用的通用思维句",
+          "limit": 30,
+          "current": "把哈希换成双哈希，冲突概率降到可忽略",
+          "issue": "通用句最容易空泛；需要扩到每类 6 句以减少重复。",
+          "hint": "知识点是 string，不要绑定具体题目；可写\"看数据范围就知道是 X\"这类判断。"
+        },
+        {
+          "key": "pools.string.corner[0]",
+          "location": "src/thinking.ts POOLS → string → corner",
+          "when": "题名不是具体算法时（如「模拟电梯」「排队打水」）使用的通用思维句",
+          "limit": 30,
+          "current": "空串、单字符要特判，不然 SAM 会少一个状态",
+          "issue": "通用句最容易空泛；需要扩到每类 6 句以减少重复。",
+          "hint": "知识点是 string，不要绑定具体题目；可写\"看数据范围就知道是 X\"这类判断。"
+        },
+        {
+          "key": "pools.string.corner[1]",
+          "location": "src/thinking.ts POOLS → string → corner",
+          "when": "题名不是具体算法时（如「模拟电梯」「排队打水」）使用的通用思维句",
+          "limit": 30,
+          "current": "哈希 base 要大于字符集，且不能是常见数",
+          "issue": "通用句最容易空泛；需要扩到每类 6 句以减少重复。",
+          "hint": "知识点是 string，不要绑定具体题目；可写\"看数据范围就知道是 X\"这类判断。"
+        },
+        {
+          "key": "pools.string.corner[2]",
+          "location": "src/thinking.ts POOLS → string → corner",
+          "when": "题名不是具体算法时（如「模拟电梯」「排队打水」）使用的通用思维句",
+          "limit": 30,
+          "current": "多测时 SAM 的节点数要重置，否则越界",
+          "issue": "通用句最容易空泛；需要扩到每类 6 句以减少重复。",
+          "hint": "知识点是 string，不要绑定具体题目；可写\"看数据范围就知道是 X\"这类判断。"
+        },
+        {
+          "key": "pools.math.observe[0]",
+          "location": "src/thinking.ts POOLS → math → observe",
+          "when": "题名不是具体算法时（如「模拟电梯」「排队打水」）使用的通用思维句",
+          "limit": 30,
+          "current": "公式里出现了阶乘和逆元，先预处理到 1e6",
+          "issue": "通用句最容易空泛；需要扩到每类 6 句以减少重复。",
+          "hint": "知识点是 math，不要绑定具体题目；可写\"看数据范围就知道是 X\"这类判断。"
+        },
+        {
+          "key": "pools.math.observe[1]",
+          "location": "src/thinking.ts POOLS → math → observe",
+          "when": "题名不是具体算法时（如「模拟电梯」「排队打水」）使用的通用思维句",
+          "limit": 30,
+          "current": "n ≤ 1e18，只能是 log 级的做法，往矩阵快速幂上想",
+          "issue": "通用句最容易空泛；需要扩到每类 6 句以减少重复。",
+          "hint": "知识点是 math，不要绑定具体题目；可写\"看数据范围就知道是 X\"这类判断。"
+        },
+        {
+          "key": "pools.math.observe[2]",
+          "location": "src/thinking.ts POOLS → math → observe",
+          "when": "题名不是具体算法时（如「模拟电梯」「排队打水」）使用的通用思维句",
+          "limit": 30,
+          "current": "手推前几项，发现是个线性递推",
+          "issue": "通用句最容易空泛；需要扩到每类 6 句以减少重复。",
+          "hint": "知识点是 math，不要绑定具体题目；可写\"看数据范围就知道是 X\"这类判断。"
+        },
+        {
+          "key": "pools.math.transform[0]",
+          "location": "src/thinking.ts POOLS → math → transform",
+          "when": "题名不是具体算法时（如「模拟电梯」「排队打水」）使用的通用思维句",
+          "limit": 30,
+          "current": "把「求和」转成「枚举 gcd 再莫比乌斯反演」",
+          "issue": "通用句最容易空泛；需要扩到每类 6 句以减少重复。",
+          "hint": "知识点是 math，不要绑定具体题目；可写\"看数据范围就知道是 X\"这类判断。"
+        },
+        {
+          "key": "pools.math.transform[1]",
+          "location": "src/thinking.ts POOLS → math → transform",
+          "when": "题名不是具体算法时（如「模拟电梯」「排队打水」）使用的通用思维句",
+          "limit": 30,
+          "current": "把「恰好 k 个」用二项式反演转成「至少 k 个」",
+          "issue": "通用句最容易空泛；需要扩到每类 6 句以减少重复。",
+          "hint": "知识点是 math，不要绑定具体题目；可写\"看数据范围就知道是 X\"这类判断。"
+        },
+        {
+          "key": "pools.math.transform[2]",
+          "location": "src/thinking.ts POOLS → math → transform",
+          "when": "题名不是具体算法时（如「模拟电梯」「排队打水」）使用的通用思维句",
+          "limit": 30,
+          "current": "把递推写成矩阵，用快速幂一次跳 n 步",
+          "issue": "通用句最容易空泛；需要扩到每类 6 句以减少重复。",
+          "hint": "知识点是 math，不要绑定具体题目；可写\"看数据范围就知道是 X\"这类判断。"
+        },
+        {
+          "key": "pools.math.structure[0]",
+          "location": "src/thinking.ts POOLS → math → structure",
+          "when": "题名不是具体算法时（如「模拟电梯」「排队打水」）使用的通用思维句",
+          "limit": 30,
+          "current": "线性筛预处理出 μ 和 phi，再整除分块",
+          "issue": "通用句最容易空泛；需要扩到每类 6 句以减少重复。",
+          "hint": "知识点是 math，不要绑定具体题目；可写\"看数据范围就知道是 X\"这类判断。"
+        },
+        {
+          "key": "pools.math.structure[1]",
+          "location": "src/thinking.ts POOLS → math → structure",
+          "when": "题名不是具体算法时（如「模拟电梯」「排队打水」）使用的通用思维句",
+          "limit": 30,
+          "current": "构造转移矩阵，大小是 k × k",
+          "issue": "通用句最容易空泛；需要扩到每类 6 句以减少重复。",
+          "hint": "知识点是 math，不要绑定具体题目；可写\"看数据范围就知道是 X\"这类判断。"
+        },
+        {
+          "key": "pools.math.structure[2]",
+          "location": "src/thinking.ts POOLS → math → structure",
+          "when": "题名不是具体算法时（如「模拟电梯」「排队打水」）使用的通用思维句",
+          "limit": 30,
+          "current": "用扩展欧拉定理把指数降下来",
+          "issue": "通用句最容易空泛；需要扩到每类 6 句以减少重复。",
+          "hint": "知识点是 math，不要绑定具体题目；可写\"看数据范围就知道是 X\"这类判断。"
+        },
+        {
+          "key": "pools.math.optimize[0]",
+          "location": "src/thinking.ts POOLS → math → optimize",
+          "when": "题名不是具体算法时（如「模拟电梯」「排队打水」）使用的通用思维句",
+          "limit": 30,
+          "current": "整除分块把 O(n) 的求和降到 O(√n)",
+          "issue": "通用句最容易空泛；需要扩到每类 6 句以减少重复。",
+          "hint": "知识点是 math，不要绑定具体题目；可写\"看数据范围就知道是 X\"这类判断。"
+        },
+        {
+          "key": "pools.math.optimize[1]",
+          "location": "src/thinking.ts POOLS → math → optimize",
+          "when": "题名不是具体算法时（如「模拟电梯」「排队打水」）使用的通用思维句",
+          "limit": 30,
+          "current": "矩阵乘法的常数太大，改成 k 次多项式乘法",
+          "issue": "通用句最容易空泛；需要扩到每类 6 句以减少重复。",
+          "hint": "知识点是 math，不要绑定具体题目；可写\"看数据范围就知道是 X\"这类判断。"
+        },
+        {
+          "key": "pools.math.optimize[2]",
+          "location": "src/thinking.ts POOLS → math → optimize",
+          "when": "题名不是具体算法时（如「模拟电梯」「排队打水」）使用的通用思维句",
+          "limit": 30,
+          "current": "快速幂里每次只乘需要的位，省掉一半",
+          "issue": "通用句最容易空泛；需要扩到每类 6 句以减少重复。",
+          "hint": "知识点是 math，不要绑定具体题目；可写\"看数据范围就知道是 X\"这类判断。"
+        },
+        {
+          "key": "pools.math.corner[0]",
+          "location": "src/thinking.ts POOLS → math → corner",
+          "when": "题名不是具体算法时（如「模拟电梯」「排队打水」）使用的通用思维句",
+          "limit": 30,
+          "current": "模数不一定是质数，不能用费马小定理求逆元",
+          "issue": "通用句最容易空泛；需要扩到每类 6 句以减少重复。",
+          "hint": "知识点是 math，不要绑定具体题目；可写\"看数据范围就知道是 X\"这类判断。"
+        },
+        {
+          "key": "pools.math.corner[1]",
+          "location": "src/thinking.ts POOLS → math → corner",
+          "when": "题名不是具体算法时（如「模拟电梯」「排队打水」）使用的通用思维句",
+          "limit": 30,
+          "current": "指数要对 φ(p) 取模，且要处理 b < φ(p) 的情况",
+          "issue": "通用句最容易空泛；需要扩到每类 6 句以减少重复。",
+          "hint": "知识点是 math，不要绑定具体题目；可写\"看数据范围就知道是 X\"这类判断。"
+        },
+        {
+          "key": "pools.math.corner[2]",
+          "location": "src/thinking.ts POOLS → math → corner",
+          "when": "题名不是具体算法时（如「模拟电梯」「排队打水」）使用的通用思维句",
+          "limit": 30,
+          "current": "负数取模要加模数再模",
+          "issue": "通用句最容易空泛；需要扩到每类 6 句以减少重复。",
+          "hint": "知识点是 math，不要绑定具体题目；可写\"看数据范围就知道是 X\"这类判断。"
+        },
+        {
+          "key": "pools.impl.observe[0]",
+          "location": "src/thinking.ts POOLS → impl → observe",
+          "when": "题名不是具体算法时（如「模拟电梯」「排队打水」）使用的通用思维句",
+          "limit": 30,
+          "current": "题面很长，但拆开就是「模拟 + 几个边界」",
+          "issue": "通用句最容易空泛；需要扩到每类 6 句以减少重复。",
+          "hint": "知识点是 impl，不要绑定具体题目；可写\"看数据范围就知道是 X\"这类判断。"
+        },
+        {
+          "key": "pools.impl.observe[1]",
+          "location": "src/thinking.ts POOLS → impl → observe",
+          "when": "题名不是具体算法时（如「模拟电梯」「排队打水」）使用的通用思维句",
+          "limit": 30,
+          "current": "数据范围很小，O(n²) 暴力能过，先保证正确",
+          "issue": "通用句最容易空泛；需要扩到每类 6 句以减少重复。",
+          "hint": "知识点是 impl，不要绑定具体题目；可写\"看数据范围就知道是 X\"这类判断。"
+        },
+        {
+          "key": "pools.impl.observe[2]",
+          "location": "src/thinking.ts POOLS → impl → observe",
+          "when": "题名不是具体算法时（如「模拟电梯」「排队打水」）使用的通用思维句",
+          "limit": 30,
+          "current": "注意到操作只有几种，可以用数组直接存状态",
+          "issue": "通用句最容易空泛；需要扩到每类 6 句以减少重复。",
+          "hint": "知识点是 impl，不要绑定具体题目；可写\"看数据范围就知道是 X\"这类判断。"
+        },
+        {
+          "key": "pools.impl.transform[0]",
+          "location": "src/thinking.ts POOLS → impl → transform",
+          "when": "题名不是具体算法时（如「模拟电梯」「排队打水」）使用的通用思维句",
+          "limit": 30,
+          "current": "把「时间轴上的事件」按时间排序，依次处理",
+          "issue": "通用句最容易空泛；需要扩到每类 6 句以减少重复。",
+          "hint": "知识点是 impl，不要绑定具体题目；可写\"看数据范围就知道是 X\"这类判断。"
+        },
+        {
+          "key": "pools.impl.transform[1]",
+          "location": "src/thinking.ts POOLS → impl → transform",
+          "when": "题名不是具体算法时（如「模拟电梯」「排队打水」）使用的通用思维句",
+          "limit": 30,
+          "current": "把二维坐标压成一维下标，省掉一层循环",
+          "issue": "通用句最容易空泛；需要扩到每类 6 句以减少重复。",
+          "hint": "知识点是 impl，不要绑定具体题目；可写\"看数据范围就知道是 X\"这类判断。"
+        },
+        {
+          "key": "pools.impl.transform[2]",
+          "location": "src/thinking.ts POOLS → impl → transform",
+          "when": "题名不是具体算法时（如「模拟电梯」「排队打水」）使用的通用思维句",
+          "limit": 30,
+          "current": "把「每个操作独立」改成「维护整体的偏移量」",
+          "issue": "通用句最容易空泛；需要扩到每类 6 句以减少重复。",
+          "hint": "知识点是 impl，不要绑定具体题目；可写\"看数据范围就知道是 X\"这类判断。"
+        },
+        {
+          "key": "pools.impl.structure[0]",
+          "location": "src/thinking.ts POOLS → impl → structure",
+          "when": "题名不是具体算法时（如「模拟电梯」「排队打水」）使用的通用思维句",
+          "limit": 30,
+          "current": "开一个桶记录每个值出现了几次",
+          "issue": "通用句最容易空泛；需要扩到每类 6 句以减少重复。",
+          "hint": "知识点是 impl，不要绑定具体题目；可写\"看数据范围就知道是 X\"这类判断。"
+        },
+        {
+          "key": "pools.impl.structure[1]",
+          "location": "src/thinking.ts POOLS → impl → structure",
+          "when": "题名不是具体算法时（如「模拟电梯」「排队打水」）使用的通用思维句",
+          "limit": 30,
+          "current": "用一个 vector 存每个位置的历史，查询时二分",
+          "issue": "通用句最容易空泛；需要扩到每类 6 句以减少重复。",
+          "hint": "知识点是 impl，不要绑定具体题目；可写\"看数据范围就知道是 X\"这类判断。"
+        },
+        {
+          "key": "pools.impl.structure[2]",
+          "location": "src/thinking.ts POOLS → impl → structure",
+          "when": "题名不是具体算法时（如「模拟电梯」「排队打水」）使用的通用思维句",
+          "limit": 30,
+          "current": "按题意写一个 check 函数，主过程逐条模拟",
+          "issue": "通用句最容易空泛；需要扩到每类 6 句以减少重复。",
+          "hint": "知识点是 impl，不要绑定具体题目；可写\"看数据范围就知道是 X\"这类判断。"
+        },
+        {
+          "key": "pools.impl.optimize[0]",
+          "location": "src/thinking.ts POOLS → impl → optimize",
+          "when": "题名不是具体算法时（如「模拟电梯」「排队打水」）使用的通用思维句",
+          "limit": 30,
+          "current": "每个事件只处理一次，总复杂度 O(n + q)",
+          "issue": "通用句最容易空泛；需要扩到每类 6 句以减少重复。",
+          "hint": "知识点是 impl，不要绑定具体题目；可写\"看数据范围就知道是 X\"这类判断。"
+        },
+        {
+          "key": "pools.impl.optimize[1]",
+          "location": "src/thinking.ts POOLS → impl → optimize",
+          "when": "题名不是具体算法时（如「模拟电梯」「排队打水」）使用的通用思维句",
+          "limit": 30,
+          "current": "把重复计算的部分提到循环外",
+          "issue": "通用句最容易空泛；需要扩到每类 6 句以减少重复。",
+          "hint": "知识点是 impl，不要绑定具体题目；可写\"看数据范围就知道是 X\"这类判断。"
+        },
+        {
+          "key": "pools.impl.optimize[2]",
+          "location": "src/thinking.ts POOLS → impl → optimize",
+          "when": "题名不是具体算法时（如「模拟电梯」「排队打水」）使用的通用思维句",
+          "limit": 30,
+          "current": "用前缀和把区间查询降到 O(1)",
+          "issue": "通用句最容易空泛；需要扩到每类 6 句以减少重复。",
+          "hint": "知识点是 impl，不要绑定具体题目；可写\"看数据范围就知道是 X\"这类判断。"
+        },
+        {
+          "key": "pools.impl.corner[0]",
+          "location": "src/thinking.ts POOLS → impl → corner",
+          "when": "题名不是具体算法时（如「模拟电梯」「排队打水」）使用的通用思维句",
+          "limit": 30,
+          "current": "多测要清空，不然上一组的数据会污染",
+          "issue": "通用句最容易空泛；需要扩到每类 6 句以减少重复。",
+          "hint": "知识点是 impl，不要绑定具体题目；可写\"看数据范围就知道是 X\"这类判断。"
+        },
+        {
+          "key": "pools.impl.corner[1]",
+          "location": "src/thinking.ts POOLS → impl → corner",
+          "when": "题名不是具体算法时（如「模拟电梯」「排队打水」）使用的通用思维句",
+          "limit": 30,
+          "current": "输出格式（空格/换行）要和样例完全一致",
+          "issue": "通用句最容易空泛；需要扩到每类 6 句以减少重复。",
+          "hint": "知识点是 impl，不要绑定具体题目；可写\"看数据范围就知道是 X\"这类判断。"
+        },
+        {
+          "key": "pools.impl.corner[2]",
+          "location": "src/thinking.ts POOLS → impl → corner",
+          "when": "题名不是具体算法时（如「模拟电梯」「排队打水」）使用的通用思维句",
+          "limit": 30,
+          "current": "边界：n = 0、所有元素相同、只有一个操作",
+          "issue": "通用句最容易空泛；需要扩到每类 6 句以减少重复。",
+          "hint": "知识点是 impl，不要绑定具体题目；可写\"看数据范围就知道是 X\"这类判断。"
+        },
+        {
+          "key": "pools.geometry.observe[0]",
+          "location": "src/thinking.ts POOLS → geometry → observe",
+          "when": "题名不是具体算法时（如「模拟电梯」「排队打水」）使用的通用思维句",
+          "limit": 30,
+          "current": "所有点都在凸包上，直接上旋转卡壳",
+          "issue": "通用句最容易空泛；需要扩到每类 6 句以减少重复。",
+          "hint": "知识点是 geometry，不要绑定具体题目；可写\"看数据范围就知道是 X\"这类判断。"
+        },
+        {
+          "key": "pools.geometry.observe[1]",
+          "location": "src/thinking.ts POOLS → geometry → observe",
+          "when": "题名不是具体算法时（如「模拟电梯」「排队打水」）使用的通用思维句",
+          "limit": 30,
+          "current": "n ≤ 2000，O(n²) 枚举点对是可行的",
+          "issue": "通用句最容易空泛；需要扩到每类 6 句以减少重复。",
+          "hint": "知识点是 geometry，不要绑定具体题目；可写\"看数据范围就知道是 X\"这类判断。"
+        },
+        {
+          "key": "pools.geometry.observe[2]",
+          "location": "src/thinking.ts POOLS → geometry → observe",
+          "when": "题名不是具体算法时（如「模拟电梯」「排队打水」）使用的通用思维句",
+          "limit": 30,
+          "current": "注意到答案只和「最远点对」有关",
+          "issue": "通用句最容易空泛；需要扩到每类 6 句以减少重复。",
+          "hint": "知识点是 geometry，不要绑定具体题目；可写\"看数据范围就知道是 X\"这类判断。"
+        },
+        {
+          "key": "pools.geometry.transform[0]",
+          "location": "src/thinking.ts POOLS → geometry → transform",
+          "when": "题名不是具体算法时（如「模拟电梯」「排队打水」）使用的通用思维句",
+          "limit": 30,
+          "current": "把「面积最大三角形」转成「固定一条边，找最远点」",
+          "issue": "通用句最容易空泛；需要扩到每类 6 句以减少重复。",
+          "hint": "知识点是 geometry，不要绑定具体题目；可写\"看数据范围就知道是 X\"这类判断。"
+        },
+        {
+          "key": "pools.geometry.transform[1]",
+          "location": "src/thinking.ts POOLS → geometry → transform",
+          "when": "题名不是具体算法时（如「模拟电梯」「排队打水」）使用的通用思维句",
+          "limit": 30,
+          "current": "把「圆覆盖」转成「角度区间覆盖」，扫一遍即可",
+          "issue": "通用句最容易空泛；需要扩到每类 6 句以减少重复。",
+          "hint": "知识点是 geometry，不要绑定具体题目；可写\"看数据范围就知道是 X\"这类判断。"
+        },
+        {
+          "key": "pools.geometry.transform[2]",
+          "location": "src/thinking.ts POOLS → geometry → transform",
+          "when": "题名不是具体算法时（如「模拟电梯」「排队打水」）使用的通用思维句",
+          "limit": 30,
+          "current": "把叉积的符号当成半平面，用极角排序",
+          "issue": "通用句最容易空泛；需要扩到每类 6 句以减少重复。",
+          "hint": "知识点是 geometry，不要绑定具体题目；可写\"看数据范围就知道是 X\"这类判断。"
+        },
+        {
+          "key": "pools.geometry.structure[0]",
+          "location": "src/thinking.ts POOLS → geometry → structure",
+          "when": "题名不是具体算法时（如「模拟电梯」「排队打水」）使用的通用思维句",
+          "limit": 30,
+          "current": "先求凸包，再在凸包上双指针",
+          "issue": "通用句最容易空泛；需要扩到每类 6 句以减少重复。",
+          "hint": "知识点是 geometry，不要绑定具体题目；可写\"看数据范围就知道是 X\"这类判断。"
+        },
+        {
+          "key": "pools.geometry.structure[1]",
+          "location": "src/thinking.ts POOLS → geometry → structure",
+          "when": "题名不是具体算法时（如「模拟电梯」「排队打水」）使用的通用思维句",
+          "limit": 30,
+          "current": "用扫描线 + 平衡树维护当前的交点集合",
+          "issue": "通用句最容易空泛；需要扩到每类 6 句以减少重复。",
+          "hint": "知识点是 geometry，不要绑定具体题目；可写\"看数据范围就知道是 X\"这类判断。"
+        },
+        {
+          "key": "pools.geometry.structure[2]",
+          "location": "src/thinking.ts POOLS → geometry → structure",
+          "when": "题名不是具体算法时（如「模拟电梯」「排队打水」）使用的通用思维句",
+          "limit": 30,
+          "current": "三分找单峰函数的最值",
+          "issue": "通用句最容易空泛；需要扩到每类 6 句以减少重复。",
+          "hint": "知识点是 geometry，不要绑定具体题目；可写\"看数据范围就知道是 X\"这类判断。"
+        },
+        {
+          "key": "pools.geometry.optimize[0]",
+          "location": "src/thinking.ts POOLS → geometry → optimize",
+          "when": "题名不是具体算法时（如「模拟电梯」「排队打水」）使用的通用思维句",
+          "limit": 30,
+          "current": "旋转卡壳把 O(n²) 降到 O(n)",
+          "issue": "通用句最容易空泛；需要扩到每类 6 句以减少重复。",
+          "hint": "知识点是 geometry，不要绑定具体题目；可写\"看数据范围就知道是 X\"这类判断。"
+        },
+        {
+          "key": "pools.geometry.optimize[1]",
+          "location": "src/thinking.ts POOLS → geometry → optimize",
+          "when": "题名不是具体算法时（如「模拟电梯」「排队打水」）使用的通用思维句",
+          "limit": 30,
+          "current": "极角排序后双指针，总复杂度 O(n log n)",
+          "issue": "通用句最容易空泛；需要扩到每类 6 句以减少重复。",
+          "hint": "知识点是 geometry，不要绑定具体题目；可写\"看数据范围就知道是 X\"这类判断。"
+        },
+        {
+          "key": "pools.geometry.optimize[2]",
+          "location": "src/thinking.ts POOLS → geometry → optimize",
+          "when": "题名不是具体算法时（如「模拟电梯」「排队打水」）使用的通用思维句",
+          "limit": 30,
+          "current": "把浮点比较换成整数叉积，避免精度问题",
+          "issue": "通用句最容易空泛；需要扩到每类 6 句以减少重复。",
+          "hint": "知识点是 geometry，不要绑定具体题目；可写\"看数据范围就知道是 X\"这类判断。"
+        },
+        {
+          "key": "pools.geometry.corner[0]",
+          "location": "src/thinking.ts POOLS → geometry → corner",
+          "when": "题名不是具体算法时（如「模拟电梯」「排队打水」）使用的通用思维句",
+          "limit": 30,
+          "current": "共线点要不要保留，按题意决定",
+          "issue": "通用句最容易空泛；需要扩到每类 6 句以减少重复。",
+          "hint": "知识点是 geometry，不要绑定具体题目；可写\"看数据范围就知道是 X\"这类判断。"
+        },
+        {
+          "key": "pools.geometry.corner[1]",
+          "location": "src/thinking.ts POOLS → geometry → corner",
+          "when": "题名不是具体算法时（如「模拟电梯」「排队打水」）使用的通用思维句",
+          "limit": 30,
+          "current": "浮点误差：比较时用 eps，别直接用 ==",
+          "issue": "通用句最容易空泛；需要扩到每类 6 句以减少重复。",
+          "hint": "知识点是 geometry，不要绑定具体题目；可写\"看数据范围就知道是 X\"这类判断。"
+        },
+        {
+          "key": "pools.geometry.corner[2]",
+          "location": "src/thinking.ts POOLS → geometry → corner",
+          "when": "题名不是具体算法时（如「模拟电梯」「排队打水」）使用的通用思维句",
+          "limit": 30,
+          "current": "n < 3 时无法构成三角形，直接输出 0",
+          "issue": "通用句最容易空泛；需要扩到每类 6 句以减少重复。",
+          "hint": "知识点是 geometry，不要绑定具体题目；可写\"看数据范围就知道是 X\"这类判断。"
+        },
+        {
+          "key": "approaches.math[0].name",
+          "location": "src/chains.ts APPROACHES → math[0]",
+          "when": "赛后复盘时显示「这题的正解：X · 也可以 Y」",
+          "limit": 10,
+          "current": "推式子 + 线性筛",
+          "issue": "解法名要能区分复杂度/实现难度，现在偏笼统。",
+          "hint": "用 OI 圈常见叫法，如「线段树优化转移」「杜教筛 + 整除分块」。"
+        },
+        {
+          "key": "approaches.math[0].structure+optimize",
+          "location": "src/chains.ts APPROACHES → math[0]",
+          "when": "该解法对应的结构步与优化步（两条各 ≤25 字）",
+          "limit": 50,
+          "current": "把答案写成前缀和的差，贡献拆到每个质因子上，O(n log log n) 预处理、O(1) 询问｜直接在线性筛里记最小质因子，边筛边算前缀，省掉第二遍循环",
+          "issue": "两句常写成同一件事。",
+          "hint": "structure 说「用什么」，optimize 说「复杂度怎么降下来」；需要新增到每知识点 3 条。"
+        },
+        {
+          "key": "approaches.math[1].name",
+          "location": "src/chains.ts APPROACHES → math[1]",
+          "when": "赛后复盘时显示「这题的正解：X · 也可以 Y」",
+          "limit": 10,
+          "current": "杜教筛 / 整除分块",
+          "issue": "解法名要能区分复杂度/实现难度，现在偏笼统。",
+          "hint": "用 OI 圈常见叫法，如「线段树优化转移」「杜教筛 + 整除分块」。"
+        },
+        {
+          "key": "approaches.math[1].structure+optimize",
+          "location": "src/chains.ts APPROACHES → math[1]",
+          "when": "该解法对应的结构步与优化步（两条各 ≤25 字）",
+          "limit": 50,
+          "current": "对 n/(i) 只有 O(√n) 种取值，按块跳，块内整体乘系数｜把已经算过的前缀和丢进 map 记忆化，递归层数就压到 O(n^(2/3))",
+          "issue": "两句常写成同一件事。",
+          "hint": "structure 说「用什么」，optimize 说「复杂度怎么降下来」；需要新增到每知识点 3 条。"
+        },
+        {
+          "key": "approaches.dp[0].name",
+          "location": "src/chains.ts APPROACHES → dp[0]",
+          "when": "赛后复盘时显示「这题的正解：X · 也可以 Y」",
+          "limit": 10,
+          "current": "转移方程 + 前缀和优化",
+          "issue": "解法名要能区分复杂度/实现难度，现在偏笼统。",
+          "hint": "用 OI 圈常见叫法，如「线段树优化转移」「杜教筛 + 整除分块」。"
+        },
+        {
+          "key": "approaches.dp[0].structure+optimize",
+          "location": "src/chains.ts APPROACHES → dp[0]",
+          "when": "该解法对应的结构步与优化步（两条各 ≤25 字）",
+          "limit": 50,
+          "current": "把 f[i] = f[j] + w(j) 的枚举区间拆成前后缀，边转移边维护前缀和｜w(j) 只和 j 有关时，把前缀 min 提前维护好，每层就降到 O(1)",
+          "issue": "两句常写成同一件事。",
+          "hint": "structure 说「用什么」，optimize 说「复杂度怎么降下来」；需要新增到每知识点 3 条。"
+        },
+        {
+          "key": "approaches.dp[1].name",
+          "location": "src/chains.ts APPROACHES → dp[1]",
+          "when": "赛后复盘时显示「这题的正解：X · 也可以 Y」",
+          "limit": 10,
+          "current": "线段树优化转移",
+          "issue": "解法名要能区分复杂度/实现难度，现在偏笼统。",
+          "hint": "用 OI 圈常见叫法，如「线段树优化转移」「杜教筛 + 整除分块」。"
+        },
+        {
+          "key": "approaches.dp[1].structure+optimize",
+          "location": "src/chains.ts APPROACHES → dp[1]",
+          "when": "该解法对应的结构步与优化步（两条各 ≤25 字）",
+          "limit": 50,
+          "current": "转移区间不固定：把 f[j] 按 j 塞进线段树，询问是区间 max｜按右端点递增插入、查询 [l, r]，整体 O(n log n)，注意多测要清整棵树",
+          "issue": "两句常写成同一件事。",
+          "hint": "structure 说「用什么」，optimize 说「复杂度怎么降下来」；需要新增到每知识点 3 条。"
+        },
+        {
+          "key": "approaches.graph[0].name",
+          "location": "src/chains.ts APPROACHES → graph[0]",
+          "when": "赛后复盘时显示「这题的正解：X · 也可以 Y」",
+          "limit": 10,
+          "current": "堆优化 Dijkstra",
+          "issue": "解法名要能区分复杂度/实现难度，现在偏笼统。",
+          "hint": "用 OI 圈常见叫法，如「线段树优化转移」「杜教筛 + 整除分块」。"
+        },
+        {
+          "key": "approaches.graph[0].structure+optimize",
+          "location": "src/chains.ts APPROACHES → graph[0]",
+          "when": "该解法对应的结构步与优化步（两条各 ≤25 字）",
+          "limit": 50,
+          "current": "边权非负，用 priority_queue 每次取当前距离最小的点，懒删除过期项｜只把「松弛成功」的边 push 进堆，堆大小压到 O(m)，常数好很多",
+          "issue": "两句常写成同一件事。",
+          "hint": "structure 说「用什么」，optimize 说「复杂度怎么降下来」；需要新增到每知识点 3 条。"
+        },
+        {
+          "key": "approaches.graph[1].name",
+          "location": "src/chains.ts APPROACHES → graph[1]",
+          "when": "赛后复盘时显示「这题的正解：X · 也可以 Y」",
+          "limit": 10,
+          "current": "缩点 + 拓扑",
+          "issue": "解法名要能区分复杂度/实现难度，现在偏笼统。",
+          "hint": "用 OI 圈常见叫法，如「线段树优化转移」「杜教筛 + 整除分块」。"
+        },
+        {
+          "key": "approaches.graph[1].structure+optimize",
+          "location": "src/chains.ts APPROACHES → graph[1]",
+          "when": "该解法对应的结构步与优化步（两条各 ≤25 字）",
+          "limit": 50,
+          "current": "Tarjan 求强连通分量，缩成一个点后变成 DAG，按拓扑序递推｜在 Tarjan 里顺便做递推，省掉一遍建图和拓扑排序",
+          "issue": "两句常写成同一件事。",
+          "hint": "structure 说「用什么」，optimize 说「复杂度怎么降下来」；需要新增到每知识点 3 条。"
+        },
+        {
+          "key": "approaches.greedy[0].name",
+          "location": "src/chains.ts APPROACHES → greedy[0]",
+          "when": "赛后复盘时显示「这题的正解：X · 也可以 Y」",
+          "limit": 10,
+          "current": "排序 + 反悔贪心",
+          "issue": "解法名要能区分复杂度/实现难度，现在偏笼统。",
+          "hint": "用 OI 圈常见叫法，如「线段树优化转移」「杜教筛 + 整除分块」。"
+        },
+        {
+          "key": "approaches.greedy[0].structure+optimize",
+          "location": "src/chains.ts APPROACHES → greedy[0]",
+          "when": "该解法对应的结构步与优化步（两条各 ≤25 字）",
+          "limit": 50,
+          "current": "按右端点排序，能放就放；放不下时把代价最大的那个换掉｜用堆维护已选集合的最大值，每次 O(log n)，总复杂度 O(n log n)",
+          "issue": "两句常写成同一件事。",
+          "hint": "structure 说「用什么」，optimize 说「复杂度怎么降下来」；需要新增到每知识点 3 条。"
+        },
+        {
+          "key": "approaches.greedy[1].name",
+          "location": "src/chains.ts APPROACHES → greedy[1]",
+          "when": "赛后复盘时显示「这题的正解：X · 也可以 Y」",
+          "limit": 10,
+          "current": "二分答案 + 检查",
+          "issue": "解法名要能区分复杂度/实现难度，现在偏笼统。",
+          "hint": "用 OI 圈常见叫法，如「线段树优化转移」「杜教筛 + 整除分块」。"
+        },
+        {
+          "key": "approaches.greedy[1].structure+optimize",
+          "location": "src/chains.ts APPROACHES → greedy[1]",
+          "when": "该解法对应的结构步与优化步（两条各 ≤25 字）",
+          "limit": 50,
+          "current": "答案单调：二分最小可行值，check 里贪心地尽量少用资源｜check 里的枚举用双指针或前缀和压掉，整体 O(n log V)",
+          "issue": "两句常写成同一件事。",
+          "hint": "structure 说「用什么」，optimize 说「复杂度怎么降下来」；需要新增到每知识点 3 条。"
+        },
+        {
+          "key": "approaches.ds[0].name",
+          "location": "src/chains.ts APPROACHES → ds[0]",
+          "when": "赛后复盘时显示「这题的正解：X · 也可以 Y」",
+          "limit": 10,
+          "current": "树状数组 + 差分",
+          "issue": "解法名要能区分复杂度/实现难度，现在偏笼统。",
+          "hint": "用 OI 圈常见叫法，如「线段树优化转移」「杜教筛 + 整除分块」。"
+        },
+        {
+          "key": "approaches.ds[0].structure+optimize",
+          "location": "src/chains.ts APPROACHES → ds[0]",
+          "when": "该解法对应的结构步与优化步（两条各 ≤25 字）",
+          "limit": 50,
+          "current": "区间加、单点查用差分，单点加、区间求和用树状数组，lowbit 跳着走｜两种操作一起要就上树状数组维护两个前缀，常数比线段树小一半",
+          "issue": "两句常写成同一件事。",
+          "hint": "structure 说「用什么」，optimize 说「复杂度怎么降下来」；需要新增到每知识点 3 条。"
+        },
+        {
+          "key": "approaches.ds[1].name",
+          "location": "src/chains.ts APPROACHES → ds[1]",
+          "when": "赛后复盘时显示「这题的正解：X · 也可以 Y」",
+          "limit": 10,
+          "current": "线段树 + 懒标记",
+          "issue": "解法名要能区分复杂度/实现难度，现在偏笼统。",
+          "hint": "用 OI 圈常见叫法，如「线段树优化转移」「杜教筛 + 整除分块」。"
+        },
+        {
+          "key": "approaches.ds[1].structure+optimize",
+          "location": "src/chains.ts APPROACHES → ds[1]",
+          "when": "该解法对应的结构步与优化步（两条各 ≤25 字）",
+          "limit": 50,
+          "current": "区间操作需要合并答案，懒标记把「先记账、真的要用再下传」做掉｜pushdown 只在区间被完全覆盖时做，查询边界时别忘记先下传",
+          "issue": "两句常写成同一件事。",
+          "hint": "structure 说「用什么」，optimize 说「复杂度怎么降下来」；需要新增到每知识点 3 条。"
+        },
+        {
+          "key": "approaches.impl[0].name",
+          "location": "src/chains.ts APPROACHES → impl[0]",
+          "when": "赛后复盘时显示「这题的正解：X · 也可以 Y」",
+          "limit": 10,
+          "current": "分步模拟 + 状态压缩",
+          "issue": "解法名要能区分复杂度/实现难度，现在偏笼统。",
+          "hint": "用 OI 圈常见叫法，如「线段树优化转移」「杜教筛 + 整除分块」。"
+        },
+        {
+          "key": "approaches.impl[0].structure+optimize",
+          "location": "src/chains.ts APPROACHES → impl[0]",
+          "when": "该解法对应的结构步与优化步（两条各 ≤25 字）",
+          "limit": 50,
+          "current": "按时间线推进，把「当前状态」写成结构体整体迁移，每一步只动相关的几个字段｜把重复扫描换成桶/队列，同一层的事件一起处理，复杂度从 O(n²) 降到 O(n + 事件数)",
+          "issue": "两句常写成同一件事。",
+          "hint": "structure 说「用什么」，optimize 说「复杂度怎么降下来」；需要新增到每知识点 3 条。"
+        },
+        {
+          "key": "approaches.impl[1].name",
+          "location": "src/chains.ts APPROACHES → impl[1]",
+          "when": "赛后复盘时显示「这题的正解：X · 也可以 Y」",
+          "limit": 10,
+          "current": "预处理 + 查表",
+          "issue": "解法名要能区分复杂度/实现难度，现在偏笼统。",
+          "hint": "用 OI 圈常见叫法，如「线段树优化转移」「杜教筛 + 整除分块」。"
+        },
+        {
+          "key": "approaches.impl[1].structure+optimize",
+          "location": "src/chains.ts APPROACHES → impl[1]",
+          "when": "该解法对应的结构步与优化步（两条各 ≤25 字）",
+          "limit": 50,
+          "current": "先把所有可能出现的形贡献预处理出来，询问时直接查表｜表只开实际用得到的范围，多测共用一次预处理，别每组重做",
+          "issue": "两句常写成同一件事。",
+          "hint": "structure 说「用什么」，optimize 说「复杂度怎么降下来」；需要新增到每知识点 3 条。"
+        },
+        {
+          "key": "approaches.string[0].name",
+          "location": "src/chains.ts APPROACHES → string[0]",
+          "when": "赛后复盘时显示「这题的正解：X · 也可以 Y」",
+          "limit": 10,
+          "current": "哈希 + 二分",
+          "issue": "解法名要能区分复杂度/实现难度，现在偏笼统。",
+          "hint": "用 OI 圈常见叫法，如「线段树优化转移」「杜教筛 + 整除分块」。"
+        },
+        {
+          "key": "approaches.string[0].structure+optimize",
+          "location": "src/chains.ts APPROACHES → string[0]",
+          "when": "该解法对应的结构步与优化步（两条各 ≤25 字）",
+          "limit": 50,
+          "current": "二分最长长度，前后缀哈希 O(1) 比较，答案单调可二分｜双模数防卡、基随机；比较时先比长度再比哈希，能省掉大半比较",
+          "issue": "两句常写成同一件事。",
+          "hint": "structure 说「用什么」，optimize 说「复杂度怎么降下来」；需要新增到每知识点 3 条。"
+        },
+        {
+          "key": "approaches.string[1].name",
+          "location": "src/chains.ts APPROACHES → string[1]",
+          "when": "赛后复盘时显示「这题的正解：X · 也可以 Y」",
+          "limit": 10,
+          "current": "KMP / Z 函数",
+          "issue": "解法名要能区分复杂度/实现难度，现在偏笼统。",
+          "hint": "用 OI 圈常见叫法，如「线段树优化转移」「杜教筛 + 整除分块」。"
+        },
+        {
+          "key": "approaches.string[1].structure+optimize",
+          "location": "src/chains.ts APPROACHES → string[1]",
+          "when": "该解法对应的结构步与优化步（两条各 ≤25 字）",
+          "limit": 50,
+          "current": "求出每个前缀的最长 border，失配时沿 border 跳，总复杂度 O(n + m)｜next 数组只算一遍，多串匹配时把它当自动机用，主串指针不回退",
+          "issue": "两句常写成同一件事。",
+          "hint": "structure 说「用什么」，optimize 说「复杂度怎么降下来」；需要新增到每知识点 3 条。"
+        },
+        {
+          "key": "approaches.geometry[0].name",
+          "location": "src/chains.ts APPROACHES → geometry[0]",
+          "when": "赛后复盘时显示「这题的正解：X · 也可以 Y」",
+          "limit": 10,
+          "current": "极角排序 + 扫描",
+          "issue": "解法名要能区分复杂度/实现难度，现在偏笼统。",
+          "hint": "用 OI 圈常见叫法，如「线段树优化转移」「杜教筛 + 整除分块」。"
+        },
+        {
+          "key": "approaches.geometry[0].structure+optimize",
+          "location": "src/chains.ts APPROACHES → geometry[0]",
+          "when": "该解法对应的结构步与优化步（两条各 ≤25 字）",
+          "limit": 50,
+          "current": "按极角排序后单调栈维护凸壳，新点让栈顶变凹就弹掉｜排序是瓶颈，点已经有序时直接 O(n)；注意共线点要不要保留",
+          "issue": "两句常写成同一件事。",
+          "hint": "structure 说「用什么」，optimize 说「复杂度怎么降下来」；需要新增到每知识点 3 条。"
+        },
+        {
+          "key": "approaches.geometry[1].name",
+          "location": "src/chains.ts APPROACHES → geometry[1]",
+          "when": "赛后复盘时显示「这题的正解：X · 也可以 Y」",
+          "limit": 10,
+          "current": "叉积判向 + 二分",
+          "issue": "解法名要能区分复杂度/实现难度，现在偏笼统。",
+          "hint": "用 OI 圈常见叫法，如「线段树优化转移」「杜教筛 + 整除分块」。"
+        },
+        {
+          "key": "approaches.geometry[1].structure+optimize",
+          "location": "src/chains.ts APPROACHES → geometry[1]",
+          "when": "该解法对应的结构步与优化步（两条各 ≤25 字）",
+          "limit": 50,
+          "current": "凸包上找切线可以二分：用叉积符号判断在哪个单调段上｜预处理一下上下凸壳的分界点，把 O(log n) 的常数压下来",
+          "issue": "两句常写成同一件事。",
+          "hint": "structure 说「用什么」，optimize 说「复杂度怎么降下来」；需要新增到每知识点 3 条。"
+        }
+      ]
+    }
+  ]
+}

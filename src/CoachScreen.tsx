@@ -10,6 +10,7 @@ import {
   advanceWeek, chooseEventOption, continueCareer, createSeason, nextStage, planWeek, qualifiedFor, retireCareer,
   reserveStudents, rosterSorted, runWeeklyContest, seasonReport, setSquad, setTeam, stageOfWeek, overallScoreOf, teamStudents,
 } from './season.ts';
+import type { WeekPlan } from './season.ts';
 import type {
   AwardRow, CareerReport, ContestRecap, ContestRound, MockConfig, MockPreset, SeasonState, SeasonStudent, SquadFocus, StageDef,
   TrainingLine, TrainingReport, WeekIntensity,
@@ -19,6 +20,8 @@ import { clearCoachSeason, coachStorageAvailable, hasCoachSave, loadCoachSeason,
 import { IS_OPV, loadOpvConfig } from './opv.ts';
 import { quoteFor } from './easter.ts';
 import type { Topic } from './types.ts';
+import type { Contest } from './types.ts';
+import { ReviewOverlay } from './ReviewOverlay.tsx';
 import { Ic, plainText } from './ui.tsx';
 import type { IconName } from './ui.tsx';
 
@@ -118,6 +121,7 @@ export default function CoachScreen({ onOpvSetup }: { onOpvSetup?: () => void })
     next: SeasonState;
     index: number;
     est: Record<string, number>;
+    review?: Contest;
   } | null>(null);
 
   const startContest = () => {
@@ -145,7 +149,7 @@ export default function CoachScreen({ onOpvSetup }: { onOpvSetup?: () => void })
           <CoachPlay
             key={watch.index}
             round={watch.rounds[watch.index]}
-            onDone={(est) => setWatch((w) => (w ? { ...w, est: { ...w.est, ...est }, index: w.index + 1 } : w))}
+            onDone={(est, contest) => setWatch((w) => (w ? { ...w, est: { ...w.est, ...est }, index: w.index + 1, review: contest } : w))}
             onSkip={revealResult}
           />
         )}
@@ -154,6 +158,7 @@ export default function CoachScreen({ onOpvSetup }: { onOpvSetup?: () => void })
             est={watch.next.lastContest
               ? Object.fromEntries(watch.next.lastContest.rows.map((r) => [r.name, r.est]))
               : watch.est}
+            round={watch.review}
             onReveal={revealResult}
             onSkip={revealResult}
           />
@@ -570,13 +575,14 @@ function PlanWeek({
   season, onPlan, onEvent,
 }: {
   season: SeasonState;
-  onPlan: (p: { topic: Topic | null; intensity: WeekIntensity; focus: SquadFocus; mock: MockConfig }) => void;
+  onPlan: (p: WeekPlan) => void;
   onEvent: (optionId: string) => void;
 }) {
-  const [topic, setTopic] = useState<Topic | null>(null);
-  const [intensity, setIntensity] = useState<WeekIntensity>('normal');
-  const [focus, setFocus] = useState<SquadFocus>('balanced');
-  const [mock, setMock] = useState<MockConfig>({ preset: 'normal', problemCount: 3, minutes: 180 });
+  const lastPlan = season.lastPlan ?? null;
+  const [topic, setTopic] = useState<Topic | null>(lastPlan?.topic ?? null);
+  const [intensity, setIntensity] = useState<WeekIntensity>(lastPlan?.intensity ?? 'normal');
+  const [focus, setFocus] = useState<SquadFocus>(lastPlan?.focus ?? 'balanced');
+  const [mock, setMock] = useState<MockConfig>(lastPlan?.mock ?? { preset: 'normal', problemCount: 3, minutes: 180 });
   const team = teamStudents(season);
   const teamAvg = (t: Topic) => team.reduce((a, s) => a + s.skills.topics[t], 0) / Math.max(1, team.length);
   const avgFatigue = team.reduce((a, s) => a + s.fatigue, 0) / Math.max(1, team.length);
@@ -618,6 +624,38 @@ function PlanWeek({
           </div>
         </div>
       )}
+
+      {lastPlan && !event && (() => {
+        const t = lastPlan.topic;
+        const changed = t !== topic || lastPlan.intensity !== intensity || lastPlan.focus !== focus;
+        return (
+          <div className="mb-3 flex flex-wrap items-center gap-2 rounded-xl border border-slate-700/60 bg-slate-800/40 px-3 py-2" data-testid="last-plan">
+            <span className="text-[11px] text-slate-300">
+              <Ic n="pin" /> 上周：{t ? TOPIC_NAMES[t] : '休息'} · {INTENSITY_INFO[lastPlan.intensity].name}
+              {!stage && lastPlan.mock ? ` · 模拟赛 ${MOCK_PRESETS[lastPlan.mock.preset].name} ${lastPlan.mock.problemCount} 题 ${lastPlan.mock.minutes} 分` : ''}
+            </span>
+            <div className="flex-1" />
+            <button
+              onClick={() => {
+                setTopic(lastPlan.topic);
+                setIntensity(lastPlan.intensity);
+                if (lastPlan.focus) setFocus(lastPlan.focus);
+                if (lastPlan.mock) setMock(lastPlan.mock);
+              }}
+              className="rounded-md border border-slate-600 px-2 py-1 text-[11px] text-slate-300 hover:bg-slate-700/50"
+            >
+              {changed ? '恢复成上周' : '已沿用'}
+            </button>
+            <button
+              onClick={() => onPlan(lastPlan)}
+              data-testid="plan-same-as-last"
+              className="rounded-md bg-slate-700 px-2.5 py-1 text-[11px] font-bold text-white hover:bg-slate-600"
+            >
+              一字不改，直接排
+            </button>
+          </div>
+        );
+      })()}
 
       {event && <EventCard ev={event} season={season} onPick={onEvent} />}
 
@@ -1418,13 +1456,13 @@ function TeamPanel({ season }: { season: SeasonState }) {
 function CoachPlay({
   round, onDone, onSkip,
 }: {
-  round: ContestRound; onDone: (est: Record<string, number>) => void; onSkip: () => void;
+  round: ContestRound; onDone: (est: Record<string, number>, contest: Contest) => void; onSkip: () => void;
 }) {
   const [contest] = useState(() => createContest(round.cfg));
   const finish = () => {
     const est: Record<string, number> = {};
     for (const st of contest.students) est[st.name] = totalEstimate(st);
-    onDone(est);
+    onDone(est, contest);
   };
   return (
     <div className="pt-4">
@@ -1448,10 +1486,14 @@ function CoachPlay({
 
 // ===== 收卷后的估分榜（还没公布真实成绩） =====
 function EstimateBoard({
-  est, onReveal, onSkip,
+  est, round, onReveal, onSkip,
 }: {
-  est: Record<string, number>; onReveal: () => void; onSkip: () => void;
+  est: Record<string, number>;
+  round?: Contest;
+  onReveal: () => void;
+  onSkip: () => void;
 }) {
+  const [review, setReview] = useState(false);
   const list = Object.entries(est).sort((a, b) => b[1] - a[1]);
   return (
     <div className="pt-5">
@@ -1484,8 +1526,18 @@ function EstimateBoard({
           >
             直接看结果
           </button>
+          {round && (
+            <button
+              onClick={() => setReview(true)}
+              data-testid="coach-review"
+              className="px-4 py-2 rounded-xl border border-emerald-500/40 text-emerald-300 text-sm hover:bg-emerald-500/10"
+            >
+              <Ic n="brain" /> 看思维链
+            </button>
+          )}
         </div>
       </div>
+      {review && round && <ReviewOverlay round={round} onClose={() => setReview(false)} />}
     </div>
   );
 }

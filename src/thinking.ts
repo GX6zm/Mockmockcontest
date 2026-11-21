@@ -10,6 +10,8 @@
 // UI 在 FocusPanel.tsx 里。
 
 import type { Problem, ProblemState, Skills, Student, Subtask, Topic } from './types.ts';
+import { APPROACHES, TITLE_CHAINS } from './chains.ts';
+import type { Approach } from './chains.ts';
 import { TOPIC_NAMES } from './game.ts';
 
 export type IdeaKind = 'observe' | 'transform' | 'structure' | 'optimize' | 'corner';
@@ -22,6 +24,8 @@ export interface IdeaStep {
   complexity?: string;
   /** 对得分的贡献权重 0–1，用来把链和分数对齐 */
   weight: number;
+  /** 前期（读懂/建模）还是后期（落地/调参）：难题两段的思考方式不一样 */
+  phase?: 'early' | 'late';
 }
 
 export interface Trap {
@@ -38,6 +42,10 @@ export interface SolveChain {
   alternatives: IdeaStep[][];
   /** 常见误区，按难度挑 1–2 条 */
   traps: Trap[];
+  /** 这一卷「标准正解」的名字，如「Kruskal + 并查集」 */
+  branchName?: string;
+  /** 其它同样能过的正解名字 */
+  altNames?: string[];
 }
 
 export type StepStatus = 'got' | 'missed' | 'misled' | 'pending';
@@ -55,6 +63,9 @@ export interface StudentTrace {
   breakAt: number;
   /** 触发过的误区 */
   trapHit: Trap | null;
+  /** 这道题的标准正解叫什么 / 另外几种正解 */
+  branchName?: string;
+  altNames?: string[];
   /** 这条链对应的最终得分（0–100，和真实得分同口径） */
   score: number;
   /** 一句话总结 */
@@ -114,7 +125,7 @@ interface StepPool {
   corner: string[];
 }
 
-const POOLS: Record<Topic, StepPool> = {
+export const POOLS: Record<Topic, StepPool> = {
   dp: {
     observe: [
       '先看数据范围：n ≤ 2000，O(n²) 的状态是装得下的',
@@ -341,96 +352,7 @@ const STEP_PLAN: Record<'low' | 'mid' | 'high', IdeaKind[]> = {
 };
 
 // ---------- 题目级覆盖 ----------
-// 题库里的高难题干脆直接以算法命名（快速幂、生成函数、LCT 维护……），
-// 这时按知识点随机抽句子会露馅：这道题就叫「快速幂」，不能说他去写了莫比乌斯反演。
-// 所以对这些题给一份「题目专属」的链，其它题继续用知识点词库。
-
-const TITLE_CHAINS: Record<string, Partial<Record<IdeaKind, string[]>>> = {
-  快速幂: {
-    observe: ['指数最大到 1e18，逐个乘肯定不行，只能把它拆成二进制'],
-    transform: ['a^b = a^(b&1) × (a²)^(b>>1)，每轮只处理最低位'],
-    structure: ['while (b) { if (b & 1) ans = ans * a % p; a = a * a % p; b >>= 1; }'],
-    optimize: ['每轮只做一次乘法和一次平方，总共 log b 轮，顺手把 log 挂到指数上'],
-    corner: ['模数可能是 1，ans 初值要设 1 不是 0；b = 0 时要直接返回 1'],
-  },
-  生成函数: {
-    observe: ['答案是一个卷积的形式：枚举分拆后两边乘起来'],
-    transform: ['把「组合方案数」写成 ∑ a_i b_{n−i}，直接就是多项式乘法的系数'],
-    structure: ['把两段方案分别写成多项式 A(x)、B(x)，求它们的卷积'],
-    optimize: ['暴力卷积是 O(n²)，上 NTT 把复杂度压到 O(n log n)'],
-    corner: ['卷积长度要开到 2n，不然下标越界；模数要选一个能 NTT 的'],
-  },
-  '多项式 exp': {
-    observe: ['n ≤ 1e5，要求的是 exp(F(x))，直接按定义算是 O(n²)'],
-    transform: ['把 exp 的式子取 ln：ln G = F，转化成求逆 + 求导 + 积分'],
-    structure: ['牛顿迭代：G ← G × (1 − ln G + F) mod x^k，每次规模翻倍'],
-    optimize: ['每轮做常数次 NTT，总复杂度 O(n log n)，前提是把求逆也写成迭代'],
-    corner: ['常数项必须是 0，否则 exp 无意义；每轮要截断到 x^k'],
-  },
-  莫比乌斯反演: {
-    observe: ['式子里有 ∑_{d|n} μ(d) 的结构，先把 gcd 提出来'],
-    transform: ['把「gcd = k」转成「gcd 是 k 的倍数」再反演，答案 = ∑ μ(d) × f(d)'],
-    structure: ['线性筛预处理 μ 和前缀和，外层对 d 整除分块'],
-    optimize: ['整除分块后每个块内 f 的贡献相同，总复杂度 O(√n) 每组询问'],
-    corner: ['μ(1) = 1，别漏；多测要预处理到最大值'],
-  },
-  数论分块: {
-    observe: ['∑ ⌊n/i⌋ 不能逐项算，但 ⌊n/i⌋ 的取值只有 O(√n) 种'],
-    transform: ['把相同的 ⌊n/i⌋ 归成一段：i ∈ [l, ⌊n/⌊n/l⌋⌋] 内值不变'],
-    structure: ['枚举 l，每次跳到 r + 1，段内直接乘起来'],
-    optimize: ['每块 O(1)，总块数 O(√n)，复杂度从 O(n) 降到 O(√n)'],
-    corner: ['r 可能超过 n，要取 min；n = 0 时直接返回'],
-  },
-  组合数取模: {
-    observe: ['n、m 最多到 1e6，预处理阶乘和逆元就能 O(1) 查询'],
-    transform: ['C(n, m) = n! / (m! (n−m)!)，把除法换成乘逆元'],
-    structure: ['线性递推阶乘，再用费马小定理求一次逆元，之后递推逆元'],
-    optimize: ['所有查询共用预处理，O(n + q)'],
-    corner: ['模数必须大于 n 才能直接用逆元；n < m 要返回 0'],
-  },
-  后缀数组: {
-    observe: ['要求所有后缀的排名，直接比较是 O(n² log n)'],
-    transform: ['用倍增：先按长度 1 排，再按长度 2、4、8 排，用 (rk[i], rk[i+k]) 排序'],
-    structure: ['基数排序替代快排，每轮 O(n)，共 log n 轮'],
-    optimize: ['总复杂度 O(n log n)，常数主要在两轮计数排序'],
-    corner: ['排名从 1 开始，越界的那一半要补 0；height 数组长度是 n'],
-  },
-  网络流建模: {
-    observe: ['题面是「每个点最多用一次 + 每个点有收益」，像流量分配'],
-    transform: ['把「点只能用一次」拆成入点/出点，中间连容量 1 的边'],
-    structure: ['源点连入点、出点连汇点，跑最大流/最小割'],
-    optimize: ['Dinic 分层图 + 当前弧优化，复杂度 O(n²m) 实际很快'],
-    corner: ['容量要开够，边数开两倍；源汇要单独编号'],
-  },
-  费用流: {
-    observe: ['「最大收益」+「每个点只能用一次」= 最小费用最大流'],
-    transform: ['把收益取反当费用，跑最小费用流，答案再取反'],
-    structure: ['SPFA/ZKW 求增广路，每次沿最短路推流'],
-    optimize: ['把 SPFA 换成势能 Dijkstra，去掉最坏情况的 O(VE)'],
-    corner: ['负权边要处理；流量为 0 时答案也可能是 0 而不是 -inf'],
-  },
-  平衡树: {
-    observe: ['要支持插入、删除、查第 k 小，n、q ≤ 1e5'],
-    transform: ['把询问离线，换成「区间 + 权值」两个维度'],
-    structure: ['FHQ Treap 按权值分裂合并，每个节点维护子树大小'],
-    optimize: ['随机优先级让树高期望 log n，单次操作 O(log n)'],
-    corner: ['重复元素要单独计数；split 的边界要判空'],
-  },
-  'LCT 维护': {
-    observe: ['要维护动态树的路径信息，树的结构一直在变'],
-    transform: ['把树拆成若干条 preferred path，每条用 splay 维护'],
-    structure: ['access(x) 把 x 到根的路径变成一条重链，makeroot 换根'],
-    optimize: ['均摊 O(log n)，总复杂度 O((n+q) log n)'],
-    corner: ['link/cut 前先判连通性；pushdown 不能漏'],
-  },
-  '动态 DP': {
-    observe: ['树上带修改的 DP，每次改一个点不能重跑整棵树'],
-    transform: ['把 DP 转移写成矩阵，树上的转移就是矩阵连乘'],
-    structure: ['树链剖分把路径拆成重链，用线段树维护区间矩阵积'],
-    optimize: ['单次修改 O(log² n)，查询 O(log n)'],
-    corner: ['矩阵乘法没有交换律，方向别写反；叶子节点的转移矩阵要单独设'],
-  },
-};
+// 题目专属链统一放在 chains.ts，这里只负责取用。
 
 /** 题目没被单独覆盖时，用带题名的泛化句子，避免「题叫快速幂、他说莫比乌斯反演」 */
 function genericStep(p: Problem, kind: IdeaKind): string[] {
@@ -508,13 +430,16 @@ function textsFor(p: Problem, kind: IdeaKind): string[] {
   return POOLS[p.topic][kind];
 }
 
-function buildSteps(p: Problem, rng: () => number): IdeaStep[] {
+function buildSteps(p: Problem, rng: () => number, branch?: Approach): IdeaStep[] {
   const tier = tierOf(p.level);
   const plan = [...STEP_PLAN[tier]];
   // 高档题有概率多一步「观察」：真实难题常常要先发现一个不显眼的性质
   // 但题目专属链的观察步往往只有一句，多插一步就会重复，这时不插
   if (tier === 'high' && rng() < 0.6 && textsFor(p, 'observe').length > 1) plan.splice(1, 0, 'observe');
-  const complexity = complexityFloor(p.level);
+  // 难题还常常要「先想一个结构，发现不够，再换一个」：多插一步结构
+  // 难题还常常要「先想一个结构，发现不够，再换一个」：多插一步结构
+  // 换正解分支时结构句已经被换成了分支的写法，再插就会两句一模一样
+  if (tier === 'high' && !branch && rng() < 0.35 && textsFor(p, 'structure').length > 1) plan.splice(plan.lastIndexOf('structure'), 0, 'structure');
   const fresh = new Set<string>();
   return plan.map((kind, i) => {
     const options = textsFor(p, kind);
@@ -523,6 +448,9 @@ function buildSteps(p: Problem, rng: () => number): IdeaStep[] {
     let guard = 0;
     while (fresh.has(text) && guard++ < 6) text = pick(rng, options);
     fresh.add(text);
+    // 换一种正解：只换「结构/优化」两步，观察和转化是共同的入口
+    if (branch && kind === 'structure') text = branch.structure;
+    if (branch && kind === 'optimize') text = branch.optimize;
     // 句子自己写了复杂度（如 O(n log n)）就以它为准，别硬套难度档的默认值
     // 「先 O(n²) 再上 NTT」这种句子取最后一个才算最终复杂度
     const inline = [...text.matchAll(/O\([^)]{1,24}\)/g)];
@@ -532,11 +460,11 @@ function buildSteps(p: Problem, rng: () => number): IdeaStep[] {
     return {
       kind,
       text,
-      complexity:
-        kind === 'structure' || kind === 'optimize'
-          ? (inlineBest ?? complexity)
-          : undefined,
+      // 只在句子自己写了复杂度时才显示：硬套难度档的默认值会给出
+      // 「KMP 的优化是 O(n√n)」这种明显不对的标注
+      complexity: kind === 'structure' || kind === 'optimize' ? inlineBest : undefined,
       weight,
+      phase: kind === 'observe' || kind === 'transform' ? 'early' : 'late',
     };
   });
 }
@@ -544,36 +472,46 @@ function buildSteps(p: Problem, rng: () => number): IdeaStep[] {
 /** 给一道题生成它的参考解链（同一道题永远同一条链） */
 export function chainFor(p: Problem): SolveChain {
   const rng = mulberry(hash(`${p.title}#${p.topic}#${p.level}#${p.id}`));
-  const canonical = buildSteps(p, rng);
   const pool = POOLS[p.topic];
-  // 另一条走法：把「结构」和「优化」换掉，保留观察/转化
+  // 按知识点生成的题（不是题目专属链）在 4 档以上会有多种正解；
+  // 挑哪一条随题目定死，保证同一场比赛重放时每个人的选择一致
+  const canBranch = p.level >= 4 && !TITLE_CHAINS[p.title];
+  const branches = canBranch ? APPROACHES[p.topic] : [];
+  const pickIdx = branches.length ? Math.floor(rng() * branches.length) : -1;
+  const branch = pickIdx >= 0 ? branches[pickIdx] : undefined;
+  const canonical = buildSteps(p, rng, branch);
+  // 另一条走法：同一套观察/转化，换成另一种结构 + 优化
   const alternatives: IdeaStep[][] = [];
-  // 题目自带专属链时不再编「另一条走法」，否则会冒出与题意无关的技术
-  if (p.level >= 4 && !TITLE_CHAINS[p.title]) {
-    const alt = canonical.map((s) =>
-      s.kind === 'structure'
-        ? { ...s, text: pick(rng, pool.structure.filter((t) => t !== s.text)), weight: s.weight }
-        : s.kind === 'optimize'
-          ? { ...s, text: pick(rng, pool.optimize.filter((t) => t !== s.text)), weight: s.weight }
-          : s,
-    );
-    // 交换论证：只有前面几步的前提下，另一条走法也成立
-    if (alt.some((a, i) => a.text !== canonical[i].text)) alternatives.push(alt);
+  const altNames: string[] = [];
+  if (branches.length > 1) {
+    branches.forEach((b, i) => {
+      if (i === pickIdx) return;
+      altNames.push(b.name);
+      alternatives.push(
+        canonical.map((s) =>
+          s.kind === 'structure'
+            ? { ...s, text: b.structure }
+            : s.kind === 'optimize'
+              ? { ...s, text: b.optimize }
+              : s,
+        ),
+      );
+    });
   }
   const traps: Trap[] = [];
   const trapCount = p.level >= 6 ? 2 : 1;
-  const shuffled = [...pool.corner].sort(() => rng() - 0.5);
+  // 题目专属链的「坑」是这道题真实会踩的坑，优先用它；没有才退回知识点词库
+  const ownCorner = TITLE_CHAINS[p.title]?.corner ?? [];
+  const cornerPool = ownCorner.length ? ownCorner : pool.corner;
+  const picked = [...cornerPool].sort(() => rng() - 0.5);
   for (let i = 0; i < trapCount; i++) {
-    traps.push({
-      text: pick(rng, [
-        `以为这题是 ${pick(rng, ['DP', '贪心', '最短路', '二分'])}，写了一半才发现不是`,
-        '复杂度算错了，以为 O(n²) 能过',
-        shuffled[i] ?? '边界没判，小样例全过但大样例挂',
-      ]),
-      loss: Math.round(15 + rng() * 25),
-    });
+    // 第一种坑用这道题自己的边界，后面的才用通用失误
+    const options = ownCorner.length
+      ? [picked[i] ?? picked[0], '复杂度算错了，以为 O(n²) 能过', '数组开小了，最后一个点直接 RE']
+      : [picked[i] ?? '边界没判，小样例全过但大样例挂', '以为这题是 DP，写了一半才发现不是', '复杂度算错了，以为 O(n²) 能过'];
+    traps.push({ text: pick(rng, options), loss: Math.round(15 + rng() * 25) });
   }
-  return { canonical, alternatives, traps };
+  return { canonical, alternatives, traps, branchName: branch?.name, altNames };
 }
 
 // ---------- 得分 → 断点 ----------
@@ -672,7 +610,7 @@ export function traceFor(
   else if (score > 0) summary = '只摸到题面，没有形成可写的思路。';
   else summary = misled ? '一开始就想歪了。' : '这题没动。';
 
-  return { steps, breakAt, trapHit, score, summary };
+  return { steps, breakAt, trapHit, score, summary, branchName: chain.branchName, altNames: chain.altNames };
 }
 
 /** 一场比赛、一位选手、每道题的链。给聚焦面板用 */

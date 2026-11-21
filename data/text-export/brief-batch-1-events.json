@@ -1,0 +1,1124 @@
+{
+  "meta": {
+    "project": "OI 模拟赛 · 校赛版（教练模式网页游戏）",
+    "language": "zh-CN",
+    "version": "2026-11",
+    "audience": "中文写手（熟悉 OI 竞赛语境）",
+    "howToUse": [
+      "这是一份「文字素材 + 上下文 + 约束」清单。你只需要改写 current 字段里的中文，不要改 key、不要改结构、不要翻译。",
+      "每个 item 都标注了它出现在界面的什么位置（when）、字数上限（limit）、当前问题（issue）、改写方向（hint）。",
+      "改写后按同一 JSON 结构返回；新增条目（事件卡、多解法）照现有字段补全。",
+      "数值、机制、真实成绩都不要写；若需要表达效果，写进 effectHint（自然语言），由开发补数值。"
+    ],
+    "style": {
+      "voice": "选手心里的第一人称短句 / 教练视角的第三人称叙述",
+      "tone": "克制、具体、允许自嘲，不煽情、不用感叹号堆情绪",
+      "rules": [
+        "每句必须有具体信息（数字、复杂度、动作、场景），不要空泛建议",
+        "不出现「你」「玩家」「让我们一起」「在这个旅程中」",
+        "不用 emoji；不用英文整句（专业缩写除外：CSP-S / NOIP / APIO / NOI / LCT / NTT）",
+        "术语必须准确：挂分、卡常、对拍、打表、省一、国集、D 类、freopen、时空限制"
+      ],
+      "examples": {
+        "good": [
+          "先把暴力写出来垫着，过了大样例再想怎么砍一维",
+          "空闲时不要乱动，否则会多算一次移动",
+          "最后 15 分钟回去抢救一版，别慌到忘写 freopen"
+        ],
+        "bad": [
+          "这题需要我们认真思考，找到最优的解决方案。",
+          "让我们一起努力，攻克这道难题吧！",
+          "通过分析题目，我们可以发现……"
+        ]
+      }
+    },
+    "redLines": [
+      "不许编造真实选手的成绩或获奖（人名、学校、分数都是真事，可调侃不可杜撰）",
+      "不许改机制与数值，只写字符串",
+      "不许改 key、字段名、JSON 结构",
+      "语录（quotes.json）是选手本人的博客原话，禁止改写"
+    ],
+    "limits": "超字数会被截断或撑破布局：思维链 ≤40 字、事件正文 ≤80 字、选项 ≤16 字、播报 ≤30 字、解法名 ≤10 字。"
+  },
+  "batches": [
+    {
+      "id": "batch-1-events",
+      "title": "每周事件卡（17 张 → 40 张）",
+      "why": "教练模式的叙事主体。玩家一季 40 周就会把 17 张全见完，之后每周都是重复。这是玩家感知最强的文字。",
+      "deliver": "返回同结构的 JSON：现有 17 张只改文字；新增 23 张照字段补全（id 用英文小写下划线）。效果数值不要填，用 effectHint 写一句自然语言，我来配。",
+      "items": [
+        {
+          "key": "event.romance.title",
+          "location": "src/events.ts EVENT_DEFS → romance",
+          "when": "每周排训练前弹出的事件卡标题（一行，加粗显示）",
+          "limit": 16,
+          "current": "早恋风波",
+          "issue": "标题需要一眼看出冲突，现在偏「说明文」。",
+          "hint": "写成一句冲突/场景名，例如「机房停电那晚」而不是「机房供电问题」。"
+        },
+        {
+          "key": "event.romance.text",
+          "location": "src/events.ts EVENT_DEFS → romance",
+          "when": "事件卡正文，选手/教练视角的处境描述",
+          "limit": 80,
+          "current": "{name} 最近和隔壁班一个同学走得很近，晚自习明显心不在焉，训练日志上开始出现\"发呆\"。",
+          "issue": "常见「交代背景 → 给出选择」的平铺，缺画面和对话。",
+          "hint": "至少一个具体细节（时间、地点、动作、一句原话），不要总结。"
+        },
+        {
+          "key": "event.romance.quote",
+          "location": "src/events.ts EVENT_DEFS → romance",
+          "when": "正文下方的一句话台词，带引号显示",
+          "limit": 40,
+          "current": "",
+          "issue": "部分台词太像旁白，不像人说出来的。",
+          "hint": "像学生在微信/机房里真会说的一句，允许不完整、带口头语。"
+        },
+        {
+          "key": "event.romance.options[0]",
+          "location": "src/events.ts EVENT_DEFS → romance.options[0]",
+          "when": "三个并列选项卡片：label 是按钮主文，note 是小字代价说明",
+          "limit": 16,
+          "current": "约谈一次，定个边界｜疲劳 +4 · 顺手补最弱专题 +1%",
+          "issue": "选项要一眼看出代价差异，label 现在偶有两条太像。",
+          "hint": "label ≤10 字，note ≤16 字；三条选项的代价方向必须不同（体力 / 关系 / 成绩 / 声望）。"
+        },
+        {
+          "key": "event.romance.options[1]",
+          "location": "src/events.ts EVENT_DEFS → romance.options[1]",
+          "when": "三个并列选项卡片：label 是按钮主文，note 是小字代价说明",
+          "limit": 16,
+          "current": "睁一只眼闭一只眼｜疲劳 +2 · 本周训练 ×0.9",
+          "issue": "选项要一眼看出代价差异，label 现在偶有两条太像。",
+          "hint": "label ≤10 字，note ≤16 字；三条选项的代价方向必须不同（体力 / 关系 / 成绩 / 声望）。"
+        },
+        {
+          "key": "event.romance.options[2]",
+          "location": "src/events.ts EVENT_DEFS → romance.options[2]",
+          "when": "三个并列选项卡片：label 是按钮主文，note 是小字代价说明",
+          "limit": 16,
+          "current": "约法三章，一起排时间表｜疲劳 +3 · 最弱专题 +2%",
+          "issue": "选项要一眼看出代价差异，label 现在偶有两条太像。",
+          "hint": "label ≤10 字，note ≤16 字；三条选项的代价方向必须不同（体力 / 关系 / 成绩 / 声望）。"
+        },
+        {
+          "key": "event.romance.log",
+          "location": "src/events.ts EVENT_DEFS → romance",
+          "when": "选择后写进「本周插曲」日志的一句话，前面会自动带学生名字",
+          "limit": 30,
+          "current": "",
+          "issue": "日志句容易和正文重复。",
+          "hint": "写成结果，不写过程；不要以「他」开头（前面已经有名字）。"
+        },
+        {
+          "key": "event.teacher.title",
+          "location": "src/events.ts EVENT_DEFS → teacher",
+          "when": "每周排训练前弹出的事件卡标题（一行，加粗显示）",
+          "limit": 16,
+          "current": "班主任找上门",
+          "issue": "标题需要一眼看出冲突，现在偏「说明文」。",
+          "hint": "写成一句冲突/场景名，例如「机房停电那晚」而不是「机房供电问题」。"
+        },
+        {
+          "key": "event.teacher.text",
+          "location": "src/events.ts EVENT_DEFS → teacher",
+          "when": "事件卡正文，选手/教练视角的处境描述",
+          "limit": 80,
+          "current": "文化课班主任在走廊拦住你：最近作业交得越来越晚，\"你这个训练，是不是占得太多了？\"",
+          "issue": "常见「交代背景 → 给出选择」的平铺，缺画面和对话。",
+          "hint": "至少一个具体细节（时间、地点、动作、一句原话），不要总结。"
+        },
+        {
+          "key": "event.teacher.quote",
+          "location": "src/events.ts EVENT_DEFS → teacher",
+          "when": "正文下方的一句话台词，带引号显示",
+          "limit": 40,
+          "current": "",
+          "issue": "部分台词太像旁白，不像人说出来的。",
+          "hint": "像学生在微信/机房里真会说的一句，允许不完整、带口头语。"
+        },
+        {
+          "key": "event.teacher.options[0]",
+          "location": "src/events.ts EVENT_DEFS → teacher.options[0]",
+          "when": "三个并列选项卡片：label 是按钮主文，note 是小字代价说明",
+          "limit": 16,
+          "current": "把训练压一压｜本周训练 ×0.6 · 疲劳 −10",
+          "issue": "选项要一眼看出代价差异，label 现在偶有两条太像。",
+          "hint": "label ≤10 字，note ≤16 字；三条选项的代价方向必须不同（体力 / 关系 / 成绩 / 声望）。"
+        },
+        {
+          "key": "event.teacher.options[1]",
+          "location": "src/events.ts EVENT_DEFS → teacher.options[1]",
+          "when": "三个并列选项卡片：label 是按钮主文，note 是小字代价说明",
+          "limit": 16,
+          "current": "和班主任商量着排课｜本周训练 ×0.85 · 疲劳 −4",
+          "issue": "选项要一眼看出代价差异，label 现在偶有两条太像。",
+          "hint": "label ≤10 字，note ≤16 字；三条选项的代价方向必须不同（体力 / 关系 / 成绩 / 声望）。"
+        },
+        {
+          "key": "event.teacher.options[2]",
+          "location": "src/events.ts EVENT_DEFS → teacher.options[2]",
+          "when": "三个并列选项卡片：label 是按钮主文，note 是小字代价说明",
+          "limit": 16,
+          "current": "顶住，用成绩说话｜本周训练 ×1.1 · 疲劳 +4",
+          "issue": "选项要一眼看出代价差异，label 现在偶有两条太像。",
+          "hint": "label ≤10 字，note ≤16 字；三条选项的代价方向必须不同（体力 / 关系 / 成绩 / 声望）。"
+        },
+        {
+          "key": "event.teacher.log",
+          "location": "src/events.ts EVENT_DEFS → teacher",
+          "when": "选择后写进「本周插曲」日志的一句话，前面会自动带学生名字",
+          "limit": 30,
+          "current": "",
+          "issue": "日志句容易和正文重复。",
+          "hint": "写成结果，不写过程；不要以「他」开头（前面已经有名字）。"
+        },
+        {
+          "key": "event.school.title",
+          "location": "src/events.ts EVENT_DEFS → school",
+          "when": "每周排训练前弹出的事件卡标题（一行，加粗显示）",
+          "limit": 16,
+          "current": "校领导的压力",
+          "issue": "标题需要一眼看出冲突，现在偏「说明文」。",
+          "hint": "写成一句冲突/场景名，例如「机房停电那晚」而不是「机房供电问题」。"
+        },
+        {
+          "key": "event.school.text",
+          "location": "src/events.ts EVENT_DEFS → school",
+          "when": "事件卡正文，选手/教练视角的处境描述",
+          "limit": 80,
+          "current": "年级会上领导点了名：今年信息学竞赛要出成绩，\"你们那批人到底行不行，给个准话。\"",
+          "issue": "常见「交代背景 → 给出选择」的平铺，缺画面和对话。",
+          "hint": "至少一个具体细节（时间、地点、动作、一句原话），不要总结。"
+        },
+        {
+          "key": "event.school.quote",
+          "location": "src/events.ts EVENT_DEFS → school",
+          "when": "正文下方的一句话台词，带引号显示",
+          "limit": 40,
+          "current": "",
+          "issue": "部分台词太像旁白，不像人说出来的。",
+          "hint": "像学生在微信/机房里真会说的一句，允许不完整、带口头语。"
+        },
+        {
+          "key": "event.school.options[0]",
+          "location": "src/events.ts EVENT_DEFS → school.options[0]",
+          "when": "三个并列选项卡片：label 是按钮主文，note 是小字代价说明",
+          "limit": 16,
+          "current": "立军令状｜本周训练 ×1.15 · 疲劳 +6",
+          "issue": "选项要一眼看出代价差异，label 现在偶有两条太像。",
+          "hint": "label ≤10 字，note ≤16 字；三条选项的代价方向必须不同（体力 / 关系 / 成绩 / 声望）。"
+        },
+        {
+          "key": "event.school.options[1]",
+          "location": "src/events.ts EVENT_DEFS → school.options[1]",
+          "when": "三个并列选项卡片：label 是按钮主文，note 是小字代价说明",
+          "limit": 16,
+          "current": "会后单独找领导沟通｜本周训练 ×0.95 · 疲劳 +2",
+          "issue": "选项要一眼看出代价差异，label 现在偶有两条太像。",
+          "hint": "label ≤10 字，note ≤16 字；三条选项的代价方向必须不同（体力 / 关系 / 成绩 / 声望）。"
+        },
+        {
+          "key": "event.school.options[2]",
+          "location": "src/events.ts EVENT_DEFS → school.options[2]",
+          "when": "三个并列选项卡片：label 是按钮主文，note 是小字代价说明",
+          "limit": 16,
+          "current": "顶回去：节奏不能乱｜本周训练 ×1.05",
+          "issue": "选项要一眼看出代价差异，label 现在偶有两条太像。",
+          "hint": "label ≤10 字，note ≤16 字；三条选项的代价方向必须不同（体力 / 关系 / 成绩 / 声望）。"
+        },
+        {
+          "key": "event.school.log",
+          "location": "src/events.ts EVENT_DEFS → school",
+          "when": "选择后写进「本周插曲」日志的一句话，前面会自动带学生名字",
+          "limit": 30,
+          "current": "",
+          "issue": "日志句容易和正文重复。",
+          "hint": "写成结果，不写过程；不要以「他」开头（前面已经有名字）。"
+        },
+        {
+          "key": "event.parent.title",
+          "location": "src/events.ts EVENT_DEFS → parent",
+          "when": "每周排训练前弹出的事件卡标题（一行，加粗显示）",
+          "limit": 16,
+          "current": "家长焦虑",
+          "issue": "标题需要一眼看出冲突，现在偏「说明文」。",
+          "hint": "写成一句冲突/场景名，例如「机房停电那晚」而不是「机房供电问题」。"
+        },
+        {
+          "key": "event.parent.text",
+          "location": "src/events.ts EVENT_DEFS → parent",
+          "when": "事件卡正文，选手/教练视角的处境描述",
+          "limit": 80,
+          "current": "{name} 家长的电话打到你手机上，语气很急：孩子天天泡机房，文化课要掉下来了。",
+          "issue": "常见「交代背景 → 给出选择」的平铺，缺画面和对话。",
+          "hint": "至少一个具体细节（时间、地点、动作、一句原话），不要总结。"
+        },
+        {
+          "key": "event.parent.quote",
+          "location": "src/events.ts EVENT_DEFS → parent",
+          "when": "正文下方的一句话台词，带引号显示",
+          "limit": 40,
+          "current": "",
+          "issue": "部分台词太像旁白，不像人说出来的。",
+          "hint": "像学生在微信/机房里真会说的一句，允许不完整、带口头语。"
+        },
+        {
+          "key": "event.parent.options[0]",
+          "location": "src/events.ts EVENT_DEFS → parent.options[0]",
+          "when": "三个并列选项卡片：label 是按钮主文，note 是小字代价说明",
+          "limit": 16,
+          "current": "请家长来学校谈一次｜疲劳 +6 · 最弱专题 +1%",
+          "issue": "选项要一眼看出代价差异，label 现在偶有两条太像。",
+          "hint": "label ≤10 字，note ≤16 字；三条选项的代价方向必须不同（体力 / 关系 / 成绩 / 声望）。"
+        },
+        {
+          "key": "event.parent.options[1]",
+          "location": "src/events.ts EVENT_DEFS → parent.options[1]",
+          "when": "三个并列选项卡片：label 是按钮主文，note 是小字代价说明",
+          "limit": 16,
+          "current": "电话里安抚｜疲劳 +2 · 最弱专题 +0.5%",
+          "issue": "选项要一眼看出代价差异，label 现在偶有两条太像。",
+          "hint": "label ≤10 字，note ≤16 字；三条选项的代价方向必须不同（体力 / 关系 / 成绩 / 声望）。"
+        },
+        {
+          "key": "event.parent.options[2]",
+          "location": "src/events.ts EVENT_DEFS → parent.options[2]",
+          "when": "三个并列选项卡片：label 是按钮主文，note 是小字代价说明",
+          "limit": 16,
+          "current": "让学生自己跟家里谈｜五五开：谈成疲劳 +3、补最弱专题 +1.5%；谈崩疲劳 +5",
+          "issue": "选项要一眼看出代价差异，label 现在偶有两条太像。",
+          "hint": "label ≤10 字，note ≤16 字；三条选项的代价方向必须不同（体力 / 关系 / 成绩 / 声望）。"
+        },
+        {
+          "key": "event.parent.log",
+          "location": "src/events.ts EVENT_DEFS → parent",
+          "when": "选择后写进「本周插曲」日志的一句话，前面会自动带学生名字",
+          "limit": 30,
+          "current": "",
+          "issue": "日志句容易和正文重复。",
+          "hint": "写成结果，不写过程；不要以「他」开头（前面已经有名字）。"
+        },
+        {
+          "key": "event.exchange.title",
+          "location": "src/events.ts EVENT_DEFS → exchange",
+          "when": "每周排训练前弹出的事件卡标题（一行，加粗显示）",
+          "limit": 16,
+          "current": "隔壁学校约交流赛",
+          "issue": "标题需要一眼看出冲突，现在偏「说明文」。",
+          "hint": "写成一句冲突/场景名，例如「机房停电那晚」而不是「机房供电问题」。"
+        },
+        {
+          "key": "event.exchange.text",
+          "location": "src/events.ts EVENT_DEFS → exchange",
+          "when": "事件卡正文，选手/教练视角的处境描述",
+          "limit": 80,
+          "current": "隔壁学校发来消息：周六想约一场交流赛，四道题，打完一起讲评。",
+          "issue": "常见「交代背景 → 给出选择」的平铺，缺画面和对话。",
+          "hint": "至少一个具体细节（时间、地点、动作、一句原话），不要总结。"
+        },
+        {
+          "key": "event.exchange.quote",
+          "location": "src/events.ts EVENT_DEFS → exchange",
+          "when": "正文下方的一句话台词，带引号显示",
+          "limit": 40,
+          "current": "",
+          "issue": "部分台词太像旁白，不像人说出来的。",
+          "hint": "像学生在微信/机房里真会说的一句，允许不完整、带口头语。"
+        },
+        {
+          "key": "event.exchange.options[0]",
+          "location": "src/events.ts EVENT_DEFS → exchange.options[0]",
+          "when": "三个并列选项卡片：label 是按钮主文，note 是小字代价说明",
+          "limit": 16,
+          "current": "接，当实战演练｜疲劳 +12 · 本周训练 ×0.9",
+          "issue": "选项要一眼看出代价差异，label 现在偶有两条太像。",
+          "hint": "label ≤10 字，note ≤16 字；三条选项的代价方向必须不同（体力 / 关系 / 成绩 / 声望）。"
+        },
+        {
+          "key": "event.exchange.options[1]",
+          "location": "src/events.ts EVENT_DEFS → exchange.options[1]",
+          "when": "三个并列选项卡片：label 是按钮主文，note 是小字代价说明",
+          "limit": 16,
+          "current": "婉拒，按计划练｜本周训练 ×1.05 · 少一次实战",
+          "issue": "选项要一眼看出代价差异，label 现在偶有两条太像。",
+          "hint": "label ≤10 字，note ≤16 字；三条选项的代价方向必须不同（体力 / 关系 / 成绩 / 声望）。"
+        },
+        {
+          "key": "event.exchange.options[2]",
+          "location": "src/events.ts EVENT_DEFS → exchange.options[2]",
+          "when": "三个并列选项卡片：label 是按钮主文，note 是小字代价说明",
+          "limit": 16,
+          "current": "只派状态好的几个去｜疲劳 +5 · 本周训练 ×0.95",
+          "issue": "选项要一眼看出代价差异，label 现在偶有两条太像。",
+          "hint": "label ≤10 字，note ≤16 字；三条选项的代价方向必须不同（体力 / 关系 / 成绩 / 声望）。"
+        },
+        {
+          "key": "event.exchange.log",
+          "location": "src/events.ts EVENT_DEFS → exchange",
+          "when": "选择后写进「本周插曲」日志的一句话，前面会自动带学生名字",
+          "limit": 30,
+          "current": "",
+          "issue": "日志句容易和正文重复。",
+          "hint": "写成结果，不写过程；不要以「他」开头（前面已经有名字）。"
+        },
+        {
+          "key": "event.cold.title",
+          "location": "src/events.ts EVENT_DEFS → cold",
+          "when": "每周排训练前弹出的事件卡标题（一行，加粗显示）",
+          "limit": 16,
+          "current": "有人感冒了",
+          "issue": "标题需要一眼看出冲突，现在偏「说明文」。",
+          "hint": "写成一句冲突/场景名，例如「机房停电那晚」而不是「机房供电问题」。"
+        },
+        {
+          "key": "event.cold.text",
+          "location": "src/events.ts EVENT_DEFS → cold",
+          "when": "事件卡正文，选手/教练视角的处境描述",
+          "limit": 80,
+          "current": "{name} 连着打了两天喷嚏，今天早上没来早训。",
+          "issue": "常见「交代背景 → 给出选择」的平铺，缺画面和对话。",
+          "hint": "至少一个具体细节（时间、地点、动作、一句原话），不要总结。"
+        },
+        {
+          "key": "event.cold.quote",
+          "location": "src/events.ts EVENT_DEFS → cold",
+          "when": "正文下方的一句话台词，带引号显示",
+          "limit": 40,
+          "current": "",
+          "issue": "部分台词太像旁白，不像人说出来的。",
+          "hint": "像学生在微信/机房里真会说的一句，允许不完整、带口头语。"
+        },
+        {
+          "key": "event.cold.options[0]",
+          "location": "src/events.ts EVENT_DEFS → cold.options[0]",
+          "when": "三个并列选项卡片：label 是按钮主文，note 是小字代价说明",
+          "limit": 16,
+          "current": "让他休息一周｜疲劳 −25 · 本周训练 ×0.9",
+          "issue": "选项要一眼看出代价差异，label 现在偶有两条太像。",
+          "hint": "label ≤10 字，note ≤16 字；三条选项的代价方向必须不同（体力 / 关系 / 成绩 / 声望）。"
+        },
+        {
+          "key": "event.cold.options[1]",
+          "location": "src/events.ts EVENT_DEFS → cold.options[1]",
+          "when": "三个并列选项卡片：label 是按钮主文，note 是小字代价说明",
+          "limit": 16,
+          "current": "带病训练，轻伤不下火线｜疲劳 +15 · 最弱专题 +1.5%",
+          "issue": "选项要一眼看出代价差异，label 现在偶有两条太像。",
+          "hint": "label ≤10 字，note ≤16 字；三条选项的代价方向必须不同（体力 / 关系 / 成绩 / 声望）。"
+        },
+        {
+          "key": "event.cold.options[2]",
+          "location": "src/events.ts EVENT_DEFS → cold.options[2]",
+          "when": "三个并列选项卡片：label 是按钮主文，note 是小字代价说明",
+          "limit": 16,
+          "current": "半天训练半天休息｜疲劳 −6",
+          "issue": "选项要一眼看出代价差异，label 现在偶有两条太像。",
+          "hint": "label ≤10 字，note ≤16 字；三条选项的代价方向必须不同（体力 / 关系 / 成绩 / 声望）。"
+        },
+        {
+          "key": "event.cold.log",
+          "location": "src/events.ts EVENT_DEFS → cold",
+          "when": "选择后写进「本周插曲」日志的一句话，前面会自动带学生名字",
+          "limit": 30,
+          "current": "",
+          "issue": "日志句容易和正文重复。",
+          "hint": "写成结果，不写过程；不要以「他」开头（前面已经有名字）。"
+        },
+        {
+          "key": "event.rival.title",
+          "location": "src/events.ts EVENT_DEFS → rival",
+          "when": "每周排训练前弹出的事件卡标题（一行，加粗显示）",
+          "limit": 16,
+          "current": "隔壁教练来挖人",
+          "issue": "标题需要一眼看出冲突，现在偏「说明文」。",
+          "hint": "写成一句冲突/场景名，例如「机房停电那晚」而不是「机房供电问题」。"
+        },
+        {
+          "key": "event.rival.text",
+          "location": "src/events.ts EVENT_DEFS → rival",
+          "when": "事件卡正文，选手/教练视角的处境描述",
+          "limit": 80,
+          "current": "隔壁学校的教练私下加了 {name} 的微信，说\"来我们这，每周两次一对一\"。",
+          "issue": "常见「交代背景 → 给出选择」的平铺，缺画面和对话。",
+          "hint": "至少一个具体细节（时间、地点、动作、一句原话），不要总结。"
+        },
+        {
+          "key": "event.rival.quote",
+          "location": "src/events.ts EVENT_DEFS → rival",
+          "when": "正文下方的一句话台词，带引号显示",
+          "limit": 40,
+          "current": "",
+          "issue": "部分台词太像旁白，不像人说出来的。",
+          "hint": "像学生在微信/机房里真会说的一句，允许不完整、带口头语。"
+        },
+        {
+          "key": "event.rival.options[0]",
+          "location": "src/events.ts EVENT_DEFS → rival.options[0]",
+          "when": "三个并列选项卡片：label 是按钮主文，note 是小字代价说明",
+          "limit": 16,
+          "current": "找学生谈话，给出承诺｜疲劳 +2 · 最弱专题 +1%",
+          "issue": "选项要一眼看出代价差异，label 现在偶有两条太像。",
+          "hint": "label ≤10 字，note ≤16 字；三条选项的代价方向必须不同（体力 / 关系 / 成绩 / 声望）。"
+        },
+        {
+          "key": "event.rival.options[1]",
+          "location": "src/events.ts EVENT_DEFS → rival.options[1]",
+          "when": "三个并列选项卡片：label 是按钮主文，note 是小字代价说明",
+          "limit": 16,
+          "current": "加大投入，用行动表态｜本周训练 ×1.1 · 疲劳 +8",
+          "issue": "选项要一眼看出代价差异，label 现在偶有两条太像。",
+          "hint": "label ≤10 字，note ≤16 字；三条选项的代价方向必须不同（体力 / 关系 / 成绩 / 声望）。"
+        },
+        {
+          "key": "event.rival.options[2]",
+          "location": "src/events.ts EVENT_DEFS → rival.options[2]",
+          "when": "三个并列选项卡片：label 是按钮主文，note 是小字代价说明",
+          "limit": 16,
+          "current": "尊重他的选择，不拦｜留下：疲劳 −2、补最弱专题 +1%；离开：疲劳 +4",
+          "issue": "选项要一眼看出代价差异，label 现在偶有两条太像。",
+          "hint": "label ≤10 字，note ≤16 字；三条选项的代价方向必须不同（体力 / 关系 / 成绩 / 声望）。"
+        },
+        {
+          "key": "event.rival.log",
+          "location": "src/events.ts EVENT_DEFS → rival",
+          "when": "选择后写进「本周插曲」日志的一句话，前面会自动带学生名字",
+          "limit": 30,
+          "current": "",
+          "issue": "日志句容易和正文重复。",
+          "hint": "写成结果，不写过程；不要以「他」开头（前面已经有名字）。"
+        },
+        {
+          "key": "event.fever.title",
+          "location": "src/events.ts EVENT_DEFS → fever",
+          "when": "每周排训练前弹出的事件卡标题（一行，加粗显示）",
+          "limit": 16,
+          "current": "赛前发烧",
+          "issue": "标题需要一眼看出冲突，现在偏「说明文」。",
+          "hint": "写成一句冲突/场景名，例如「机房停电那晚」而不是「机房供电问题」。"
+        },
+        {
+          "key": "event.fever.text",
+          "location": "src/events.ts EVENT_DEFS → fever",
+          "when": "事件卡正文，选手/教练视角的处境描述",
+          "limit": 80,
+          "current": "比赛前一天，{name} 烧到 38.5℃，家长问要不要弃赛。",
+          "issue": "常见「交代背景 → 给出选择」的平铺，缺画面和对话。",
+          "hint": "至少一个具体细节（时间、地点、动作、一句原话），不要总结。"
+        },
+        {
+          "key": "event.fever.quote",
+          "location": "src/events.ts EVENT_DEFS → fever",
+          "when": "正文下方的一句话台词，带引号显示",
+          "limit": 40,
+          "current": "",
+          "issue": "部分台词太像旁白，不像人说出来的。",
+          "hint": "像学生在微信/机房里真会说的一句，允许不完整、带口头语。"
+        },
+        {
+          "key": "event.fever.options[0]",
+          "location": "src/events.ts EVENT_DEFS → fever.options[0]",
+          "when": "三个并列选项卡片：label 是按钮主文，note 是小字代价说明",
+          "limit": 16,
+          "current": "弃赛，先把人养好｜疲劳 −20 · 缺席本周正式比赛",
+          "issue": "选项要一眼看出代价差异，label 现在偶有两条太像。",
+          "hint": "label ≤10 字，note ≤16 字；三条选项的代价方向必须不同（体力 / 关系 / 成绩 / 声望）。"
+        },
+        {
+          "key": "event.fever.options[1]",
+          "location": "src/events.ts EVENT_DEFS → fever.options[1]",
+          "when": "三个并列选项卡片：label 是按钮主文，note 是小字代价说明",
+          "limit": 16,
+          "current": "带病上，吃点药顶住｜疲劳 +12 · 本周训练 ×0.9",
+          "issue": "选项要一眼看出代价差异，label 现在偶有两条太像。",
+          "hint": "label ≤10 字，note ≤16 字；三条选项的代价方向必须不同（体力 / 关系 / 成绩 / 声望）。"
+        },
+        {
+          "key": "event.fever.options[2]",
+          "location": "src/events.ts EVENT_DEFS → fever.options[2]",
+          "when": "三个并列选项卡片：label 是按钮主文，note 是小字代价说明",
+          "limit": 16,
+          "current": "先请假半天，看情况｜疲劳 +4 · 缺席本周正式比赛 · 作业 +1",
+          "issue": "选项要一眼看出代价差异，label 现在偶有两条太像。",
+          "hint": "label ≤10 字，note ≤16 字；三条选项的代价方向必须不同（体力 / 关系 / 成绩 / 声望）。"
+        },
+        {
+          "key": "event.fever.log",
+          "location": "src/events.ts EVENT_DEFS → fever",
+          "when": "选择后写进「本周插曲」日志的一句话，前面会自动带学生名字",
+          "limit": 30,
+          "current": "",
+          "issue": "日志句容易和正文重复。",
+          "hint": "写成结果，不写过程；不要以「他」开头（前面已经有名字）。"
+        },
+        {
+          "key": "event.midterm.title",
+          "location": "src/events.ts EVENT_DEFS → midterm",
+          "when": "每周排训练前弹出的事件卡标题（一行，加粗显示）",
+          "limit": 16,
+          "current": "期中考试周",
+          "issue": "标题需要一眼看出冲突，现在偏「说明文」。",
+          "hint": "写成一句冲突/场景名，例如「机房停电那晚」而不是「机房供电问题」。"
+        },
+        {
+          "key": "event.midterm.text",
+          "location": "src/events.ts EVENT_DEFS → midterm",
+          "when": "事件卡正文，选手/教练视角的处境描述",
+          "limit": 80,
+          "current": "文化课期中考试撞上训练周，班主任把成绩单发到了群里。",
+          "issue": "常见「交代背景 → 给出选择」的平铺，缺画面和对话。",
+          "hint": "至少一个具体细节（时间、地点、动作、一句原话），不要总结。"
+        },
+        {
+          "key": "event.midterm.quote",
+          "location": "src/events.ts EVENT_DEFS → midterm",
+          "when": "正文下方的一句话台词，带引号显示",
+          "limit": 40,
+          "current": "",
+          "issue": "部分台词太像旁白，不像人说出来的。",
+          "hint": "像学生在微信/机房里真会说的一句，允许不完整、带口头语。"
+        },
+        {
+          "key": "event.midterm.options[0]",
+          "location": "src/events.ts EVENT_DEFS → midterm.options[0]",
+          "when": "三个并列选项卡片：label 是按钮主文，note 是小字代价说明",
+          "limit": 16,
+          "current": "停训一周，先保文化课｜本周训练 ×0.5 · 疲劳 −8 · 作业 +4",
+          "issue": "选项要一眼看出代价差异，label 现在偶有两条太像。",
+          "hint": "label ≤10 字，note ≤16 字；三条选项的代价方向必须不同（体力 / 关系 / 成绩 / 声望）。"
+        },
+        {
+          "key": "event.midterm.options[1]",
+          "location": "src/events.ts EVENT_DEFS → midterm.options[1]",
+          "when": "三个并列选项卡片：label 是按钮主文，note 是小字代价说明",
+          "limit": 16,
+          "current": "训练减半，晚上补课｜本周训练 ×0.8 · 作业 +1",
+          "issue": "选项要一眼看出代价差异，label 现在偶有两条太像。",
+          "hint": "label ≤10 字，note ≤16 字；三条选项的代价方向必须不同（体力 / 关系 / 成绩 / 声望）。"
+        },
+        {
+          "key": "event.midterm.options[2]",
+          "location": "src/events.ts EVENT_DEFS → midterm.options[2]",
+          "when": "三个并列选项卡片：label 是按钮主文，note 是小字代价说明",
+          "limit": 16,
+          "current": "照常训练，成绩再说｜本周训练 ×1.0 · 作业 −3 · 声望 −1",
+          "issue": "选项要一眼看出代价差异，label 现在偶有两条太像。",
+          "hint": "label ≤10 字，note ≤16 字；三条选项的代价方向必须不同（体力 / 关系 / 成绩 / 声望）。"
+        },
+        {
+          "key": "event.midterm.log",
+          "location": "src/events.ts EVENT_DEFS → midterm",
+          "when": "选择后写进「本周插曲」日志的一句话，前面会自动带学生名字",
+          "limit": 30,
+          "current": "",
+          "issue": "日志句容易和正文重复。",
+          "hint": "写成结果，不写过程；不要以「他」开头（前面已经有名字）。"
+        },
+        {
+          "key": "event.recruit.title",
+          "location": "src/events.ts EVENT_DEFS → recruit",
+          "when": "每周排训练前弹出的事件卡标题（一行，加粗显示）",
+          "limit": 16,
+          "current": "小学宣讲",
+          "issue": "标题需要一眼看出冲突，现在偏「说明文」。",
+          "hint": "写成一句冲突/场景名，例如「机房停电那晚」而不是「机房供电问题」。"
+        },
+        {
+          "key": "event.recruit.text",
+          "location": "src/events.ts EVENT_DEFS → recruit",
+          "when": "事件卡正文，选手/教练视角的处境描述",
+          "limit": 80,
+          "current": "附近小学请你去讲一节“信息学是干什么的”，顺便招几个好苗子。",
+          "issue": "常见「交代背景 → 给出选择」的平铺，缺画面和对话。",
+          "hint": "至少一个具体细节（时间、地点、动作、一句原话），不要总结。"
+        },
+        {
+          "key": "event.recruit.quote",
+          "location": "src/events.ts EVENT_DEFS → recruit",
+          "when": "正文下方的一句话台词，带引号显示",
+          "limit": 40,
+          "current": "",
+          "issue": "部分台词太像旁白，不像人说出来的。",
+          "hint": "像学生在微信/机房里真会说的一句，允许不完整、带口头语。"
+        },
+        {
+          "key": "event.recruit.options[0]",
+          "location": "src/events.ts EVENT_DEFS → recruit.options[0]",
+          "when": "三个并列选项卡片：label 是按钮主文，note 是小字代价说明",
+          "limit": 16,
+          "current": "亲自去讲｜声望 +4 · 本周训练 ×0.9 · 疲劳 +4",
+          "issue": "选项要一眼看出代价差异，label 现在偶有两条太像。",
+          "hint": "label ≤10 字，note ≤16 字；三条选项的代价方向必须不同（体力 / 关系 / 成绩 / 声望）。"
+        },
+        {
+          "key": "event.recruit.options[1]",
+          "location": "src/events.ts EVENT_DEFS → recruit.options[1]",
+          "when": "三个并列选项卡片：label 是按钮主文，note 是小字代价说明",
+          "limit": 16,
+          "current": "让队员去讲｜声望 +2 · 作业 +2 · 本周训练 ×0.95",
+          "issue": "选项要一眼看出代价差异，label 现在偶有两条太像。",
+          "hint": "label ≤10 字，note ≤16 字；三条选项的代价方向必须不同（体力 / 关系 / 成绩 / 声望）。"
+        },
+        {
+          "key": "event.recruit.options[2]",
+          "location": "src/events.ts EVENT_DEFS → recruit.options[2]",
+          "when": "三个并列选项卡片：label 是按钮主文，note 是小字代价说明",
+          "limit": 16,
+          "current": "不去了，训练要紧｜本周训练 ×1.0 · 声望 −2",
+          "issue": "选项要一眼看出代价差异，label 现在偶有两条太像。",
+          "hint": "label ≤10 字，note ≤16 字；三条选项的代价方向必须不同（体力 / 关系 / 成绩 / 声望）。"
+        },
+        {
+          "key": "event.recruit.log",
+          "location": "src/events.ts EVENT_DEFS → recruit",
+          "when": "选择后写进「本周插曲」日志的一句话，前面会自动带学生名字",
+          "limit": 30,
+          "current": "",
+          "issue": "日志句容易和正文重复。",
+          "hint": "写成结果，不写过程；不要以「他」开头（前面已经有名字）。"
+        },
+        {
+          "key": "event.alumni.title",
+          "location": "src/events.ts EVENT_DEFS → alumni",
+          "when": "每周排训练前弹出的事件卡标题（一行，加粗显示）",
+          "limit": 16,
+          "current": "学长回校",
+          "issue": "标题需要一眼看出冲突，现在偏「说明文」。",
+          "hint": "写成一句冲突/场景名，例如「机房停电那晚」而不是「机房供电问题」。"
+        },
+        {
+          "key": "event.alumni.text",
+          "location": "src/events.ts EVENT_DEFS → alumni",
+          "when": "事件卡正文，选手/教练视角的处境描述",
+          "limit": 80,
+          "current": "去年毕业的学长回来看老师，顺便在机房坐了一下午。",
+          "issue": "常见「交代背景 → 给出选择」的平铺，缺画面和对话。",
+          "hint": "至少一个具体细节（时间、地点、动作、一句原话），不要总结。"
+        },
+        {
+          "key": "event.alumni.quote",
+          "location": "src/events.ts EVENT_DEFS → alumni",
+          "when": "正文下方的一句话台词，带引号显示",
+          "limit": 40,
+          "current": "",
+          "issue": "部分台词太像旁白，不像人说出来的。",
+          "hint": "像学生在微信/机房里真会说的一句，允许不完整、带口头语。"
+        },
+        {
+          "key": "event.alumni.options[0]",
+          "location": "src/events.ts EVENT_DEFS → alumni.options[0]",
+          "when": "三个并列选项卡片：label 是按钮主文，note 是小字代价说明",
+          "limit": 16,
+          "current": "请他讲一节课｜全队专题 +0.5% · 作业 +3 · 声望 +2",
+          "issue": "选项要一眼看出代价差异，label 现在偶有两条太像。",
+          "hint": "label ≤10 字，note ≤16 字；三条选项的代价方向必须不同（体力 / 关系 / 成绩 / 声望）。"
+        },
+        {
+          "key": "event.alumni.options[1]",
+          "location": "src/events.ts EVENT_DEFS → alumni.options[1]",
+          "when": "三个并列选项卡片：label 是按钮主文，note 是小字代价说明",
+          "limit": 16,
+          "current": "一起吃个饭，聊聊天｜疲劳 −6 · 声望 +1",
+          "issue": "选项要一眼看出代价差异，label 现在偶有两条太像。",
+          "hint": "label ≤10 字，note ≤16 字；三条选项的代价方向必须不同（体力 / 关系 / 成绩 / 声望）。"
+        },
+        {
+          "key": "event.alumni.options[2]",
+          "location": "src/events.ts EVENT_DEFS → alumni.options[2]",
+          "when": "三个并列选项卡片：label 是按钮主文，note 是小字代价说明",
+          "limit": 16,
+          "current": "让他陪练一场｜疲劳 +6 · 本周训练 ×1.05",
+          "issue": "选项要一眼看出代价差异，label 现在偶有两条太像。",
+          "hint": "label ≤10 字，note ≤16 字；三条选项的代价方向必须不同（体力 / 关系 / 成绩 / 声望）。"
+        },
+        {
+          "key": "event.alumni.log",
+          "location": "src/events.ts EVENT_DEFS → alumni",
+          "when": "选择后写进「本周插曲」日志的一句话，前面会自动带学生名字",
+          "limit": 30,
+          "current": "",
+          "issue": "日志句容易和正文重复。",
+          "hint": "写成结果，不写过程；不要以「他」开头（前面已经有名字）。"
+        },
+        {
+          "key": "event.funding.title",
+          "location": "src/events.ts EVENT_DEFS → funding",
+          "when": "每周排训练前弹出的事件卡标题（一行，加粗显示）",
+          "limit": 16,
+          "current": "经费被砍",
+          "issue": "标题需要一眼看出冲突，现在偏「说明文」。",
+          "hint": "写成一句冲突/场景名，例如「机房停电那晚」而不是「机房供电问题」。"
+        },
+        {
+          "key": "event.funding.text",
+          "location": "src/events.ts EVENT_DEFS → funding",
+          "when": "事件卡正文，选手/教练视角的处境描述",
+          "limit": 80,
+          "current": "学校说这学期经费紧张，机房的电费和资料费要砍一半。",
+          "issue": "常见「交代背景 → 给出选择」的平铺，缺画面和对话。",
+          "hint": "至少一个具体细节（时间、地点、动作、一句原话），不要总结。"
+        },
+        {
+          "key": "event.funding.quote",
+          "location": "src/events.ts EVENT_DEFS → funding",
+          "when": "正文下方的一句话台词，带引号显示",
+          "limit": 40,
+          "current": "",
+          "issue": "部分台词太像旁白，不像人说出来的。",
+          "hint": "像学生在微信/机房里真会说的一句，允许不完整、带口头语。"
+        },
+        {
+          "key": "event.funding.options[0]",
+          "location": "src/events.ts EVENT_DEFS → funding.options[0]",
+          "when": "三个并列选项卡片：label 是按钮主文，note 是小字代价说明",
+          "limit": 16,
+          "current": "自己想办法筹｜疲劳 +6 · 本周训练 ×1.05 · 声望 +1",
+          "issue": "选项要一眼看出代价差异，label 现在偶有两条太像。",
+          "hint": "label ≤10 字，note ≤16 字；三条选项的代价方向必须不同（体力 / 关系 / 成绩 / 声望）。"
+        },
+        {
+          "key": "event.funding.options[1]",
+          "location": "src/events.ts EVENT_DEFS → funding.options[1]",
+          "when": "三个并列选项卡片：label 是按钮主文，note 是小字代价说明",
+          "limit": 16,
+          "current": "砍掉加练和资料｜本周训练 ×0.7 · 疲劳 −10",
+          "issue": "选项要一眼看出代价差异，label 现在偶有两条太像。",
+          "hint": "label ≤10 字，note ≤16 字；三条选项的代价方向必须不同（体力 / 关系 / 成绩 / 声望）。"
+        },
+        {
+          "key": "event.funding.options[2]",
+          "location": "src/events.ts EVENT_DEFS → funding.options[2]",
+          "when": "三个并列选项卡片：label 是按钮主文，note 是小字代价说明",
+          "limit": 16,
+          "current": "找家长分摊｜声望 −2 · 本周训练 ×0.95 · 作业 +1",
+          "issue": "选项要一眼看出代价差异，label 现在偶有两条太像。",
+          "hint": "label ≤10 字，note ≤16 字；三条选项的代价方向必须不同（体力 / 关系 / 成绩 / 声望）。"
+        },
+        {
+          "key": "event.funding.log",
+          "location": "src/events.ts EVENT_DEFS → funding",
+          "when": "选择后写进「本周插曲」日志的一句话，前面会自动带学生名字",
+          "limit": 30,
+          "current": "",
+          "issue": "日志句容易和正文重复。",
+          "hint": "写成结果，不写过程；不要以「他」开头（前面已经有名字）。"
+        },
+        {
+          "key": "event.transfer.title",
+          "location": "src/events.ts EVENT_DEFS → transfer",
+          "when": "每周排训练前弹出的事件卡标题（一行，加粗显示）",
+          "limit": 16,
+          "current": "有人想转学",
+          "issue": "标题需要一眼看出冲突，现在偏「说明文」。",
+          "hint": "写成一句冲突/场景名，例如「机房停电那晚」而不是「机房供电问题」。"
+        },
+        {
+          "key": "event.transfer.text",
+          "location": "src/events.ts EVENT_DEFS → transfer",
+          "when": "事件卡正文，选手/教练视角的处境描述",
+          "limit": 80,
+          "current": "{name} 家长在考虑把孩子转到有竞赛班的学校，来问你意见。",
+          "issue": "常见「交代背景 → 给出选择」的平铺，缺画面和对话。",
+          "hint": "至少一个具体细节（时间、地点、动作、一句原话），不要总结。"
+        },
+        {
+          "key": "event.transfer.quote",
+          "location": "src/events.ts EVENT_DEFS → transfer",
+          "when": "正文下方的一句话台词，带引号显示",
+          "limit": 40,
+          "current": "",
+          "issue": "部分台词太像旁白，不像人说出来的。",
+          "hint": "像学生在微信/机房里真会说的一句，允许不完整、带口头语。"
+        },
+        {
+          "key": "event.transfer.options[0]",
+          "location": "src/events.ts EVENT_DEFS → transfer.options[0]",
+          "when": "三个并列选项卡片：label 是按钮主文，note 是小字代价说明",
+          "limit": 16,
+          "current": "挽留，给出训练承诺｜疲劳 +3 · 最弱专题 +1% · 作业 +2",
+          "issue": "选项要一眼看出代价差异，label 现在偶有两条太像。",
+          "hint": "label ≤10 字，note ≤16 字；三条选项的代价方向必须不同（体力 / 关系 / 成绩 / 声望）。"
+        },
+        {
+          "key": "event.transfer.options[1]",
+          "location": "src/events.ts EVENT_DEFS → transfer.options[1]",
+          "when": "三个并列选项卡片：label 是按钮主文，note 是小字代价说明",
+          "limit": 16,
+          "current": "尊重选择，办手续｜缺席两周 · 声望 −2",
+          "issue": "选项要一眼看出代价差异，label 现在偶有两条太像。",
+          "hint": "label ≤10 字，note ≤16 字；三条选项的代价方向必须不同（体力 / 关系 / 成绩 / 声望）。"
+        },
+        {
+          "key": "event.transfer.options[2]",
+          "location": "src/events.ts EVENT_DEFS → transfer.options[2]",
+          "when": "三个并列选项卡片：label 是按钮主文，note 是小字代价说明",
+          "limit": 16,
+          "current": "用一次比赛成绩证明｜疲劳 +5 · 本周训练 ×1.1 · 声望 +1",
+          "issue": "选项要一眼看出代价差异，label 现在偶有两条太像。",
+          "hint": "label ≤10 字，note ≤16 字；三条选项的代价方向必须不同（体力 / 关系 / 成绩 / 声望）。"
+        },
+        {
+          "key": "event.transfer.log",
+          "location": "src/events.ts EVENT_DEFS → transfer",
+          "when": "选择后写进「本周插曲」日志的一句话，前面会自动带学生名字",
+          "limit": 30,
+          "current": "",
+          "issue": "日志句容易和正文重复。",
+          "hint": "写成结果，不写过程；不要以「他」开头（前面已经有名字）。"
+        },
+        {
+          "key": "event.burnout.title",
+          "location": "src/events.ts EVENT_DEFS → burnout",
+          "when": "每周排训练前弹出的事件卡标题（一行，加粗显示）",
+          "limit": 16,
+          "current": "状态崩了",
+          "issue": "标题需要一眼看出冲突，现在偏「说明文」。",
+          "hint": "写成一句冲突/场景名，例如「机房停电那晚」而不是「机房供电问题」。"
+        },
+        {
+          "key": "event.burnout.text",
+          "location": "src/events.ts EVENT_DEFS → burnout",
+          "when": "事件卡正文，选手/教练视角的处境描述",
+          "limit": 80,
+          "current": "{name} 连续两周训练时发呆，问他怎么了，只说“不想写了”。",
+          "issue": "常见「交代背景 → 给出选择」的平铺，缺画面和对话。",
+          "hint": "至少一个具体细节（时间、地点、动作、一句原话），不要总结。"
+        },
+        {
+          "key": "event.burnout.quote",
+          "location": "src/events.ts EVENT_DEFS → burnout",
+          "when": "正文下方的一句话台词，带引号显示",
+          "limit": 40,
+          "current": "",
+          "issue": "部分台词太像旁白，不像人说出来的。",
+          "hint": "像学生在微信/机房里真会说的一句，允许不完整、带口头语。"
+        },
+        {
+          "key": "event.burnout.options[0]",
+          "location": "src/events.ts EVENT_DEFS → burnout.options[0]",
+          "when": "三个并列选项卡片：label 是按钮主文，note 是小字代价说明",
+          "limit": 16,
+          "current": "强制休息两周｜疲劳 −30 · 缺席两周正式比赛",
+          "issue": "选项要一眼看出代价差异，label 现在偶有两条太像。",
+          "hint": "label ≤10 字，note ≤16 字；三条选项的代价方向必须不同（体力 / 关系 / 成绩 / 声望）。"
+        },
+        {
+          "key": "event.burnout.options[1]",
+          "location": "src/events.ts EVENT_DEFS → burnout.options[1]",
+          "when": "三个并列选项卡片：label 是按钮主文，note 是小字代价说明",
+          "limit": 16,
+          "current": "聊一聊，减点量｜疲劳 −10 · 作业 +2 · 本周训练 ×0.85",
+          "issue": "选项要一眼看出代价差异，label 现在偶有两条太像。",
+          "hint": "label ≤10 字，note ≤16 字；三条选项的代价方向必须不同（体力 / 关系 / 成绩 / 声望）。"
+        },
+        {
+          "key": "event.burnout.options[2]",
+          "location": "src/events.ts EVENT_DEFS → burnout.options[2]",
+          "when": "三个并列选项卡片：label 是按钮主文，note 是小字代价说明",
+          "limit": 16,
+          "current": "再顶一顶，比赛要紧｜疲劳 +8 · 本周训练 ×1.1 · 声望 −1",
+          "issue": "选项要一眼看出代价差异，label 现在偶有两条太像。",
+          "hint": "label ≤10 字，note ≤16 字；三条选项的代价方向必须不同（体力 / 关系 / 成绩 / 声望）。"
+        },
+        {
+          "key": "event.burnout.log",
+          "location": "src/events.ts EVENT_DEFS → burnout",
+          "when": "选择后写进「本周插曲」日志的一句话，前面会自动带学生名字",
+          "limit": 30,
+          "current": "",
+          "issue": "日志句容易和正文重复。",
+          "hint": "写成结果，不写过程；不要以「他」开头（前面已经有名字）。"
+        },
+        {
+          "key": "event.media.title",
+          "location": "src/events.ts EVENT_DEFS → media",
+          "when": "每周排训练前弹出的事件卡标题（一行，加粗显示）",
+          "limit": 16,
+          "current": "本地媒体报道",
+          "issue": "标题需要一眼看出冲突，现在偏「说明文」。",
+          "hint": "写成一句冲突/场景名，例如「机房停电那晚」而不是「机房供电问题」。"
+        },
+        {
+          "key": "event.media.text",
+          "location": "src/events.ts EVENT_DEFS → media",
+          "when": "事件卡正文，选手/教练视角的处境描述",
+          "limit": 80,
+          "current": "本地报纸想写一篇“中学生搞信息学”的稿子，点名要采访你们队。",
+          "issue": "常见「交代背景 → 给出选择」的平铺，缺画面和对话。",
+          "hint": "至少一个具体细节（时间、地点、动作、一句原话），不要总结。"
+        },
+        {
+          "key": "event.media.quote",
+          "location": "src/events.ts EVENT_DEFS → media",
+          "when": "正文下方的一句话台词，带引号显示",
+          "limit": 40,
+          "current": "",
+          "issue": "部分台词太像旁白，不像人说出来的。",
+          "hint": "像学生在微信/机房里真会说的一句，允许不完整、带口头语。"
+        },
+        {
+          "key": "event.media.options[0]",
+          "location": "src/events.ts EVENT_DEFS → media.options[0]",
+          "when": "三个并列选项卡片：label 是按钮主文，note 是小字代价说明",
+          "limit": 16,
+          "current": "接受采访｜声望 +5 · 本周训练 ×0.9",
+          "issue": "选项要一眼看出代价差异，label 现在偶有两条太像。",
+          "hint": "label ≤10 字，note ≤16 字；三条选项的代价方向必须不同（体力 / 关系 / 成绩 / 声望）。"
+        },
+        {
+          "key": "event.media.options[1]",
+          "location": "src/events.ts EVENT_DEFS → media.options[1]",
+          "when": "三个并列选项卡片：label 是按钮主文，note 是小字代价说明",
+          "limit": 16,
+          "current": "低调处理，只给资料｜声望 +1 · 本周训练 ×1.0",
+          "issue": "选项要一眼看出代价差异，label 现在偶有两条太像。",
+          "hint": "label ≤10 字，note ≤16 字；三条选项的代价方向必须不同（体力 / 关系 / 成绩 / 声望）。"
+        },
+        {
+          "key": "event.media.options[2]",
+          "location": "src/events.ts EVENT_DEFS → media.options[2]",
+          "when": "三个并列选项卡片：label 是按钮主文，note 是小字代价说明",
+          "limit": 16,
+          "current": "拒绝，别打扰训练｜声望 −1 · 本周训练 ×1.05",
+          "issue": "选项要一眼看出代价差异，label 现在偶有两条太像。",
+          "hint": "label ≤10 字，note ≤16 字；三条选项的代价方向必须不同（体力 / 关系 / 成绩 / 声望）。"
+        },
+        {
+          "key": "event.media.log",
+          "location": "src/events.ts EVENT_DEFS → media",
+          "when": "选择后写进「本周插曲」日志的一句话，前面会自动带学生名字",
+          "limit": 30,
+          "current": "",
+          "issue": "日志句容易和正文重复。",
+          "hint": "写成结果，不写过程；不要以「他」开头（前面已经有名字）。"
+        },
+        {
+          "key": "event.joint.title",
+          "location": "src/events.ts EVENT_DEFS → joint",
+          "when": "每周排训练前弹出的事件卡标题（一行，加粗显示）",
+          "limit": 16,
+          "current": "外校联合训练",
+          "issue": "标题需要一眼看出冲突，现在偏「说明文」。",
+          "hint": "写成一句冲突/场景名，例如「机房停电那晚」而不是「机房供电问题」。"
+        },
+        {
+          "key": "event.joint.text",
+          "location": "src/events.ts EVENT_DEFS → joint",
+          "when": "事件卡正文，选手/教练视角的处境描述",
+          "limit": 80,
+          "current": "邻市几所学校组织联合训练，包吃包住，打三天比赛。",
+          "issue": "常见「交代背景 → 给出选择」的平铺，缺画面和对话。",
+          "hint": "至少一个具体细节（时间、地点、动作、一句原话），不要总结。"
+        },
+        {
+          "key": "event.joint.quote",
+          "location": "src/events.ts EVENT_DEFS → joint",
+          "when": "正文下方的一句话台词，带引号显示",
+          "limit": 40,
+          "current": "",
+          "issue": "部分台词太像旁白，不像人说出来的。",
+          "hint": "像学生在微信/机房里真会说的一句，允许不完整、带口头语。"
+        },
+        {
+          "key": "event.joint.options[0]",
+          "location": "src/events.ts EVENT_DEFS → joint.options[0]",
+          "when": "三个并列选项卡片：label 是按钮主文，note 是小字代价说明",
+          "limit": 16,
+          "current": "全队参加｜疲劳 +10 · 本周训练 ×1.1 · 作业 +2",
+          "issue": "选项要一眼看出代价差异，label 现在偶有两条太像。",
+          "hint": "label ≤10 字，note ≤16 字；三条选项的代价方向必须不同（体力 / 关系 / 成绩 / 声望）。"
+        },
+        {
+          "key": "event.joint.options[1]",
+          "location": "src/events.ts EVENT_DEFS → joint.options[1]",
+          "when": "三个并列选项卡片：label 是按钮主文，note 是小字代价说明",
+          "limit": 16,
+          "current": "只去主力｜疲劳 +4 · 本周训练 ×1.0 · 声望 +1",
+          "issue": "选项要一眼看出代价差异，label 现在偶有两条太像。",
+          "hint": "label ≤10 字，note ≤16 字；三条选项的代价方向必须不同（体力 / 关系 / 成绩 / 声望）。"
+        },
+        {
+          "key": "event.joint.options[2]",
+          "location": "src/events.ts EVENT_DEFS → joint.options[2]",
+          "when": "三个并列选项卡片：label 是按钮主文，note 是小字代价说明",
+          "limit": 16,
+          "current": "不去，按自己的节奏｜本周训练 ×1.0",
+          "issue": "选项要一眼看出代价差异，label 现在偶有两条太像。",
+          "hint": "label ≤10 字，note ≤16 字；三条选项的代价方向必须不同（体力 / 关系 / 成绩 / 声望）。"
+        },
+        {
+          "key": "event.joint.log",
+          "location": "src/events.ts EVENT_DEFS → joint",
+          "when": "选择后写进「本周插曲」日志的一句话，前面会自动带学生名字",
+          "limit": 30,
+          "current": "",
+          "issue": "日志句容易和正文重复。",
+          "hint": "写成结果，不写过程；不要以「他」开头（前面已经有名字）。"
+        },
+        {
+          "key": "event.parents_job.title",
+          "location": "src/events.ts EVENT_DEFS → parents_job",
+          "when": "每周排训练前弹出的事件卡标题（一行，加粗显示）",
+          "limit": 16,
+          "current": "家长要求转文化课",
+          "issue": "标题需要一眼看出冲突，现在偏「说明文」。",
+          "hint": "写成一句冲突/场景名，例如「机房停电那晚」而不是「机房供电问题」。"
+        },
+        {
+          "key": "event.parents_job.text",
+          "location": "src/events.ts EVENT_DEFS → parents_job",
+          "when": "事件卡正文，选手/教练视角的处境描述",
+          "limit": 80,
+          "current": "{name} 家长下了最后通牒：再不出成绩，就回去专心高考。",
+          "issue": "常见「交代背景 → 给出选择」的平铺，缺画面和对话。",
+          "hint": "至少一个具体细节（时间、地点、动作、一句原话），不要总结。"
+        },
+        {
+          "key": "event.parents_job.quote",
+          "location": "src/events.ts EVENT_DEFS → parents_job",
+          "when": "正文下方的一句话台词，带引号显示",
+          "limit": 40,
+          "current": "",
+          "issue": "部分台词太像旁白，不像人说出来的。",
+          "hint": "像学生在微信/机房里真会说的一句，允许不完整、带口头语。"
+        },
+        {
+          "key": "event.parents_job.options[0]",
+          "location": "src/events.ts EVENT_DEFS → parents_job.options[0]",
+          "when": "三个并列选项卡片：label 是按钮主文，note 是小字代价说明",
+          "limit": 16,
+          "current": "保证文化课不掉｜本周训练 ×0.8 · 疲劳 −4 · 作业 +3",
+          "issue": "选项要一眼看出代价差异，label 现在偶有两条太像。",
+          "hint": "label ≤10 字，note ≤16 字；三条选项的代价方向必须不同（体力 / 关系 / 成绩 / 声望）。"
+        },
+        {
+          "key": "event.parents_job.options[1]",
+          "location": "src/events.ts EVENT_DEFS → parents_job.options[1]",
+          "when": "三个并列选项卡片：label 是按钮主文，note 是小字代价说明",
+          "limit": 16,
+          "current": "全力冲竞赛｜疲劳 +6 · 本周训练 ×1.1 · 声望 −1",
+          "issue": "选项要一眼看出代价差异，label 现在偶有两条太像。",
+          "hint": "label ≤10 字，note ≤16 字；三条选项的代价方向必须不同（体力 / 关系 / 成绩 / 声望）。"
+        },
+        {
+          "key": "event.parents_job.options[2]",
+          "location": "src/events.ts EVENT_DEFS → parents_job.options[2]",
+          "when": "三个并列选项卡片：label 是按钮主文，note 是小字代价说明",
+          "limit": 16,
+          "current": "让学生自己选｜五五开：留下补专题 +1%，离开疲劳 +4",
+          "issue": "选项要一眼看出代价差异，label 现在偶有两条太像。",
+          "hint": "label ≤10 字，note ≤16 字；三条选项的代价方向必须不同（体力 / 关系 / 成绩 / 声望）。"
+        },
+        {
+          "key": "event.parents_job.log",
+          "location": "src/events.ts EVENT_DEFS → parents_job",
+          "when": "选择后写进「本周插曲」日志的一句话，前面会自动带学生名字",
+          "limit": 30,
+          "current": "",
+          "issue": "日志句容易和正文重复。",
+          "hint": "写成结果，不写过程；不要以「他」开头（前面已经有名字）。"
+        }
+      ]
+    }
+  ]
+}

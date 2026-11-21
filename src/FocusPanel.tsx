@@ -3,6 +3,7 @@
 // 只读视图：不消耗随机数、不改引擎状态，完全由 contest 的当前状态推导。
 // 链本身来自 thinking.ts（题目侧固定，选手侧的断点由真实得分倒推）。
 
+import { Fragment } from 'react';
 import { levelInfo, TOPIC_NAMES } from './game.ts';
 import type { Contest, Student } from './types.ts';
 import { kindName, tracesForStudent, type TracedStep } from './thinking.ts';
@@ -47,7 +48,9 @@ export function FocusPanel({
         </div>
 
         <div className="px-3 pt-1.5 pb-1 text-[9.5px] text-slate-600">
-          比赛中只展开他已经走过的步骤，没走到的先收着。
+          {finished
+            ? '赛后复盘：整条链都已展开，可以对照他最后拿了多少分。'
+            : '比赛中只展开他已经走过的步骤，没走到的先收着。'}
         </div>
 
         <div className="flex-1 overflow-y-auto px-2.5 pb-6 space-y-2">
@@ -80,6 +83,13 @@ export function FocusPanel({
                   </span>
                 </div>
 
+                {finished && tr.branchName && (
+                  <div className="mt-1 text-[8.5px] text-slate-500">
+                    这题的正解：{tr.branchName}
+                    {tr.altNames && tr.altNames.length > 0 ? ` · 也可以 ${tr.altNames.join(' / ')}` : ''}
+                  </div>
+                )}
+
                 <div className="mt-1.5 space-y-1">
                   {(() => {
                     // 还没动过这题（没交过、也不在做），就什么思路都不该露出来
@@ -97,30 +107,58 @@ export function FocusPanel({
                       );
                     }
                     const rest = tr.steps.length - visible.length;
+                    // 他此刻正在啃的那一步：比赛里给个「现在在想」的活口
+                    const thinkingNow =
+                      !finished && active && touched && ps.phase !== 'idle' && rest > 0 ? tr.steps[visible.length] : null;
+                    let lastPhase: string | undefined;
                     return (
                       <>
                         {visible.map((s, j) => {
                           const style = STATUS_STYLE[s.status];
+                          const ph = s.step.phase;
+                          const showPhase = ph && ph !== lastPhase;
+                          lastPhase = ph ?? lastPhase;
                           return (
-                            <div key={j} className="flex items-start gap-1.5 leading-snug">
-                              <span className={`mt-[5px] w-1.5 h-1.5 rounded-full shrink-0 ${style.dot}`} />
-                              <div className="min-w-0">
-                                <div className={`text-[10.5px] ${style.text}`}>{s.step.text}</div>
-                                <div className="text-[8.5px] text-slate-600">
-                                  {kindName(s.step.kind)}
-                                  {s.step.complexity ? ` · ${s.step.complexity}` : ''} · 第 {s.minute} 分钟
-                                  {s.status === 'got'
-                                    ? ' · 想到了'
-                                    : s.status === 'missed'
-                                      ? ' · 没往这想'
-                                      : s.status === 'misled'
-                                        ? ' · 走了错路'
-                                        : ''}
+                            <Fragment key={j}>
+                              {showPhase && (
+                                <div className="flex items-center gap-1.5 pt-1.5 pb-0.5">
+                                  <span className="text-[8px] tracking-[0.15em] text-slate-400/80">
+                                    {ph === 'early' ? '前期 · 读懂题、找性质' : '后期 · 落地、卡复杂度'}
+                                  </span>
+                                  <span className="h-px flex-1 bg-slate-700/40" />
+                                </div>
+                              )}
+                              <div className="flex items-start gap-1.5 leading-snug">
+                                <span className={`mt-[5px] w-1.5 h-1.5 rounded-full shrink-0 ${style.dot}`} />
+                                <div className="min-w-0">
+                                  <div className={`text-[10.5px] ${style.text}`}>{s.step.text}</div>
+                                  <div className="text-[8.5px] text-slate-600">
+                                    {kindName(s.step.kind)}
+                                    {s.step.complexity ? ` · ${s.step.complexity}` : ''} · 第 {s.minute} 分钟
+                                    {s.status === 'got'
+                                      ? ' · 想到了'
+                                      : s.status === 'missed'
+                                        ? ' · 没往这想'
+                                        : s.status === 'misled'
+                                          ? ' · 走了错路'
+                                          : ''}
+                                  </div>
                                 </div>
                               </div>
-                            </div>
+                            </Fragment>
                           );
                         })}
+                        {thinkingNow && (
+                          <div className="flex items-start gap-1.5 rounded-md bg-amber-400/10 border border-amber-400/20 px-1.5 py-1">
+                            <span className="mt-[5px] w-1.5 h-1.5 rounded-full shrink-0 bg-amber-300 animate-pulse" />
+                            <div className="min-w-0">
+                              <div className="text-[10.5px] text-amber-200/90">现在在想：{thinkingNow.step.text}</div>
+                              <div className="text-[8.5px] text-amber-300/50">
+                                第 {visible.length + 1}/{tr.steps.length} 步 · {kindName(thinkingNow.step.kind)}
+                              </div>
+                            </div>
+                          </div>
+                        )}
                         {rest > 0 && (
                           <div className="flex items-center gap-1.5 opacity-40">
                             <span className="w-1.5 h-1.5 rounded-full bg-slate-700 shrink-0" />

@@ -627,6 +627,8 @@ export interface SeasonState {
   /** 学校声望 0–100，影响新生质量 */
   prestige: number;
   plan: WeekPlan | null;
+  /** 上一周实际排的方案（下一周默认沿用） */
+  lastPlan?: WeekPlan | null;
   report: TrainingReport | null;
   lastContest: ContestRecap | null;
   /** 本学年的比赛记录 */
@@ -1121,6 +1123,7 @@ export function planWeek(s: SeasonState, plan: WeekPlan): SeasonState {
     ...s,
     students,
     plan,
+    lastPlan: plan,
     report: { week: s.week, plan, lines },
     phase: 'report',
     weekMult: 1,
