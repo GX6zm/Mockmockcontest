@@ -33,8 +33,21 @@ writeFileSync(out, html, 'utf8');
 // 自检：HTML 里除三个正常脚本外，不应再有 </script
 const closers = (html.match(/<\/script/gi) || []).length;
 if (closers !== 3) throw new Error(`自检失败：</script 出现 ${closers} 次（应为 3）`);
+if (!html.includes('opv-editor')) throw new Error('自检失败：产物里找不到自定义开局编辑器');
+if (!html.includes('ui-ic')) throw new Error('自检失败：产物里找不到 Lucide 图标原语');
+if (!/<html\b[^>]*data-motion="/.test(html)) throw new Error('自检失败：<html> 上缺少 data-motion 开关');
 
-console.log(`已生成 ${out}（${(Buffer.byteLength(html) / 1024).toFixed(0)} KB），双击即可开始`);
+const FORBIDDEN = [
+  '🥇', '🥈', '🥉', '⚡', '🎓', '🚀', '📜', '👁', '🧠', '🏆', '⚙', '📋',
+  '🔓', '⏭', '📉', '📈', '🎯', '🏅', '🎭', '📝', '🔄', '🎲', '✏', '✨',
+  '🔥', '🌱', '📄', '🧊', '💾', '✕', '⚠', '⚖', '🙂', '😐', '😵', '📌',
+  '☕', '📘', '🏁', '📅', '📊', '🎙', '📡', '⏩', '▶', '⏸', '◆', '◇',
+  '✓', '😡', '🤨', '🤣', '😨', '😤', '🤓', '🤬', '😭', '❗',
+];
+const hits = FORBIDDEN.filter((g) => html.includes(g));
+if (hits.length) throw new Error(`自检失败：产物里仍有表情符号 ${JSON.stringify(hits)}`);
+
+console.log(`已生成 ${out}（${(Buffer.byteLength(html) / 1024).toFixed(0)} KB，已内置自定义开局与动效切换），双击即可开始`);
 
 // GitHub Pages：同一份单文件再放一份到 site/index.html，Pages 从 /site 目录发布。
 // 这样线上地址是 .../仓库名/ 这种干净链接，而不是 .../OI模拟赛.html 一长串百分号编码。

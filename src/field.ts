@@ -24,9 +24,8 @@ export interface FieldSpec {
 
 const clamp01 = (v: number) => Math.max(0, Math.min(1, v));
 
-/** 锚点插值：给分位 → 分数 */
-export function scoreAt(spec: FieldSpec, q: number): number {
-  const anchors = spec.anchors.slice().sort((a, b) => a.q - b.q);
+/** 已排序锚点插值：给分位 → 分数 */
+function interpSorted(anchors: FieldAnchor[], q: number): number {
   if (!anchors.length) return 0;
   const qq = clamp01(q);
   if (qq <= anchors[0].q) return anchors[0].score;
@@ -41,6 +40,25 @@ export function scoreAt(spec: FieldSpec, q: number): number {
   return anchors[anchors.length - 1].score;
 }
 
+/** 锚点插值：给分位 → 分数 */
+export function scoreAt(spec: FieldSpec, q: number): number {
+  const anchors = spec.anchors.slice().sort((a, b) => a.q - b.q);
+  return interpSorted(anchors, q);
+}
+
+/** 卷面难度浮动时同步偏移中间锚点，使省排名池与浮动后的省线保持一致 */
+export function shiftField(spec: FieldSpec, shift: number, maxScore: number): FieldSpec {
+  if (!shift) return spec;
+  return {
+    ...spec,
+    anchors: spec.anchors.map((a) => (
+      a.q <= 0 || a.q >= 1
+        ? a
+        : { ...a, score: Math.max(0, Math.min(maxScore, Math.round((a.score + shift) / 5) * 5)) }
+    )),
+  };
+}
+
 /**
  * 外校选手分数（降序），人数 = total - 1（把最高分位置留给本校最高分，避免
  * "我们考了 400 却排在虚构的第 1 名之外"这种别扭事；真实里确实可能并列第一）。
@@ -48,11 +66,12 @@ export function scoreAt(spec: FieldSpec, q: number): number {
  */
 export function fieldScores(spec: FieldSpec): number[] {
   const n = Math.max(0, spec.total - 1);
+  const anchors = spec.anchors.slice().sort((a, b) => a.q - b.q);
   const out: number[] = [];
   for (let i = 0; i < n; i++) {
     // i=0 → 分位最低、i=n-1 → 分位最高：先按分位从高到低排
     const q = (n - 1 - i + 0.5) / spec.total;
-    out.push(Math.round(scoreAt(spec, q)));
+    out.push(Math.round(interpSorted(anchors, q)));
   }
   return out;
 }

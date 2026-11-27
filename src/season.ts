@@ -24,7 +24,7 @@
  * 训练 / 事件 / 比赛都只影响这个模块自己的状态，不碰 game.ts 的比赛循环。
  */
 import { ROSTER } from './roster.ts';
-import { awardIndexByRank, fieldScores, pctOf, rankAmong } from './field.ts';
+import { awardIndexByRank, fieldScores, pctOf, rankAmong, shiftField } from './field.ts';
 import type { FieldSpec } from './field.ts';
 import { GRADES_BY_NAME } from './grades.ts';
 import { TALENT_BY_NAME } from './talent.ts';
@@ -35,9 +35,12 @@ import {
 } from './game.ts';
 import { EVENT_DEFS, eventDefById } from './events.ts';
 import type { PendingEvent, StudentPatch } from './events.ts';
-import { ABILITY_CEIL, IS_OPV, loadOpvConfig, opvSkills } from './opv.ts';
+import { ABILITY_CEIL, IS_OPV, NORMAL_ABILITY_CEIL, OPV_ABILITY_CEIL, loadOpvConfig, opvSkills } from './opv.ts';
 import type { OpvConfig } from './opv.ts';
-import type { CohortEntry, ContestConfig, Problem, Skills, StudentResult, Topic } from './types.ts';
+import { assignTraits } from './traits.ts';
+import type {
+  CohortEntry, ContestConfig, ContestFormat, ContestTactic, Problem, Skills, StudentResult, Topic, TraitId,
+} from './types.ts';
 
 export const YEAR_WEEKS = 40;
 /** 兼容旧脚本的默认值；教练实际可以带任意多年，学年末自己决定是否退休 */
@@ -48,6 +51,12 @@ export const SEASON_WEEKS = YEAR_WEEKS;
 export const TEAM_MIN = 6;
 export const TEAM_MAX = 8;
 
+export interface ContestGuideLine {
+  score: number;
+  label: string;
+  tone: 'gold' | 'silver' | 'bronze' | 'prov1' | 'team';
+}
+
 /**
  * 一场「可观看」的比赛：runWeeklyContest 传 trace 时把每场要打的 cfg 记下来，
  * 前端用同一个 cfg 重建 Contest（同 seed 同结果），逐场播放给教练看；
@@ -56,6 +65,8 @@ export const TEAM_MAX = 8;
 export interface ContestRound {
   label: string;
   cfg: ContestConfig;
+  stageId?: StageId;
+  guideLines?: ContestGuideLine[];
 }
 
 export type Grade = 1 | 2 | 3 | 4 | 5 | 6;
@@ -80,6 +91,8 @@ export interface StageDef {
   name: string;
   short: string;
   kind: 'prelim' | 'contest';
+  /** 赛制：oi = 盲测估分/最后提交/有 freopen；ioi = 实时评测/取最高分/无 freopen */
+  format?: ContestFormat;
   /** J 组 / S 组 / BOTH = 同场分 J、S 两组 / OPEN = 不分学段 */
   group: 'J' | 'S' | 'BOTH' | 'OPEN';
   levels: number[];
@@ -121,19 +134,19 @@ export const YEAR_STAGES: StageDef[] = [
   {
     id: 'csp1', week: 4, name: 'CSP 第一轮（初赛）', short: '初赛',
     kind: 'prelim', group: 'S', levels: [], minutes: 120, days: 1, gate: null, gateText: '',
-    advanceText: '过线才能参加第二轮', clock: '2026-09-19 · 第一轮',
+    advanceText: '过线才能参加第二轮', clock: '9 月中旬 · 第一轮',
     national: 34400, anchors: [], bands: [],
     note: '全校一张卷（S 卷），陕西线 37 分；晋级名额不少于实考 20%',
   },
   {
     id: 'csp2', week: 8, name: 'CSP 第二轮（复赛）', short: '复赛',
-    kind: 'contest', group: 'S', levels: [1, 3, 7, 7], minutes: 240, days: 1,
+    kind: 'contest', format: 'oi', group: 'S', levels: [1, 3, 7, 7], minutes: 240, days: 1,
     // 历年 CSP-S2：T1 普及+/提高-、T2 提高、T3 提高+、T4 省选
     ranges: [[20, 32], [48, 58], [100, 110], [106, 114]],
     // 校准：引擎原始得分率 → 2025 陕西 S 组真实得分率（强选手 84% ≈ 336 分）
     curve: [[0, 0], [0.25, 0.12], [0.32, 0.26], [0.38, 0.5], [0.45, 0.85], [0.6, 0.95], [1, 1]],
     gate: 'csp1', gateText: '初赛过线', advanceText: 'S 组二等及以上进 NOIP 名单',
-    clock: '2026-10-31 · 4 小时',
+    clock: '10 月底 · OI 赛制 · 4 小时',
     national: 785,
     anchors: [[0.2, 0.75], [0.4, 0.45]],
     bands: [
@@ -145,13 +158,13 @@ export const YEAR_STAGES: StageDef[] = [
   },
   {
     id: 'noip', week: 12, name: 'NOIP', short: 'NOIP',
-    kind: 'contest', group: 'S', levels: [2, 7, 7, 7], minutes: 270, days: 1,
+    kind: 'contest', format: 'oi', group: 'S', levels: [2, 7, 7, 7], minutes: 270, days: 1,
     // 历年 NOIP：T1 提高-、T2 提高、T3 提高+、T4 省选
     ranges: [[32, 42], [100, 110], [106, 114], [106, 114]],
     // 校准：NOIP 2025 陕西一等线 128（≈32%）、二等 95、三等 86；强选手 ~67%（270 分）
     curve: [[0, 0], [0.15, 0.28], [0.3, 0.5], [0.4, 0.62], [0.5, 0.72], [0.65, 0.85], [1, 1]],
-    gate: 'csp2', gateText: 'CSP-S 二等及以上（限高中生）', advanceText: '一等进省选 / WC 名单',
-    clock: '2026-11-29 · 4.5h',
+    gate: 'csp2', gateText: 'CSP-S 二等及以上（限高中生）', advanceText: '一等进省选 / WC / APIO 名单',
+    clock: '11 月底 · OI 赛制 · 4.5h',
     national: 7725,
     anchors: [[0.215, 0.67], [0.27, 0.42], [0.3425, 0.2]],
     bands: [
@@ -162,103 +175,121 @@ export const YEAR_STAGES: StageDef[] = [
     note: '全国高中生参赛约 7,725 人（一等 1,545 人 ÷ 20%）；基准线 137/108/86',
   },
   {
-    id: 'wc', week: 16, name: 'WC 冬令营', short: 'WC',
-    kind: 'contest', group: 'OPEN', levels: [7, 7, 7], minutes: 300, days: 1,
-    // WC 学生营员测试：省选 ~ NOI-
-    ranges: [[100, 110], [104, 114], [106, 114]],
-    // 校准：WC2025 银线 257/300、铜线 211；陕西仅 6 人获奖（167–240 分）
-    curve: [[0, 0], [0.1, 0.35], [0.2, 0.6], [0.35, 0.82], [0.5, 0.92], [1, 1]],
-    gate: 'noip', gateText: 'NOIP 一等（省推荐名额）', advanceText: '测试排名，不评奖',
-    clock: '2027-02 · 青岛 · 冬令营测试',
-    national: 300, anchors: [[0.15, 0.9], [0.35, 0.5], [0.55, 0.1]], bands: [],
-    note: '学生营员测试不评金银铜；国家队从国家集训队（NOI 前 50）里选拔',
+    id: 'ctt', week: 14, name: 'CTT 国家集训队集训', short: 'CTT',
+    kind: 'contest', format: 'ioi', group: 'OPEN', levels: [7, 7, 7], minutes: 300, days: 3,
+    // 集训队测试（12 月）：NOI 金 ~ IOI 级，三场，IOI 实时评测赛制
+    ranges: [
+      [96, 108], [104, 112], [106, 114],
+      [100, 110], [104, 114], [106, 114],
+      [100, 110], [106, 114], [106, 114],
+    ],
+    curve: [[0, 0], [0.1, 0.3], [0.25, 0.55], [0.45, 0.78], [0.65, 0.9], [1, 1]],
+    gate: 'noi', gateText: '上学年 NOI 前 50（国家集训队）', advanceText: '总成绩前 30 名进 CTS',
+    clock: '12 月中旬 · IOI 赛制 · 三试',
+    national: 50, anchors: [[0.2, 0.85], [0.5, 0.55], [0.8, 0.2]], bands: [],
+    note: '跨学年国集周期：上学年 NOI 进国集队员参加；总成绩 = 作业/互测 10% + CTT 三场各 18%（54%），前 30 进 CTS',
   },
   {
-    id: 'prov', week: 21, name: '省选（两试）', short: '省选',
-    kind: 'contest', group: 'OPEN', levels: [6, 7, 7], minutes: 270, days: 2,
+    id: 'wc', week: 18, name: 'WC 冬令营', short: 'WC',
+    kind: 'contest', format: 'ioi', group: 'OPEN', levels: [7, 7, 7], minutes: 300, days: 1,
+    // WC 学生营员测试：省选 ~ NOI-，IOI 实时评测赛制，评金银铜牌
+    ranges: [[100, 110], [104, 114], [106, 114]],
+    // 校准：WC2025 金线 257/300、银线 211、铜线 167
+    curve: [[0, 0], [0.1, 0.35], [0.2, 0.6], [0.35, 0.82], [0.5, 0.92], [1, 1]],
+    gate: 'noip', gateText: 'NOIP 一等（省推荐名额）', advanceText: '冬令营金银铜牌',
+    clock: '次年 1–2 月 · IOI 赛制 · 5h',
+    national: 500, anchors: [[0.557, 0.68], [0.703, 0.386], [0.857, 0.112]],
+    bands: [
+      { pct: 0.112, label: '金牌', tone: 'gold' },
+      { pct: 0.386, label: '银牌', tone: 'silver' },
+      { pct: 0.68, label: '铜牌', tone: 'bronze' },
+    ],
+    note: 'WC 学生营员测试采用 IOI 实时评测赛制，满分 300；按全国名次评金/银/铜牌（约 500 人：金 56 / 银 137 / 铜 147）',
+  },
+  {
+    id: 'cts', week: 19, name: 'CTS 国家队选拔', short: 'CTS',
+    kind: 'contest', format: 'ioi', group: 'OPEN', levels: [7, 7, 7], minutes: 300, days: 2,
+    // 国家队选拔（与 WC 同期）：IOI 级，两试，IOI 实时评测赛制
+    ranges: [
+      [104, 112], [106, 114], [106, 114],
+      [104, 112], [106, 114], [106, 114],
+    ],
+    curve: [[0, 0], [0.08, 0.25], [0.2, 0.5], [0.4, 0.75], [0.62, 0.9], [1, 1]],
+    gate: 'ctt', gateText: 'CTT 总成绩前 30 名', advanceText: '前 6 名答辩 → 前 4 名国家队',
+    clock: '次年 1–2 月 · IOI 赛制 · 两试',
+    national: 30, anchors: [[0.15, 0.9], [0.45, 0.6], [0.75, 0.25]], bands: [],
+    note: '与 WC 同期举行：总成绩 = 作业/互测 10% + CTT 54% + CTS 两场各 18%（36%）；前 6 名进入论文答辩，定 4 人国家队',
+  },
+  {
+    id: 'prov', week: 23, name: '省选（两试）', short: '省选',
+    kind: 'contest', format: 'oi', group: 'OPEN', levels: [6, 7, 7], minutes: 270, days: 2,
     // 省选两试：T1 提高+、T2 省选-、T3 省选/NOI
-    ranges: [[74, 94], [102, 112], [106, 114]],
+    ranges: [
+      [74, 94], [102, 112], [106, 114],
+      [74, 94], [102, 112], [106, 114],
+    ],
     // 校准：省选两试合计 600 分，陕西最高约 350–400、省队线约 300
     curve: [[0, 0], [0.3, 0.4], [0.5, 0.62], [0.65, 0.78], [0.8, 0.9], [1, 1]],
-    gate: 'noip', gateText: 'NOIP 正式选手（非高三）', advanceText: '省队 17 个名额：A 类 5 + B 类 12（上限）',
-    clock: '2027-03 上旬 · 两试',
+    gate: 'noip', gateText: 'NOIP 正式选手（高一/高二；初中须达一等线体验）', advanceText: '省队 17 个名额：A 类 5（NOI+5分）+ B 类 12',
+    clock: '次年 3 月上旬 · OI 赛制 · 两试',
     national: 160, anchors: [[0.2, 0.5], [0.27, 0.2], [0.32, 0.05]], bands: [],
-    note: '总分 = NOIP 标准分×30% + 省选标准分×70%；单校不得超过省队名额的 1/3（17 个名额 → 我校最多 5 人）',
+    note: '总分 = NOIP 标准分×30% + 省选标准分×70%；前 5 名为 A 类（NOI +5 分），单校不超过 1/3（最多 5 人）；初中生达省队线可获 NOI E 类资格',
   },
   {
-    id: 'apio', week: 26, name: 'APIO', short: 'APIO',
-    kind: 'contest', group: 'OPEN', levels: [7, 7, 7], minutes: 300, days: 1,
-    // APIO 中国区：省选 ~ NOI-
+    id: 'apio', week: 28, name: 'APIO', short: 'APIO',
+    kind: 'contest', format: 'ioi', group: 'OPEN', levels: [7, 7, 7], minutes: 300, days: 1,
+    // APIO 中国区：省选 ~ NOI-，IOI 实时评测赛制
     ranges: [[94, 104], [100, 110], [106, 114]],
     // 校准：APIO2025 中国区 300 分、金 193 / 银 130 / 铜 80
     curve: [[0, 0], [0.3, 0.42], [0.45, 0.55], [0.6, 0.7], [0.8, 0.88], [1, 1]],
-    gate: 'prov', gateText: '进入省队', advanceText: '亚太赛金银铜',
-    clock: '2027-05 · 中国区',
-    national: 600, anchors: [[0.267, 0.517], [0.433, 0.258], [0.643, 0.086]],
+    gate: 'noip', gateText: '省队或 NOIP 一等（高中生）', advanceText: '亚太赛金银铜',
+    clock: '次年 5 月 · IOI 赛制 · 5h',
+    national: 640, anchors: [[0.267, 0.517], [0.433, 0.258], [0.643, 0.086]],
     bands: [
-      { pct: 0.086, label: '金牌', tone: 'gold' },
-      { pct: 0.258, label: '银牌', tone: 'silver' },
-      { pct: 0.517, label: '铜牌', tone: 'bronze' },
+      { pct: 0.1, label: '金牌', tone: 'gold' },
+      { pct: 0.3, label: '银牌', tone: 'silver' },
+      { pct: 0.6, label: '铜牌', tone: 'bronze' },
     ],
-    note: 'APIO2025 中国区 744 位师生、金牌 64 / 银 128 / 铜 193（线 193/130/80）',
+    note: 'APIO 中国区采用 IOI 实时评测赛制，约 640 人参赛（省队 + NOIP 一等高中生）；金 64 / 银 128 / 铜 193（线 193/130/80）',
   },
   {
-    id: 'noi', week: 32, name: 'NOI（两试）', short: 'NOI',
-    kind: 'contest', group: 'OPEN', levels: [7, 7, 7], minutes: 300, days: 2,
+    id: 'noi', week: 34, name: 'NOI（两试）', short: 'NOI',
+    kind: 'contest', format: 'oi', group: 'OPEN', levels: [7, 7, 7], minutes: 300, days: 2,
     // NOI 两试：NOI ~ NOI+
-    ranges: [[90, 100], [102, 112], [106, 114]],
-    // 按 NOI2026 游记校准：满分 700 = 笔试 100 + 两试各 300；
-    // 特别之处真实总分 557（100+100+60+97+100+100+0），顶尖选手两试得分率应落在 0.76 上下。
-    // 旧曲线把 145 知识点的选手压到 485 分 / 全国 #114；逐档重标定后 145 知识点约 560 分，
-    // 越过 FIELDS.noi 的 557 金线（全国第 50 名），国集链 CTT → CTS → IOI 才可达。
-    // 金线是硬门槛：差 2 分也是银牌、CTT 全链无人，所以这一段必须留一点余量。
+    ranges: [
+      [90, 100], [102, 112], [106, 114],
+      [90, 100], [102, 112], [106, 114],
+    ],
+    // 按 NOI2026 游记校准：满分 705 = 笔试 100 + 两试各 300 + A 类加分 5
     curve: [[0, 0], [0.1, 0.74], [0.2, 0.94], [0.3, 0.97], [0.45, 1], [1, 1]],
-    gate: 'prov', gateText: '进入省队', advanceText: '全国赛金银铜（初中生只能进夏令营）',
-    clock: '2027-07 · 两试',
-    national: 337, anchors: [[0.25, 0.85], [0.4, 0.6], [0.55, 0.148]],
+    gate: 'prov', gateText: '省队（或初中生省选达省队线 E 类）', advanceText: '前 50 金牌进下学年国集（保送清北）',
+    clock: '次年 7 月 · OI 赛制 · 笔试 + 两试',
+    national: 338, anchors: [[0.25, 0.85], [0.4, 0.6], [0.55, 0.148]],
     bands: [
       { pct: 0.148, label: '金牌', tone: 'gold' },
       { pct: 0.6, label: '银牌', tone: 'silver' },
       { pct: 0.85, label: '铜牌', tone: 'bronze' },
     ],
-    note: '正式选手约 337 人（获奖 287 ÷ 85%）：金 50 / 银 152 / 铜 85；总分 = 笔试 100 + 两试各 300；铜牌还要求 ≥100 分',
+    note: '正式选手约 338 人：金 50 / 银 152 / 铜 85；满分 705（笔试 100 + 两试 600 + 省队 A 类 5 分）；前 50 入选下学年国家集训队（CTT）并获保送资格',
   },
   {
-    id: 'ctt', week: 34, name: 'CTT 国家集训队集训', short: 'CTT',
-    kind: 'contest', group: 'OPEN', levels: [7, 7, 7], minutes: 300, days: 3,
-    // 集训队测试：NOI 金 ~ IOI 级，三场
-    ranges: [[100, 110], [106, 114], [106, 114]],
-    curve: [[0, 0], [0.1, 0.3], [0.25, 0.55], [0.45, 0.78], [0.65, 0.9], [1, 1]],
-    gate: 'noi', gateText: 'NOI 前 50（国家集训队 / 保送）', advanceText: '总成绩前 30 名进 CTS',
-    clock: '2027-07 下旬 · 三试',
-    national: 50, anchors: [[0.2, 0.85], [0.5, 0.55], [0.8, 0.2]], bands: [],
-    note: '总成绩 = 作业/互测 10% + CTT 三场各 18%（合计 54%）；测试后取前 30 名进入 CTS',
-  },
-  {
-    id: 'cts', week: 37, name: 'CTS 国家队选拔', short: 'CTS',
-    kind: 'contest', group: 'OPEN', levels: [2, 7, 7], minutes: 300, days: 2,
-    // 国家队选拔：IOI 级；六属性删除后按引擎可达区间压一档
-    ranges: [[106, 114], [106, 114], [106, 114]],
-    curve: [[0, 0], [0.08, 0.25], [0.2, 0.5], [0.4, 0.75], [0.62, 0.9], [1, 1]],
-    gate: 'ctt', gateText: 'CTT 总成绩前 30 名', advanceText: '前 6 名答辩 → 前 4 名国家队',
-    clock: '2027-08 上旬 · 两试',
-    national: 30, anchors: [[0.15, 0.9], [0.45, 0.6], [0.75, 0.25]], bands: [],
-    note: '总成绩 = 作业/互测 10% + CTT 54% + CTS 两场各 18%（36%）；前 6 名进入论文答辩，答辩定 4 人',
-  },
-  {
-    id: 'ioi', week: 40, name: 'IOI 国际信息学奥林匹克', short: 'IOI',
-    kind: 'contest', group: 'OPEN', levels: [6, 7, 7], minutes: 300, days: 2,
-    // IOI：国家队 4 人，国际赛难度；同样按引擎可达区间校准
-    ranges: [[44, 52], [104, 112], [106, 114]],
-    curve: [[0, 0], [0.08, 0.3], [0.2, 0.58], [0.4, 0.82], [0.62, 0.93], [1, 1]],
-    gate: 'cts', gateText: 'CTS 前 4 名（国家队）', advanceText: '国际赛金银铜',
-    clock: '2027-08 中旬 · 两试',
-    national: 4, anchors: [[0.25, 0.9], [0.5, 0.65], [0.75, 0.35]], bands: [
-      { pct: 0.25, label: '金牌', tone: 'gold' },
-      { pct: 0.5, label: '银牌', tone: 'silver' },
-      { pct: 1, label: '铜牌', tone: 'bronze' },
+    id: 'ioi', week: 39, name: 'IOI 国际信息学奥林匹克', short: 'IOI',
+    kind: 'contest', format: 'ioi', group: 'OPEN', levels: [6, 7, 7], minutes: 300, days: 2,
+    // IOI：中国队 4 人出征国际赛（全球约 353 人，满分 600，IOI 实时评测赛制）
+    ranges: [
+      [44, 52], [104, 112], [106, 114],
+      [44, 52], [104, 112], [106, 114],
     ],
-    note: '中国队 4 人出征；按 4 人内部排名发金/银/铜（简化）',
+    curve: [[0, 0], [0.08, 0.3], [0.2, 0.58], [0.4, 0.82], [0.62, 0.93], [1, 1]],
+    gate: 'cts', gateText: '本学年 CTS 前 4 名（国家队）', advanceText: '国际赛金银铜（全球前 1/12 金）',
+    clock: '次年 8 月 · IOI 赛制 · 两试',
+    national: 353, anchors: [[0.358, 0.5], [0.55, 0.25], [0.733, 0.085]],
+    bands: [
+      { pct: 30 / 353, label: '金牌', tone: 'gold' },
+      { pct: 89 / 353, label: '银牌', tone: 'silver' },
+      { pct: 177 / 353, label: '铜牌', tone: 'bronze' },
+    ],
+    note: '中国队 4 人出征国际赛（全球约 353 人，满分 600，IOI 实时评测赛制）；按全球前 1/12 金（30）、前 1/4 银（59）、前 1/2 铜（88）发牌',
   },
 ];
 
@@ -327,6 +358,11 @@ export const PAPER_HISTORY: Record<string, Record<number, number[]>> = {
     2024: [7, 7, 8, 8, 8, 8],
     2025: [4, 6, 7, 8, 8, 8],
     2026: [6, 7, 8, 7, 8, 8],
+  },
+  // CTT（三试，每天 3 题）
+  ctt: {
+    2024: [6, 7, 8, 7, 7, 8, 7, 8, 8],
+    2025: [7, 7, 8, 7, 8, 8, 7, 8, 8],
   },
   // CTS（两试）
   cts: {
@@ -434,10 +470,16 @@ function shiftLines(lines: ScoreLine[], shift: number): ScoreLine[] {
   return lines.map((l) => ({ ...l, min: Math.max(0, Math.round((l.min + shift) / 5) * 5) }));
 }
 
-/** 初赛：陕西 2025 S 线 37 分，全国分位来自官方指导线 */
+/** 初赛：陕西 2025 S 线 37 分，全国分位按真实全客观题卷面分布校准 */
 export const PRELIM_NATIONAL_S = 34400;
-/** 官方指导线：37 分 = 全国前 20%（晋级名额 ≈ 实考 20%）；62.5 分 = 前 5% */
-export const PRELIM_ANCHORS_S: [number, number][] = [[0.37, 0.2], [0.625, 0.05]];
+/** 全国 CSP-S 初赛分位锚点（30 分纯蒙底线 ≈ 前 85%，45 分全国中位 ≈ 前 50%，60 分 ≈ 前 22%，75 分 ≈ 前 7%，88 分 ≈ 前 1.5%） */
+export const PRELIM_ANCHORS_S: [number, number][] = [
+  [0.30, 0.85],
+  [0.45, 0.50],
+  [0.60, 0.22],
+  [0.75, 0.07],
+  [0.88, 0.015],
+];
 
 /** 在锚点之间线性插值出「全国前多少比例」；两端补 (0, 100%) 和 (满分, 1%) */
 export function pctFromAnchors(anchors: [number, number][], ratio: number): number {
@@ -490,12 +532,22 @@ export interface SeasonStudent {
   joined: number;
   /** 岁数（仅 OPv 自定义开局设置，原版名单没有这个字段） */
   age?: number;
+  /** 选手轻量特性词条 */
+  traits?: TraitId[];
+  /** 新生苗子特性是否已揭示（打满 3 场或第 6 周后自动揭晓） */
+  traitsRevealed?: boolean;
+  /** 本人累计打过的比赛场数 */
+  contestsPlayed?: number;
+  // ===== 跨学年国集资格（上学年 NOI 前 50 结转到本学年 12 月 CTT / 2 月 CTS / 8 月 IOI）=====
+  cttEligible?: boolean;
+  /** 上学年 NOI 总分（满分 705），供本学年 CTS 答辩折算 */
+  prevNoiScore?: number;
   // ===== 本学年资格链（每年 6 月清空）=====
   csp1?: { score: number; passed: boolean };
   csp2?: { score: number; rank: number; award: 0 | 1 | 2 | 3 };
-  noip?: { score: number; rank: number; first: boolean };
+  noip?: { score: number; rank: number; first: boolean; reachedFirstLine?: boolean };
   wc?: { score: number; medal: 0 | 1 | 2 | 3 };
-  prov?: { score: number; rank: number; first: boolean; team: boolean; raw?: number };
+  prov?: { score: number; rank: number; first: boolean; team: boolean; category?: 'A' | 'B'; raw?: number };
   apio?: { score: number; medal: 0 | 1 | 2 | 3 };
   noi?: { score: number; medal: 0 | 1 | 2 | 3; selected?: boolean; baosong?: boolean };
   ctt?: { score: number; rank: number; selected: boolean; composite?: number };
@@ -505,11 +557,128 @@ export interface SeasonStudent {
 
 export type SquadFocus = 'main' | 'balanced' | 'reserve';
 
+export type CareAction = 'rest' | 'weak' | 'meta';
+export interface CareOrder {
+  name: string;
+  action: CareAction;
+}
+export const CARE_MAX = 2;
+export const CARE_INFO: Record<CareAction, { name: string; short: string; note: string }> = {
+  rest: { name: '单人轮休', short: '休', note: '本周不练，单独大幅回疲劳，不影响全队训练' },
+  weak: { name: '专项补短', short: '短', note: '改练自己最弱专题且效率 ×1.35（额外疲劳 +3）' },
+  meta: { name: '代码调试', short: '码', note: '强化编码/调试/阅读，压低写挂率（专题效率 ×0.65）' },
+};
+
+export type SpecialProjectId = 'suspend' | 'camp' | 'alumni' | 'drill';
+export interface SpecialProjectDef {
+  id: SpecialProjectId;
+  name: string;
+  costBudget: number;
+  costSuspend: number;
+  limitPerYear?: number;
+  note: string;
+  icon: 'flag' | 'rocket' | 'award' | 'target';
+}
+
+export const SPECIAL_PROJECTS: SpecialProjectDef[] = [
+  {
+    id: 'suspend',
+    name: '申请停课集训',
+    costBudget: 0,
+    costSuspend: 1,
+    note: '全队本周成长 ×1.45、作业 +3；额外疲劳 +10，下周文化课压力事件概率翻倍',
+    icon: 'flag',
+  },
+  {
+    id: 'camp',
+    name: '外校联训营',
+    costBudget: 25,
+    costSuspend: 0,
+    limitPerYear: 3,
+    note: '主专题成长 ×1.65（突破 120 后衰减减缓）+ 顺手补弱项；额外疲劳 +14，每学年限 3 次',
+    icon: 'rocket',
+  },
+  {
+    id: 'alumni',
+    name: '请往届学长讲课',
+    costBudget: 15,
+    costSuspend: 0,
+    note: '邀毕业强手返校讲其最强专题，定向补专题 + 提调试阅读 + 全队疲劳 −4',
+    icon: 'award',
+  },
+  {
+    id: 'drill',
+    name: '赛前防挂题包',
+    costBudget: 12,
+    costSuspend: 0,
+    note: '全队代码/调试显著提升、作业 +4；本周专题成长 ×0.8、额外疲劳 +4',
+    icon: 'target',
+  },
+];
+
+export interface HonorEntry {
+  year: number;
+  grade: Grade;
+  stageId: StageId;
+  stageShort: string;
+  score: number;
+  rank: number;
+  award: string;
+}
+
+export interface StudentArchive {
+  name: string;
+  joinedYear: number;
+  graduatedYear: number | null;
+  entryGrade?: Grade;
+  underdog?: boolean;
+  startOverall: number;
+  peakOverall: number;
+  maxGrade: Grade;
+  bestTopic: Topic;
+  destination?: string;
+  provFirsts: number;
+  provTeams: number;
+  noiGold: number;
+  noiSilver: number;
+  noiBronze: number;
+  noiSelected: number;
+  ioiMedals: number;
+  officialCount: number;
+  worstDrop?: { year: number; stageShort: string; problemId: number; delta: number; reason: string };
+  bestGain?: { year: number; stageShort: string; problemId: number; delta: number; reason: string };
+  honors: HonorEntry[];
+}
+
+export interface RecordEntry {
+  name: string;
+  year: number;
+  value: number;
+  detail: string;
+}
+
+export interface SeasonRecords {
+  highestOverall?: RecordEntry;
+  highestOfficialRatio?: RecordEntry;
+  worstDrop?: RecordEntry;
+  bestGain?: RecordEntry;
+  fastestGrowth?: RecordEntry;
+  mostOfficialContests?: RecordEntry;
+}
+
 export interface WeekPlan {
   topic: Topic | null;
   intensity: WeekIntensity;
   /** 教练精力分配：主力优先 / 均衡 / 梯队优先 */
   focus?: SquadFocus;
+  /** 梯队单独专题（不传则跟随主力专题） */
+  reserveTopic?: Topic | null;
+  /** 每周最多 2 个人的个别关照微调 */
+  care?: CareOrder[];
+  /** 每周最多选 1 项战略特训项目 */
+  special?: SpecialProjectId | null;
+  /** 请往届学长讲课时指定的毕业生名字 */
+  alumniName?: string | null;
   /** 校内模拟赛配置：难度档 / 题数 / 时长 */
   mock?: MockConfig;
 }
@@ -539,6 +708,95 @@ export interface TrainingReport {
   week: number;
   plan: WeekPlan;
   lines: TrainingLine[];
+  specialNote?: string;
+  breakthroughNote?: string;
+}
+
+export type ScenarioId = 'standard' | 'desert' | 'lastStand';
+export interface ScenarioDef {
+  id: ScenarioId;
+  name: string;
+  badge: string;
+  note: string;
+  yearsLabel: string;
+}
+
+export const SCENARIOS: ScenarioDef[] = [
+  {
+    id: 'standard',
+    name: '标准校队',
+    badge: '默认',
+    note: '声望 50 开局，传承正常校队梯度，自由执教多年打造百年强校',
+    yearsLabel: '不限学年',
+  },
+  {
+    id: 'desert',
+    name: '荒漠重建',
+    badge: '高难挑战',
+    note: '声望 20 · 经费 25 · 停课 1 周 · 全员从零起步，5 年极限冲省队',
+    yearsLabel: '5 年重建',
+  },
+  {
+    id: 'lastStand',
+    name: '背水一战',
+    badge: '单季冲刺',
+    note: '仅有 1 学年窗口！声望 65 · 经费 90 · 停课 5 周，一季定胜负',
+    yearsLabel: '1 年限时',
+  },
+];
+
+export type SeasonGoalId = 'safe' | 'ambitious' | 'gamble';
+export interface SeasonGoalDef {
+  id: SeasonGoalId;
+  name: string;
+  requirement: string;
+  rewardText: string;
+  penaltyText: string;
+}
+
+export const SEASON_GOALS: SeasonGoalDef[] = [
+  {
+    id: 'safe',
+    name: '稳健保底',
+    requirement: '本学年省一（CSP-S / NOIP）≥ 2 人',
+    rewardText: '经费 +10 · 声望 +2',
+    penaltyText: '声望 −3',
+  },
+  {
+    id: 'ambitious',
+    name: '进取争先',
+    requirement: '本学年省队 ≥ 1 人 或 省一 ≥ 4 人',
+    rewardText: '经费 +18 · 下学年停课 +1 周 · 声望 +4',
+    penaltyText: '声望 −5',
+  },
+  {
+    id: 'gamble',
+    name: '豪赌冲金',
+    requirement: '本学年 NOI 奖牌 ≥ 1 块 或 省队 ≥ 3 人',
+    rewardText: '经费 +30 · 下学年停课 +2 周 · 声望 +7',
+    penaltyText: '声望 −8',
+  },
+];
+
+export interface GoalResult {
+  goalId: SeasonGoalId;
+  title: string;
+  met: boolean;
+  note: string;
+  rewardBudget: number;
+  rewardSuspend: number;
+  deltaPrestige: number;
+}
+
+export interface RivalComparison {
+  school: string;
+  isLocal: boolean;
+  ace: string;
+  aceScore: number;
+  ourTop: number;
+  rivalMedals: number;
+  ourMedals: number;
+  beaten: boolean;
 }
 
 export type ContestKind = 'practice' | 'prelim' | 'official';
@@ -553,6 +811,7 @@ export interface ContestRecap {
   year: number;
   week: number;
   kind: ContestKind;
+  format?: ContestFormat;
   stageId?: StageId;
   title: string;
   levels: number[];
@@ -580,6 +839,10 @@ export interface ContestRecap {
   advanced?: string[];
   /** 因伤病/处分停赛而缺考的人（赛后 sitOut 已消耗，只能从 recap 里查到赛前名单） */
   absent?: string[];
+  /** 本场使用的赛前战术指令 */
+  tactic?: ContestTactic;
+  /** 宿敌名校赛后对位结果 */
+  rivals?: RivalComparison[];
   note?: string;
   cutoff?: number;
 }
@@ -610,6 +873,7 @@ export interface YearSummary {
   ioiBronze: number;
   avgOverallGain: number;
   graduates: string[];
+  goalResult?: GoalResult;
 }
 
 export interface SeasonState {
@@ -638,11 +902,35 @@ export interface SeasonState {
   /** 上季的梯队（新学年选队页预填） */
   lastReserve: string[];
   /** 本学年毕业的高三学生（选队页展示） */
-  graduates: { name: string; grade: Grade; overall: number }[];
+  graduates: { name: string; grade: Grade; overall: number; destination?: string }[];
   /** 本学年新入学的高一新生 */
   newcomers: string[];
   /** 历年总结 */
   history: YearSummary[];
+  /** 校队经费（点数，1 点≈1 千元） */
+  budget?: number;
+  /** 停课集训额度（周/学年） */
+  suspendQuota?: number;
+  /** 本学年外出联训营已用次数 */
+  campUsed?: number;
+  /** 停课引发的下周文化课压力翻倍标志 */
+  suspendPressure?: number;
+  /** 跨学年选手长期档案（含毕业生去向与全部正赛履历） */
+  archives?: Record<string, StudentArchive>;
+  /** 跨学年校史奇闻纪录榜 */
+  records?: SeasonRecords;
+  /** 开局剧本（标准 / 荒漠重建 / 背水一战） */
+  scenario?: ScenarioId;
+  /** 本学年校领导目标协议 */
+  yearGoal?: SeasonGoalId;
+  /** 下场正赛的赛前战术指令 */
+  nextTactic?: ContestTactic;
+  /** 连续剧事件链排期 */
+  scheduledEvents?: { id: string; minWeek: number; target?: string | null }[];
+  /** 连续剧剧情状态标记 */
+  storyFlags?: Record<string, string>;
+  /** 学年目标达标结转到下学年的额外停课额度 */
+  nextYearSuspendBonus?: number;
   // ===== 每周插曲（沿用 M1）=====
   pendingEvent: PendingEvent | null;
   eventLog: EventLogEntry[];
@@ -759,6 +1047,9 @@ function makeNewcomer(idx: number, year: number, seed: number, template: CohortE
     onTeam: false,
     onReserve: false,
     joined: year,
+    traits: assignTraits(name, seed + year * 977 + idx * 31, grade),
+    traitsRevealed: false,
+    contestsPlayed: 0,
   };
 }
 
@@ -780,12 +1071,16 @@ function talentFromGrowth(growth: number): number {
   return Math.round((0.9 + (clamp(growth, 0, 100) - 40) / 59 * 0.45) * 1000) / 1000;
 }
 
-export function createSeason(seed: number, careerYears = MAX_YEARS): SeasonState {
-  const career = Math.max(1, Math.min(MAX_YEARS, careerYears));
+export function createSeason(seed: number, careerYears = MAX_YEARS, scenario: ScenarioId = 'standard'): SeasonState {
+  const career = scenario === 'lastStand'
+    ? 1
+    : scenario === 'desert'
+      ? (careerYears === MAX_YEARS ? 5 : Math.max(1, Math.min(MAX_YEARS, careerYears)))
+      : Math.max(1, Math.min(MAX_YEARS, careerYears));
   const cohort = buildCohort(seed >>> 0);
   const rng = makeRng((seed * 7919 + 17) >>> 0);
   const grades = assignGrades(cohort.map((e) => e.name), seed >>> 0);
-  const students: SeasonStudent[] = cohort.map((e) => {
+  const students: SeasonStudent[] = cohort.map((e, idx) => {
     const over = PROFILE_BY_NAME[e.name];
     const skills = cloneSkills(e.skills);
     // 属性表只保留 topics / 代码·阅读·调试 / 年级 / 天赋
@@ -796,25 +1091,39 @@ export function createSeason(seed: number, careerYears = MAX_YEARS): SeasonState
     // 水平基线：按调研出的实力指数整体缩放（保留个人知识点形状：偏数学的还是偏图论）
     const level = levelOf(e.name);
     if (level) scaleSkillsToOverall(skills, level.ability);
+    const grade: Grade = scenario === 'desert'
+      ? (([1, 1, 2, 3, 4, 4][idx % 6] as Grade))
+      : (level?.grade ?? over?.grade ?? grades.get(e.name) ?? 4);
+    if (scenario === 'desert') {
+      const targetOv = 26 + ((seed + idx * 37) % 18);
+      scaleSkillsToOverall(skills, targetOv);
+    }
     // 天赋表填了就用表里的，没填沿用种子随机；随机数照常消耗，保证没填的人结果不变
     const talentRoll = 0.85 + rng() * 0.3;
     return {
       name: e.name,
       skills,
       startSkills: cloneSkills(skills),
-      grade: level?.grade ?? over?.grade ?? grades.get(e.name) ?? 4,
+      grade,
       startOverall: overallOf(skills),
       startRank: 0,
       fatigue: 0,
-    homework: 50,
-    sitOut: 0,
+      homework: 50,
+      sitOut: 0,
       talent: level ? talentFromGrowth(level.growth) : (over?.talent ?? TALENT_BY_NAME[e.name] ?? talentRoll),
       onTeam: false,
       onReserve: false,
       joined: 1,
+      traits: assignTraits(e.name, seed >>> 0, grade),
+      traitsRevealed: grade >= 4,
+      contestsPlayed: 0,
     };
   });
   rankStudents(students);
+  const archives = syncArchiveSnapshots({}, students, 1, false, students.length);
+  const prestige = scenario === 'desert' ? 20 : scenario === 'lastStand' ? 65 : 50;
+  const budget = scenario === 'desert' ? 25 : scenario === 'lastStand' ? 90 : initialBudgetFor(prestige);
+  const suspendQuota = scenario === 'desert' ? 1 : scenario === 'lastStand' ? 5 : initialSuspendFor(prestige);
   const state: SeasonState = {
     seed: seed >>> 0,
     careerYears: career,
@@ -824,8 +1133,20 @@ export function createSeason(seed: number, careerYears = MAX_YEARS): SeasonState
     students,
     team: [],
     reserve: [],
-    prestige: 50,
-      plan: null,
+    prestige,
+    budget,
+    suspendQuota,
+    campUsed: 0,
+    suspendPressure: 0,
+    archives,
+    records: {},
+    scenario,
+    yearGoal: 'safe',
+    nextTactic: 'normal',
+    scheduledEvents: [],
+    storyFlags: {},
+    nextYearSuspendBonus: 0,
+    plan: null,
     report: null,
     lastContest: null,
     contests: [],
@@ -893,7 +1214,15 @@ export function applyOpvToSeason(s: SeasonState, cfg: OpvConfig | null = loadOpv
   };
   // 只重排名次，不重算其他人的开学综合
   students.slice().sort((a, b) => b.startOverall - a.startOverall).forEach((x, i) => { x.startRank = i + 1; });
-  return { ...s, students, prestige: cfg.prestige };
+  const archives = syncArchiveSnapshots(s.archives ?? {}, [students[idx]], s.year, true);
+  return {
+    ...s,
+    students,
+    prestige: cfg.prestige,
+    budget: initialBudgetFor(cfg.prestige),
+    suspendQuota: initialSuspendFor(cfg.prestige),
+    archives,
+  };
 }
 
 function meanDifficulty(problems: Problem[]): number {
@@ -921,7 +1250,12 @@ function rankStudents(students: SeasonStudent[]) {
   students.slice().sort((a, b) => b.startOverall - a.startOverall).forEach((st, i) => { st.startRank = i + 1; });
 }
 
-export function setSquad(s: SeasonState, names: string[], reserve: string[] = []): SeasonState {
+export function setSquad(
+  s: SeasonState,
+  names: string[],
+  reserve: string[] = [],
+  yearGoal?: SeasonGoalId,
+): SeasonState {
   // 主力人数上不封顶；梯队默认最多 12 人，避免一屏塞不下。
   const valid = new Set(s.students.map((st) => st.name));
   const main = [...new Set(names)].filter((n) => valid.has(n));
@@ -930,6 +1264,7 @@ export function setSquad(s: SeasonState, names: string[], reserve: string[] = []
     ...s,
     team: main,
     reserve: res,
+    yearGoal: yearGoal ?? s.yearGoal ?? 'safe',
     phase: 'plan',
     students: s.students.map((st) => ({
       ...st,
@@ -955,42 +1290,201 @@ export function reserveStudents(s: SeasonState): SeasonStudent[] {
     .filter((x): x is SeasonStudent => Boolean(x));
 }
 
-// ===== 随机事件（每周一个，排训练前处理） =====
+// ===== 资源、档案与校史纪录工具 =====
+const initialBudgetFor = (prestige: number) => Math.round(30 + clamp(prestige, 0, 100) * 0.8);
+const initialSuspendFor = (prestige: number) => (prestige >= 75 ? 5 : 4);
+
+export const budgetOf = (s: SeasonState): number => s.budget ?? 70;
+export const suspendQuotaOf = (s: SeasonState): number => s.suspendQuota ?? 4;
+export const campUsedOf = (s: SeasonState): number => s.campUsed ?? 0;
+
+function bestTopicOf(st: SeasonStudent): Topic {
+  let best: Topic = 'dp';
+  let val = -1;
+  for (const t of TOPIC_LIST) {
+    if (st.skills.topics[t] > val) { val = st.skills.topics[t]; best = t; }
+  }
+  return best;
+}
+
+function weakestTopicOfStudent(st: SeasonStudent): Topic {
+  let worst: Topic = 'dp';
+  let val = Infinity;
+  for (const t of TOPIC_LIST) {
+    if (st.skills.topics[t] < val) { val = st.skills.topics[t]; worst = t; }
+  }
+  return worst;
+}
+
+export function honorScoreOf(a: StudentArchive): number {
+  return (
+    a.ioiMedals * 60 +
+    a.noiGold * 40 +
+    a.noiSelected * 20 +
+    a.noiSilver * 22 +
+    a.noiBronze * 12 +
+    a.provTeams * 15 +
+    a.provFirsts * 4 +
+    a.peakOverall * 0.2
+  );
+}
+
+export function archiveOf(s: SeasonState, name: string): StudentArchive | undefined {
+  return s.archives?.[name];
+}
+
+export function recordsOf(s: SeasonState): SeasonRecords {
+  return s.records ?? {};
+}
+
+export function alumniPoolOf(s: SeasonState): StudentArchive[] {
+  return Object.values(s.archives ?? {})
+    .filter((a) => a.graduatedYear !== null)
+    .sort((a, b) => honorScoreOf(b) - honorScoreOf(a) || b.peakOverall - a.peakOverall);
+}
+
+export function canUseSpecial(s: SeasonState, id: SpecialProjectId): { ok: boolean; reason?: string } {
+  const def = SPECIAL_PROJECTS.find((p) => p.id === id);
+  if (!def) return { ok: false, reason: '未知项目' };
+  if (budgetOf(s) < def.costBudget) return { ok: false, reason: `经费不足 ${def.costBudget}` };
+  if (suspendQuotaOf(s) < def.costSuspend) return { ok: false, reason: '本学年停课额度已用完' };
+  if (def.limitPerYear && campUsedOf(s) >= def.limitPerYear) {
+    return { ok: false, reason: `本学年已满 ${def.limitPerYear} 次` };
+  }
+  return { ok: true };
+}
+
+function createEmptyArchive(st: SeasonStudent, year: number, totalCount = 54): StudentArchive {
+  const ov = overallOf(st.skills);
+  return {
+    name: st.name,
+    joinedYear: st.joined ?? year,
+    graduatedYear: null,
+    entryGrade: st.grade,
+    underdog: st.startRank > 0 && st.startRank > Math.round(totalCount * 0.8),
+    startOverall: st.startOverall || ov,
+    peakOverall: ov,
+    maxGrade: st.grade,
+    bestTopic: bestTopicOf(st),
+    provFirsts: 0,
+    provTeams: 0,
+    noiGold: 0,
+    noiSilver: 0,
+    noiBronze: 0,
+    noiSelected: 0,
+    ioiMedals: 0,
+    officialCount: 0,
+    honors: [],
+  };
+}
+
+function syncArchiveSnapshots(
+  prev: Record<string, StudentArchive>,
+  students: SeasonStudent[],
+  year: number,
+  resetStart = false,
+  totalCount = students.length,
+): Record<string, StudentArchive> {
+  const next: Record<string, StudentArchive> = { ...prev };
+  for (const st of students) {
+    const ov = overallOf(st.skills);
+    const cur = next[st.name] ?? createEmptyArchive(st, year, totalCount);
+    next[st.name] = {
+      ...cur,
+      entryGrade: cur.entryGrade ?? st.grade,
+      underdog: cur.underdog ?? (st.startRank > 0 && st.startRank > Math.round(totalCount * 0.8)),
+      startOverall: resetStart ? (st.startOverall || ov) : cur.startOverall,
+      peakOverall: resetStart ? ov : Math.max(cur.peakOverall, ov),
+      maxGrade: Math.max(cur.maxGrade, st.grade) as Grade,
+      bestTopic: bestTopicOf(st),
+    };
+  }
+  return next;
+}
+
+function destinationOf(st: SeasonStudent, arch: StudentArchive): string {
+  const ioiMedal = arch.ioiMedals > 0 || (st.ioi?.medal ?? 0) > 0;
+  const noiGold = arch.noiGold > 0 || st.noi?.medal === 1 || Boolean(st.noi?.selected);
+  const noiMedal = arch.noiSilver > 0 || arch.noiBronze > 0 || (st.noi?.medal ?? 0) >= 2;
+  const provTeam = arch.provTeams > 0 || Boolean(st.prov?.team);
+  const provFirst = arch.provFirsts > 0 || Boolean(st.noip?.first) || st.csp2?.award === 1;
+
+  if (ioiMedal || Boolean(st.cts?.selected)) return '清北姚班 / 图灵班（IOI 国家队保送）';
+  if (noiGold) return '清北保送（NOI 国家集训队）';
+  if (noiMedal || provTeam) return '强基破格入围清北 / 华五计算机';
+  if (provFirst) return '回归文化课，考入 985 计算机 / 软工';
+  return '告别机房回归文化课，开启新旅程';
+}
+
+// ===== 赛场与随机事件 =====
+const PRESSURE_EVENT_IDS = new Set(['teacher', 'parent', 'midterm', 'parents_job']);
+
 /** 每周出事件的概率：一学年 40 周大约 25 次 */
 const EVENT_CHANCE = 0.62;
 
-function rollWeekEvent(s: SeasonState): PendingEvent | null {
-  if (!s.team.length) return null;
+function rollWeekEvent(s: SeasonState): { event: PendingEvent | null; scheduledLeft: { id: string; minWeek: number; target?: string | null }[] } {
+  const scheduled = s.scheduledEvents ?? [];
+  const dueIdx = scheduled.findIndex((item) => item.minWeek <= s.week);
+  if (dueIdx >= 0) {
+    const due = scheduled[dueIdx];
+    const def = eventDefById(due.id);
+    if (def) {
+      const target = def.needsTarget
+        ? (due.target && s.team.includes(due.target) ? due.target : s.team[0] ?? null)
+        : null;
+      return {
+        event: {
+          id: def.id,
+          week: s.week,
+          tag: def.tag,
+          title: def.title,
+          text: def.text.replace('{name}', target ?? '一个队员'),
+          target,
+          options: def.options.map((o) => ({ id: o.id, label: o.label, note: o.note })),
+        },
+        scheduledLeft: scheduled.filter((_, i) => i !== dueIdx),
+      };
+    }
+  }
+
+  if (!s.team.length) return { event: null, scheduledLeft: scheduled };
   const rng = makeRng((s.seed * 8191 + s.year * 104729 + s.week * 7331 + 3) >>> 0);
-  if (rng() > EVENT_CHANCE) return null;
+  if (rng() > EVENT_CHANCE) return { event: null, scheduledLeft: scheduled };
 
   const lastId = s.eventLog[s.eventLog.length - 1]?.id ?? null;
-  let pool = EVENT_DEFS.slice();
+  let pool = EVENT_DEFS.filter((d) => !d.chainOnly);
   if (pool.length > 1) pool = pool.filter((d) => d.id !== lastId);
 
-  const total = pool.reduce((a, d) => a + d.weight, 0);
+  const pressure = (s.suspendPressure ?? 0) > 0;
+  const weightOf = (d: (typeof EVENT_DEFS)[number]) =>
+    pressure && PRESSURE_EVENT_IDS.has(d.id) ? d.weight * 2 : d.weight;
+
+  const total = pool.reduce((a, d) => a + weightOf(d), 0);
   let r = rng() * total;
   let def = pool[pool.length - 1];
   for (const d of pool) {
-    r -= d.weight;
+    r -= weightOf(d);
     if (r <= 0) { def = d; break; }
   }
   const target = def.needsTarget ? s.team[Math.floor(rng() * s.team.length)] ?? null : null;
   return {
-    id: def.id,
-    week: s.week,
-    tag: def.tag,
-    title: def.title,
-    text: def.text.replace('{name}', target ?? '一个队员'),
-    target,
-    options: def.options.map((o) => ({ id: o.id, label: o.label, note: o.note })),
+    event: {
+      id: def.id,
+      week: s.week,
+      tag: def.tag,
+      title: def.title,
+      text: def.text.replace('{name}', target ?? '一个队员'),
+      target,
+      options: def.options.map((o) => ({ id: o.id, label: o.label, note: o.note })),
+    },
+    scheduledLeft: scheduled,
   };
 }
 
 function withEvent(s: SeasonState): SeasonState {
   if (s.phase !== 'plan') return s;
-  const ev = rollWeekEvent(s);
-  return { ...s, pendingEvent: ev, lastEventResult: null };
+  const { event, scheduledLeft } = rollWeekEvent(s);
+  return { ...s, pendingEvent: event, scheduledEvents: scheduledLeft, lastEventResult: null, suspendPressure: 0 };
 }
 
 function applyPatch(st: SeasonStudent, p: StudentPatch): SeasonStudent {
@@ -1026,11 +1520,26 @@ export function chooseEventOption(s: SeasonState, optionId: string): SeasonState
     return st;
   });
 
+  const nextScheduled = [...(s.scheduledEvents ?? [])];
+  if (patch.followUp) {
+    nextScheduled.push({
+      id: patch.followUp.id,
+      minWeek: pending.week + patch.followUp.delayWeeks,
+      target: patch.followUp.keepTarget ? pending.target : null,
+    });
+  }
+  const nextFlags = patch.storyFlag
+    ? { ...(s.storyFlags ?? {}), [patch.storyFlag[0]]: patch.storyFlag[1] }
+    : s.storyFlags;
+
   return {
     ...s,
     students,
     prestige: clamp(s.prestige + (patch.prestige ?? 0), 0, 100),
+    budget: clamp(budgetOf(s) + (patch.budget ?? 0), 0, 200),
     pendingEvent: null,
+    scheduledEvents: nextScheduled,
+    ...(nextFlags ? { storyFlags: nextFlags } : {}),
     weekMult: s.weekMult * (patch.growthMult ?? 1),
     lastEventResult: patch.log,
     eventLog: [
@@ -1077,68 +1586,247 @@ export function planWeek(s: SeasonState, plan: WeekPlan): SeasonState {
   const baseGain = INTENSITY_GAIN[plan.intensity];
   const lines: TrainingLine[] = [];
 
+  // 特训项目校验与资源结算
+  let activeSpecial: SpecialProjectId | null = plan.special ?? null;
+  if (activeSpecial && !canUseSpecial(s, activeSpecial).ok) activeSpecial = null;
+  const specialDef = activeSpecial ? SPECIAL_PROJECTS.find((p) => p.id === activeSpecial) : undefined;
+  let nextBudget = budgetOf(s) - (specialDef?.costBudget ?? 0);
+  const nextSuspendQuota = suspendQuotaOf(s) - (specialDef?.costSuspend ?? 0);
+  const nextCampUsed = campUsedOf(s) + (activeSpecial === 'camp' ? 1 : 0);
+  const nextSuspendPressure = activeSpecial === 'suspend' ? 1 : 0;
+
+  // 请往届学长讲课：锁定讲授人与专题
+  const alumniPool = alumniPoolOf(s);
+  const invitedAlumnus = activeSpecial === 'alumni'
+    ? (alumniPool.find((a) => a.name === plan.alumniName) ?? alumniPool[0] ?? null)
+    : null;
+  const teamWeakestTopic = (() => {
+    const squad = teamStudents(s);
+    if (!squad.length) return 'dp' as Topic;
+    return TOPIC_LIST.slice().sort((a, b) => {
+      const av = squad.reduce((sum, x) => sum + x.skills.topics[a], 0);
+      const bv = squad.reduce((sum, x) => sum + x.skills.topics[b], 0);
+      return av - bv;
+    })[0];
+  })();
+  const alumniTopic: Topic = invitedAlumnus?.bestTopic ?? plan.topic ?? teamWeakestTopic;
+  const specialGrowthMult = activeSpecial === 'suspend'
+    ? 1.45
+    : activeSpecial === 'camp'
+      ? 1.65
+      : activeSpecial === 'drill'
+        ? 0.8
+        : 1;
+
+  let specialNote: string | undefined;
+  if (activeSpecial === 'suspend') {
+    specialNote = `特训·申请停课集训：消耗 1 周停课额度（余 ${nextSuspendQuota} 周），全队成长 ×1.45、疲劳 +10，下周文化课压力事件概率翻倍。`;
+  } else if (activeSpecial === 'camp') {
+    specialNote = `特训·外校联训营：消耗 25 经费（余 ${nextBudget}），主专题成长 ×1.65（超频区衰减减缓）+ 顺手补弱项，全队疲劳 +14。`;
+  } else if (activeSpecial === 'alumni') {
+    const speaker = invitedAlumnus ? `${invitedAlumnus.name}（${invitedAlumnus.graduatedYear}届）` : '校史往届金牌学长';
+    specialNote = `特训·学长返校讲课：消耗 15 经费（余 ${nextBudget}），邀 ${speaker} 讲授「${TOPIC_NAMES[alumniTopic]}」，定向提专题与调试阅读，全队疲劳 −4。`;
+  } else if (activeSpecial === 'drill') {
+    specialNote = `特训·赛前防挂题包：消耗 12 经费（余 ${nextBudget}），全队代码/调试显著提升、作业 +4，专题成长 ×0.8、疲劳 +4。`;
+  }
+
+  // 个别关照槽位（最多 2 人，仅限主力/梯队）
+  const careMap = new Map<string, CareAction>();
+  for (const ord of (plan.care ?? []).slice(0, CARE_MAX)) {
+    if (!careMap.has(ord.name)) careMap.set(ord.name, ord.action);
+  }
+
   // 带的人越多，每人分到的教练注意力越少（6 人满额，按 0.6 次方稀释，最少 0.2）
   const sizePenalty = Math.max(0.2, Math.pow(TEAM_MIN / Math.max(TEAM_MIN, s.team.length), 0.6));
   const focus: SquadFocus = plan.focus ?? 'balanced';
+  // 开窍顿悟：使用独立随机流，不扰动常规训练随机数；每周最多 1 名低疲劳主力/梯队队员触发
+  const btRng = makeRng((s.seed * 4099 + s.year * 997 + s.week * 313 + 7) >>> 0);
+  const btCandidates = s.students.filter(
+    (st) => (st.onTeam || st.onReserve) && st.fatigue < 60 && careMap.get(st.name) !== 'rest',
+  );
+  const breakthroughTarget = plan.intensity !== 'rest' && btCandidates.length > 0 && btRng() < 0.045
+    ? btCandidates[Math.floor(btRng() * btCandidates.length)]?.name ?? null
+    : null;
+  let breakthroughNote: string | undefined;
+
   const students = s.students.map((st) => {
     const skills = cloneSkills(st.skills);
+    const inSquad = st.onTeam || st.onReserve;
+    const care = inSquad ? careMap.get(st.name) : undefined;
+    const attention = st.onTeam
+      ? (focus === 'main' ? 1 : focus === 'reserve' ? 0.55 : 0.8)
+      : st.onReserve
+        ? (focus === 'main' ? 0.35 : focus === 'reserve' ? 1 : 0.7)
+        : 0.2;
+
+    if (care === 'rest') {
+      const rec = -(16 + 0.22 * st.fatigue);
+      const fatigue = clamp(st.fatigue + rec, 0, 100);
+      const homework = clamp((st.homework ?? 50) - 0.6, 0, 100);
+      if (st.onTeam) {
+        lines.push({ name: st.name, text: '【个别轮休】本周单人暂停训练，集中回了一波状态', tone: 'ok', fatigue });
+      }
+      return { ...st, skills, fatigue, homework };
+    }
+
     let growth = 0;
     let trainedTopic: Topic | null = null;
     if (k > 0) {
-      const inSquad = st.onTeam || st.onReserve;
-      trainedTopic = inSquad && plan.topic ? plan.topic : TOPIC_LIST[Math.floor(rng() * TOPIC_LIST.length)] ?? null;
+      if (care === 'weak') {
+        trainedTopic = weakestTopicOfStudent(st);
+      } else if (st.onReserve && plan.reserveTopic) {
+        trainedTopic = plan.reserveTopic;
+      } else if (inSquad && plan.topic) {
+        trainedTopic = plan.topic;
+      } else {
+        trainedTopic = TOPIC_LIST[Math.floor(rng() * TOPIC_LIST.length)] ?? null;
+      }
       if (trainedTopic) {
         const cur = skills.topics[trainedTopic];
-        const attention = st.onTeam
-          ? (focus === 'main' ? 1 : focus === 'reserve' ? 0.55 : 0.8)
-          : st.onReserve
-            ? (focus === 'main' ? 0.35 : focus === 'reserve' ? 1 : 0.7)
-            : 0.2;
-        // 疲劳只减缓训练效率；越接近上限边际越小，但不至于完全练不动。
-        growth = Math.pow(Math.max(0, 1 - cur), TRAIN_EXP) * TRAIN_BASE * k * attention
-          * sizePenalty * st.talent * fatigueTrainMult(st.fatigue);
+        // OPv 超频区（> 0.8 = 120 知识点）按 OPV_ABILITY_CEIL 平滑衰减；外校联训营进一步减缓超频衰减
+        let headroom = cur <= 0.8
+          ? Math.max(0, 1 - cur)
+          : (IS_OPV ? Math.max(0, (OPV_ABILITY_CEIL - cur) / (OPV_ABILITY_CEIL - 0.8)) * 0.2 : Math.max(0, 1 - cur));
+        if (activeSpecial === 'camp' && cur > 0.8) {
+          headroom = Math.max(headroom, 0.22);
+        }
+        const careMult = care === 'weak' ? 1.35 : care === 'meta' ? 0.65 : 1;
+        // 选手特性训练加成：大器晚成（高中）/ 偏科怪才（练最强专题）/ 高能冲刺（低疲劳）
+        const tr = st.traits ?? [];
+        const traitMult = (tr.includes('lateBloomer') && isSenior(st.grade) ? 1.22 : 1)
+          * (tr.includes('specialist') && trainedTopic === bestTopicOf(st) ? 1.40 : 1)
+          * (tr.includes('sprinter') && st.fatigue < 40 ? 1.18 : 1);
+        growth = Math.pow(headroom, TRAIN_EXP) * TRAIN_BASE * k * attention
+          * sizePenalty * st.talent * fatigueTrainMult(st.fatigue)
+          * specialGrowthMult * careMult * traitMult;
         growth *= 0.75 + rng() * 0.5;
         growth *= s.weekMult;
         skills.topics[trainedTopic] = clamp(cur + growth, 0.05, ABILITY_CEIL);
-        skills.coding = clamp(skills.coding + growth * 0.12, 0.05, ABILITY_CEIL);
-        skills.debug = clamp(skills.debug + growth * 0.1, 0.05, ABILITY_CEIL);
+        skills.coding = clamp(skills.coding + growth * 0.12, 0.05, NORMAL_ABILITY_CEIL);
+        skills.debug = clamp(skills.debug + growth * 0.1, 0.05, NORMAL_ABILITY_CEIL);
       }
     }
+
+    const hitBreakthrough = st.name === breakthroughTarget && trainedTopic !== null;
+    if (hitBreakthrough && trainedTopic) {
+      skills.topics[trainedTopic] = clamp(skills.topics[trainedTopic] + 0.025, 0.05, ABILITY_CEIL);
+      skills.coding = clamp(skills.coding + 0.01, 0.05, NORMAL_ABILITY_CEIL);
+      breakthroughNote = `开窍顿悟：${st.name} 本周在「${TOPIC_NAMES[trainedTopic]}」突然打通任督二脉，专题与代码手感额外暴涨！`;
+    }
+
+    // 个别关照：代码调试强化
+    if (care === 'meta') {
+      skills.coding = clamp(skills.coding + 0.015 * st.talent, 0.05, NORMAL_ABILITY_CEIL);
+      skills.debug = clamp(skills.debug + 0.016 * st.talent, 0.05, NORMAL_ABILITY_CEIL);
+      skills.reading = clamp(skills.reading + 0.012 * st.talent, 0.05, NORMAL_ABILITY_CEIL);
+    }
+
+    // 特训项目额外收益与疲劳/作业影响
+    let specialFatigue = 0;
+    let specialHw = 0;
+    if (inSquad && activeSpecial === 'suspend') {
+      specialFatigue = 10;
+      specialHw = 3;
+    } else if (inSquad && activeSpecial === 'camp') {
+      const wt = weakestTopicOfStudent(st);
+      skills.topics[wt] = clamp(skills.topics[wt] + 0.008 * attention, 0.05, ABILITY_CEIL);
+      specialFatigue = 14;
+    } else if (inSquad && activeSpecial === 'alumni') {
+      skills.topics[alumniTopic] = clamp(skills.topics[alumniTopic] + 0.015 * attention * st.talent, 0.05, ABILITY_CEIL);
+      skills.debug = clamp(skills.debug + 0.01 * attention, 0.05, NORMAL_ABILITY_CEIL);
+      skills.reading = clamp(skills.reading + 0.008 * attention, 0.05, NORMAL_ABILITY_CEIL);
+      specialFatigue = -4;
+      specialHw = 2;
+    } else if (inSquad && activeSpecial === 'drill') {
+      skills.coding = clamp(skills.coding + 0.018 * attention, 0.05, NORMAL_ABILITY_CEIL);
+      skills.debug = clamp(skills.debug + 0.022 * attention, 0.05, NORMAL_ABILITY_CEIL);
+      specialFatigue = 4;
+      specialHw = 4;
+    }
+
     // 休息按当前疲劳恢复：低疲劳休息会浪费，高疲劳才回得动。
-    const gain = plan.intensity === 'rest' ? -(16 + 0.22 * st.fatigue) : baseGain;
-    const fatigue = clamp(st.fatigue + gain, 0, 100);
+    const gain = plan.intensity === 'rest'
+      ? -(16 + 0.22 * st.fatigue)
+      : baseGain + (care === 'weak' ? 3 : 0);
+    const fatigue = clamp(st.fatigue + gain + specialFatigue, 0, 100);
     // 作业/互测分：训练出勤与质量，国集选拔时占 10%
     const hwGain = plan.intensity === 'rest'
       ? -1.2
       : 0.25 + (plan.intensity === 'extra' ? 0.2 : 0) + growth * 150 * 0.08;
-    const homework = clamp((st.homework ?? 50) + hwGain, 0, 100);
+    const homework = clamp((st.homework ?? 50) + hwGain + specialHw, 0, 100);
+
     if (st.onTeam) {
       const r = reportOf(growth, fatigue, plan.intensity);
-      lines.push({ name: st.name, text: r.text, tone: r.tone, fatigue });
+      const btPrefix = hitBreakthrough ? '【开窍顿悟】' : '';
+      const prefix = `${btPrefix}${care === 'weak' ? '【补短板】' : care === 'meta' ? '【练代码对拍】' : ''}`;
+      lines.push({ name: st.name, text: `${prefix}${r.text}`, tone: hitBreakthrough ? 'good' : r.tone, fatigue });
     }
     return { ...st, skills, fatigue, homework };
   });
 
+  // 同步档案峰值与最高综合纪录
+  const archives = syncArchiveSnapshots(s.archives ?? {}, students, s.year);
+  const records: SeasonRecords = { ...(s.records ?? {}) };
+  for (const st of students) {
+    const ov = overallOf(st.skills);
+    if (!records.highestOverall || ov > records.highestOverall.value) {
+      records.highestOverall = {
+        name: st.name,
+        year: s.year,
+        value: Math.round(ov * 10) / 10,
+        detail: `${GRADE_NAMES[st.grade]} · 第 ${s.week} 周`,
+      };
+    }
+  }
+
+  // 上周方案保留分层专题和补短/代码关照，但清空一次性的单人轮休与特训项目，防止下周连点误扣资源
+  const cleanCare = (plan.care ?? []).slice(0, CARE_MAX).filter((c) => c.action !== 'rest');
+  const nextLastPlan: WeekPlan = {
+    ...plan,
+    special: null,
+    alumniName: null,
+    care: cleanCare.length ? cleanCare : undefined,
+  };
+
   return {
     ...s,
     students,
-    plan,
-    lastPlan: plan,
-    report: { week: s.week, plan, lines },
+    budget: clamp(nextBudget, 0, 200),
+    suspendQuota: Math.max(0, nextSuspendQuota),
+    campUsed: nextCampUsed,
+    suspendPressure: nextSuspendPressure,
+    archives,
+    records,
+    plan: { ...plan, special: activeSpecial },
+    lastPlan: nextLastPlan,
+    report: { week: s.week, plan: { ...plan, special: activeSpecial }, lines, specialNote, breakthroughNote },
     phase: 'report',
     weekMult: 1,
   };
 }
 
 // ===== 比赛引擎 =====
-function runOneDay(cohort: CohortEntry[], levels: number[], minutes: number, seed: number, ranges?: [number, number][], trace?: ContestRound[], label?: string, curve?: [number, number][]) {
-  const cfg = {
+function runOneDay(
+  cohort: CohortEntry[],
+  levels: number[],
+  minutes: number,
+  seed: number,
+  ranges?: [number, number][],
+  trace?: ContestRound[],
+  label?: string,
+  curve?: [number, number][],
+  format: ContestFormat = 'oi',
+  tactic?: ContestTactic,
+) {
+  const cfg: ContestConfig = {
     preset: 'season-week',
     problemCount: levels.length,
     levels,
     studentCount: cohort.length,
     minutes,
     seed,
+    format,
+    ...(tactic && tactic !== 'normal' ? { tactic } : {}),
     cohort,
     difficultyRanges: ranges,
     scoreCurve: curve,
@@ -1189,32 +1877,98 @@ export const PRELIM_LINE = 37;
 /** 初中组（J 组）初赛线：卷子更容易，线反而略高（陕西 2025：J 37.5 / S 37） */
 const PRELIM_JUNIOR_LINE = 37.5;
 
+const prelimSig = (x: number) => 1 / (1 + Math.exp(-x));
+
 /**
- * 初赛 = 笔试（选择/阅读程序/完善程序），直接出分，不套比赛引擎。
- * 卷面能力 ≈ 阅读程序 + 代码基础 + 年级经验；J 卷更基础，S 卷多算法阅读。
- * 校准目标（回归测试会卡）：NOI 银牌级 J ≥95、S ≥92；高二中游 J ≈85、S ≈80；初三 J ≈65。
+ * 初赛 = 全客观题笔试（100 分：15 单选×2 + 阅读程序 40 分含判断/单选 + 完善程序 10 单选×3）。
+ *
+ * 按 CCF CSP-S 真实试卷结构逐题模拟：
+ * - 真正会做的题按能力与题位难度（sigmoid）直接拿分；
+ * - 不会做的题按客观题概率蒙题（判断二选一 50%、单选四选一 25% + 少量排除干扰项加成）。
+ * 由此保证纯零基础盲蒙期望也在 ~29 分，校队弱生自然落在 30–42 分，不再出现 0–10 分白卷；
+ * 中游 45–60 分，校队强手 70–85 分，顶尖/满级选手 85–99 分，并保留真实 0.5 分刻度。
  */
 function prelimPaperScore(st: SeasonStudent, rng: () => number): number {
   const sk = st.skills;
+  const topicAvg = clamp(
+    TOPIC_LIST.reduce((a, t) => a + sk.topics[t], 0) / TOPIC_LIST.length,
+    0,
+    1,
+  );
+  const read = clamp(sk.reading, 0, 1);
+  const code = clamp(sk.coding, 0, 1);
   const exp = (st.grade - 1) / 5;
-  // 原来 13% 的“心态”权重已删除，按中性规则并入阅读（+8%）和代码（+5%）。
-  const ability = 0.53 * clamp(sk.reading, 0, 1) + 0.37 * clamp(sk.coding, 0, 1) + 0.10 * exp;
-  // 陕西 2025 官方线 37 分 ≈ 全国前 20%，62.5 分 ≈ 省前 25%；按能力线性映射，弱一些的学生就是过不了线
-  const base = clamp((ability - 0.53) / 0.42, 0, 1);
-  const noise = gauss(rng) * 3.2;
-  // 疲劳只影响训练效率，不再扣初赛分。
-  return clamp(Math.round(clamp(base, 0, 1) * 100 + noise), 0, 100);
+  // 考场临场状态小波动
+  const shift = gauss(rng) * 0.03;
+
+  const s1 = clamp(0.42 * topicAvg + 0.28 * read + 0.22 * code + 0.08 * exp + shift, 0, 1.05);
+  const s2 = clamp(0.48 * read + 0.27 * code + 0.20 * topicAvg + 0.05 * exp + shift, 0, 1.05);
+  const s3 = clamp(0.42 * code + 0.33 * topicAvg + 0.20 * read + 0.05 * exp + shift, 0, 1.05);
+
+  let score = 0;
+
+  // 1) 单项选择：15 题 × 2 分 = 30 分（四选一，纯蒙 25%）
+  const mcqD = [0.22, 0.30, 0.38, 0.44, 0.50, 0.55, 0.60, 0.64, 0.68, 0.72, 0.76, 0.80, 0.84, 0.88, 0.92];
+  const guessMcq1 = 0.25 + 0.05 * Math.min(1, s1);
+  for (const d of mcqD) {
+    const know = clamp(prelimSig((s1 - d) / 0.11), 0.005, 0.985);
+    if (rng() < know || rng() < guessMcq1) score += 2;
+  }
+
+  // 2) 阅读程序（3 题共 40 分）：10 道判断 × 1.5 分（二选一 50%）+ 7 道单选共 25 分（四选一 25%）
+  const readTf: [number, number][] = [
+    [0.42, 1.5], [0.50, 1.5], [0.58, 1.5],
+    [0.62, 1.5], [0.68, 1.5], [0.74, 1.5],
+    [0.76, 1.5], [0.82, 1.5], [0.86, 1.5], [0.90, 1.5],
+  ];
+  for (const [d, pts] of readTf) {
+    const know = clamp(prelimSig((s2 - d) / 0.12), 0.005, 0.98);
+    if (rng() < know || rng() < 0.5) score += pts;
+  }
+  const readMcq: [number, number][] = [
+    [0.50, 3], [0.60, 3],
+    [0.68, 3.5], [0.76, 3.5],
+    [0.80, 4], [0.86, 4], [0.92, 4],
+  ];
+  const guessMcq2 = 0.25 + 0.05 * Math.min(1, s2);
+  for (const [d, pts] of readMcq) {
+    const know = clamp(prelimSig((s2 - d) / 0.12), 0.005, 0.98);
+    if (rng() < know || rng() < guessMcq2) score += pts;
+  }
+
+  // 3) 完善程序（2 题）：10 道单选 × 3 分 = 30 分（四选一 25%）
+  const fillD = [0.50, 0.56, 0.62, 0.68, 0.74, 0.72, 0.78, 0.83, 0.88, 0.93];
+  const guessMcq3 = 0.25 + 0.05 * Math.min(1, s3);
+  for (const d of fillD) {
+    const know = clamp(prelimSig((s3 - d) / 0.11), 0.005, 0.985);
+    if (rng() < know || rng() < guessMcq3) score += 3;
+  }
+
+  return clamp(Math.round(score * 2) / 2, 0, 100);
+}
+
+/** NOI 笔试（100 分，公开题库背诵）：省队选手普遍 98–100 分，偶发粗心丢 1–4 分 */
+function noiWrittenScore(st: SeasonStudent, rng: () => number): number {
+  const prep = 0.55 * clamp(st.skills.reading, 0, 1) + 0.45 * clamp((st.homework ?? 50) / 100, 0, 1);
+  const missP = clamp(0.045 - prep * 0.042, 0.004, 0.05);
+  let wrong = 0;
+  for (let i = 0; i < 100; i += 1) {
+    if (rng() < missP) wrong += 1;
+  }
+  return clamp(100 - wrong, 85, 100);
 }
 
 const ratioLine = (n: number, p: number) => Math.max(1, Math.round(n * p));
 
-function bumpFatigue(s: SeasonState, dayCount: number): SeasonState {
+function bumpFatigue(s: SeasonState, dayCount: number, participants?: Set<string>): SeasonState {
   return {
     ...s,
     students: s.students.map((st) => ({
       ...st,
-      // 缺席的人没上考场，不该跟着加疲劳
-      fatigue: st.sitOut > 0 ? st.fatigue : clamp(st.fatigue + (st.onTeam ? 8 : 5) * dayCount, 0, 100),
+      // 缺席或未获得本场资格的人没上考场，不跟着加疲劳
+      fatigue: (st.sitOut > 0 || (participants && !participants.has(st.name)))
+        ? st.fatigue
+        : clamp(st.fatigue + (st.onTeam ? 8 : 5) * dayCount, 0, 100),
     })),
   };
 }
@@ -1230,10 +1984,11 @@ function runPractice(s: SeasonState, trace?: ContestRound[]): SeasonState {
   const cohort: CohortEntry[] = s.students.map((st) => ({
     name: st.name,
     skills: contestSkills(st),
-    fatigue: Math.min(0.68, (st.fatigue / 100) * 0.55),
+    fatigue: 0,
+    traits: st.traits,
   }));
   const fullScore = levels.length * 100;
-  const run = runOneDay(cohort, levels, minutes, (s.seed * 31 + s.year * 6151 + week * 7919 + 5) >>> 0, undefined, trace, `校内模拟赛 · ${count} 题 · ${minutes} 分钟（${MOCK_PRESETS[mock.preset].name}）`);
+  const run = runOneDay(cohort, levels, minutes, (s.seed * 31 + s.year * 6151 + week * 7919 + 5) >>> 0, undefined, trace, `校内模拟赛 · ${count} 题 · ${minutes} 分钟（${MOCK_PRESETS[mock.preset].name}）`, undefined, 'oi');
   const topics = new Set(run.problems.map((p) => p.topic));
   const meanDiff = meanDifficulty(run.problems);
   const grown = s.students.map((st) => {
@@ -1244,7 +1999,7 @@ function runPractice(s: SeasonState, trace?: ContestRound[]): SeasonState {
     return { ...g, homework: clamp((g.homework ?? 50) * 0.85 + frac * 100 * 0.15, 0, 100) };
   });
   const recap: ContestRecap = {
-    year: s.year, week, kind: 'practice', title: `第 ${week} 周 · 校内模拟赛（${MOCK_PRESETS[mock.preset].name}）`,
+    year: s.year, week, kind: 'practice', format: 'oi', title: `第 ${week} 周 · 校内模拟赛（${MOCK_PRESETS[mock.preset].name}）`,
     levels, minutes, days: 1, rows: run.rows, fullScore, problems: run.problems,
     note: `模拟赛 ${count} 题 · ${minutes} 分钟 · ${MOCK_PRESETS[mock.preset].note}；不计正式成绩，难度和水平匹配时成长最多`,
   };
@@ -1316,14 +2071,18 @@ function runPrelim(s: SeasonState, stage: StageDef): SeasonState {
     },
     note: `笔试直接出分：全校 ${rows.length} 人参加${absent.length ? `（${absent.length} 人停赛缺考）` : ''}，陕西线 ${PRELIM_LINE} 分，过线 ${overLine.length} 人${overLine.length < minQuota ? `（不足实考 20%，按官方下限补足到 ${minQuota} 人）` : '全部晋级'}；官方只规定晋级人数不少于实考 20%（${minQuota} 人），强校过线率通常高于全省平均。实际晋级 ${pass.length} 人。`,
   };
-  return {
-    ...s,
-    students,
-    week: week + 1,
-    phase: 'result',
-    lastContest: recap,
-    contests: [...s.contests, recap],
-  };
+  return recordOfficialOutcome(
+    {
+      ...s,
+      students,
+      week: week + 1,
+      phase: 'result',
+      lastContest: recap,
+      contests: [...s.contests, recap],
+    },
+    recap,
+    stage,
+  );
 }
 
 /** 按省线判奖：min 是该奖的最低分（满分按实际场次） */
@@ -1339,30 +2098,39 @@ const CSP2_GUIDE = {
   S: { total: 785, quota: 157, lines: [{ label: '省一', min: 100, tone: 'prov1' }, { label: '省二', min: 30, tone: 'silver' }] as ScoreLine[] },
 };
 
-/** 虚构外校/外省选手的分数分布池（满分按各赛事实际：CSP 400、NOIP 400、WC/APIO 300、NOI 700、CTT/CTS/IOI 700、省选总分 100 分制） */
+/** 虚构外校/外省选手的分数分布池（满分按各赛事实际：CSP 400、NOIP 400、WC/APIO 300、NOI 705、CTT/CTS 100 积分制、IOI 600、省选总分 100 分制） */
 export const FIELDS: Record<string, FieldSpec> = {
   'csp2.S': { total: 785, anchors: [{ q: 0, score: 400 }, { q: 0.2, score: 100 }, { q: 0.4, score: 30 }, { q: 1, score: 0 }] },
   noip: { total: 160, anchors: [{ q: 0, score: 300 }, { q: 0.2, score: 128 }, { q: 0.43, score: 95 }, { q: 0.49, score: 86 }, { q: 1, score: 0 }] },
   prov: { total: 79, anchors: [{ q: 0, score: 75 }, { q: 0.15, score: 65 }, { q: 0.5, score: 45 }, { q: 1, score: 5 }] },
-  // WC2025：满分 300，金牌线 257、银牌线 211、铜牌线 167（258 分在官方榜上是金牌）
+  // WC2025：满分 300，金牌线 257（前 11.2%）、银牌线 211（前 38.6%）、铜牌线 167（前 68%）
   wc: { total: 500, anchors: [{ q: 0, score: 300 }, { q: 0.112, score: 257 }, { q: 0.386, score: 211 }, { q: 0.68, score: 167 }, { q: 1, score: 100 }] },
   apio: { total: 640, anchors: [{ q: 0, score: 290 }, { q: 0.1, score: 193 }, { q: 0.3, score: 130 }, { q: 0.6, score: 80 }, { q: 1, score: 0 }] },
-  // NOI2026 真实金线 557（游记：te_bie_zhi_chu 557 分压线 Au）；本作 700 分制。
-  // 名额仍按官方 金 50 / 银 152 / 铜 85 发，这里只把「线」对齐到真实分数。
-  noi: { total: 338, anchors: [{ q: 0, score: 700 }, { q: 0.148, score: 557 }, { q: 0.5, score: 400 }, { q: 0.85, score: 300 }, { q: 1, score: 0 }] },
+  // NOI2026 真实金线 557（满分 705 = 笔试 100 + 两试 600 + 省队 A 类 5 分）；金 50 / 银 152 / 铜 85
+  noi: { total: 338, anchors: [{ q: 0, score: 705 }, { q: 0.148, score: 557 }, { q: 0.5, score: 400 }, { q: 0.85, score: 300 }, { q: 1, score: 0 }] },
   // CTT/CTS 改用 100 分制的积分池，和上面的 composite×100 同刻度：
   // CTT 50 人取前 30（q=0.6）、CTS 30 人取前 6（q=0.2），两条线都有真实门槛。
   ctt: { total: 50, anchors: [{ q: 0, score: 100 }, { q: 0.3, score: 52 }, { q: 0.6, score: 26 }, { q: 1, score: 0 }] },
   cts: { total: 30, anchors: [{ q: 0, score: 100 }, { q: 0.2, score: 58 }, { q: 0.5, score: 36 }, { q: 1, score: 0 }] },
-  ioi: { total: 4, anchors: [{ q: 0, score: 300 }, { q: 0.25, score: 270 }, { q: 0.5, score: 230 }, { q: 0.75, score: 180 }, { q: 1, score: 100 }] },
+  // IOI 全球赛池（约 353 人，满分 600 = 两试各 300）：前 1/12 金（30）、前 1/4 银（89）、前 1/2 铜（177）
+  ioi: {
+    total: 353,
+    anchors: [
+      { q: 0, score: 600 },
+      { q: 30 / 353, score: 440 },
+      { q: 89 / 353, score: 330 },
+      { q: 177 / 353, score: 215 },
+      { q: 1, score: 0 },
+    ],
+  },
 };
 
-/** 全国性赛事按名次名额发奖（NOI 338 人：金 50 / 银 152 / 铜 85；APIO 640：金 64 / 银 128 / 铜 193；IOI 中国队 4 人）。
- *  WC 不在此列：冬令营学生营员测试官方不评金银铜。 */
+/** 全国/国际赛事按名次名额发奖（WC 500：金 56 / 银 137 / 铜 147；NOI 338：金 50 / 银 152 / 铜 85；APIO 640：金 64 / 银 128 / 铜 193；IOI 353：金 30 / 银 59 / 铜 88） */
 export const NATIONAL_QUOTAS: Record<string, number[]> = {
+  wc: [56, 193, 340],
   noi: [50, 202, 287],
   apio: [64, 192, 385],
-  ioi: [1, 2, 4],
+  ioi: [30, 89, 177],
 };
 
 /** 陕西 NOIP 2025 官方线：一等 128（32 人）、二等 95（37）、三等 86（10） */
@@ -1393,10 +2161,124 @@ function bandOf(stage: StageDef, pct: number, real: number): AwardBand | null {
   return null;
 }
 
+export const RIVAL_SCHOOLS: { school: string; isLocal: boolean; strengthPct: number; aces: string[] }[] = [
+  { school: '省实验中学', isLocal: true, strengthPct: 0.14, aces: ['顾知行', '宋明轩', '许若尘'] },
+  { school: '附中竞赛部', isLocal: true, strengthPct: 0.22, aces: ['沈亦辰', '周予安', '林景明'] },
+  { school: '镇海二中', isLocal: false, strengthPct: 0.08, aces: ['江屿白', '陈致远', '余思齐'] },
+  { school: '雅礼实验', isLocal: false, strengthPct: 0.12, aces: ['谢清晏', '陆行舟', '苏子昂'] },
+];
+
+function computeRivalComparisons(
+  stage: StageDef,
+  rows: StudentResult[],
+  awards: AwardRow[],
+  teamSet: Set<string>,
+  stageField: number[],
+  nationalRows: NonNullable<ContestRecap['national']>['rows'],
+  seed: number,
+  year: number,
+): RivalComparison[] {
+  if (!stageField.length || !rows.length) return [];
+  const ourTeamScores = nationalRows
+    .filter((r) => teamSet.has(r.name))
+    .map((r) => r.score);
+  const ourTop = ourTeamScores.length
+    ? Math.max(...ourTeamScores)
+    : Math.round(Math.max(0, ...rows.map((r) => r.real)));
+  const ourMedals = awards.filter(
+    (a) => teamSet.has(a.name) && (a.tone === 'gold' || a.tone === 'silver' || a.tone === 'prov1' || a.tone === 'team'),
+  ).length;
+
+  const isLocalStage = stage.id === 'csp2' || stage.id === 'noip' || stage.id === 'prov';
+  const targets = isLocalStage
+    ? RIVAL_SCHOOLS.filter((r) => r.isLocal || r.school === '镇海二中')
+    : RIVAL_SCHOOLS;
+
+  const descending = stageField.slice().sort((a, b) => b - a);
+  const rng = makeRng((seed * 193 + year * 4099 + stage.week * 131 + 17) >>> 0);
+
+  return targets.map((rv) => {
+    const jitter = (rng() - 0.5) * 0.06;
+    const q = clamp(rv.strengthPct + jitter, 0.02, 0.72);
+    const idx = clamp(Math.floor(q * (descending.length - 1)), 0, descending.length - 1);
+    const aceScore = Math.round(descending[idx] ?? 0);
+    const ace = rv.aces[(year + stage.week + Math.floor(rng() * rv.aces.length)) % rv.aces.length];
+    const rivalMedals = Math.max(1, Math.round((1 - q) * 3.2 + rng() * 1.2));
+    const beaten = ourTop > aceScore || (ourTop === aceScore && ourMedals >= rivalMedals);
+    return {
+      school: rv.school,
+      isLocal: rv.isLocal,
+      ace,
+      aceScore,
+      ourTop,
+      rivalMedals,
+      ourMedals,
+      beaten,
+    };
+  });
+}
+
+/** 为赛时直播榜单生成目标参考分数线（纯展示，随本年卷面难度偏移） */
+export function guideLinesForStage(stage: StageDef): ContestGuideLine[] {
+  const shift = paperShiftOf(stage);
+  switch (stage.id) {
+    case 'csp2': {
+      const lines = shiftLines(CSP2_GUIDE.S.lines, shift);
+      return lines.map((l) => ({ score: l.min, label: `S组${l.label}线`, tone: l.tone }));
+    }
+    case 'noip': {
+      const lines = shiftLines(NOIP_SSX.lines, shift);
+      return lines.slice(0, 2).map((l) => ({ score: l.min, label: `${l.label}线`, tone: l.tone }));
+    }
+    case 'wc':
+      return [
+        { score: 257, label: 'WC 金牌线', tone: 'gold' },
+        { score: 211, label: 'WC 银牌线', tone: 'silver' },
+        { score: 167, label: 'WC 铜牌线', tone: 'bronze' },
+      ];
+    case 'apio':
+      return [
+        { score: 193, label: 'APIO 金牌线', tone: 'gold' },
+        { score: 130, label: 'APIO 银牌线', tone: 'silver' },
+        { score: 80, label: 'APIO 铜牌线', tone: 'bronze' },
+      ];
+    case 'prov':
+      return [
+        { score: 220, label: '冲 A 类单试线', tone: 'gold' },
+        { score: 160, label: '省队单试基准线', tone: 'team' },
+      ];
+    case 'noi':
+      return [
+        { score: 225, label: 'NOI 金牌单试线', tone: 'gold' },
+        { score: 150, label: 'NOI 银牌单试线', tone: 'silver' },
+        { score: 100, label: 'NOI 铜牌单试线', tone: 'bronze' },
+      ];
+    case 'ctt':
+      return [
+        { score: 185, label: '进 CTS 单试线', tone: 'team' },
+        { score: 125, label: '国集稳健线', tone: 'silver' },
+      ];
+    case 'cts':
+      return [
+        { score: 205, label: '国家队冲刺线', tone: 'gold' },
+        { score: 155, label: '答辩入围基准线', tone: 'team' },
+      ];
+    case 'ioi':
+      return [
+        { score: 220, label: 'IOI 金牌单试线', tone: 'gold' },
+        { score: 165, label: 'IOI 银牌单试线', tone: 'silver' },
+        { score: 108, label: 'IOI 铜牌单试线', tone: 'bronze' },
+      ];
+    default:
+      return [];
+  }
+}
+
 /** 复赛：4 题 4h，初赛过线的人全部参加（初中生也可考，NOIP 起才限高中生），按陕西官方省线判奖 */
 function runCsp2(s: SeasonState, stage: StageDef, trace?: ContestRound[]): SeasonState {
   const week = s.week;
   const entrants = s.students.filter((st) => Boolean(st.csp1?.passed) && st.sitOut === 0);
+  const tactic = s.nextTactic ?? 'normal';
 
   const allRows: StudentResult[] = [];
   const allProblems: Problem[] = [];
@@ -1406,8 +2288,11 @@ function runCsp2(s: SeasonState, stage: StageDef, trace?: ContestRound[]): Seaso
   const teamSet = new Set(s.team);
   const info = new Map<string, { rank: number; award: 0 | 1 | 2 | 3; score: number }>();
   const ranAny = entrants.length > 0;
-  // 省线随本卷难度浮动（难卷降线、易卷抬线）
-  const csp2Guide = { ...CSP2_GUIDE.S, lines: shiftLines(CSP2_GUIDE.S.lines, paperShiftOf(stage)) };
+  // 省线与分数池随本卷难度同步浮动（难卷降线、易卷抬线）
+  const shift = paperShiftOf(stage);
+  const csp2Guide = { ...CSP2_GUIDE.S, lines: shiftLines(CSP2_GUIDE.S.lines, shift) };
+  const csp2Spec = shiftField(FIELDS['csp2.S'], shift, 400);
+  const csp2Field = fieldScores(csp2Spec);
 
   if (ranAny) {
     const guide = csp2Guide;
@@ -1415,20 +2300,27 @@ function runCsp2(s: SeasonState, stage: StageDef, trace?: ContestRound[]): Seaso
       name: st.name,
       skills: contestSkills(st),
       fatigue: 0,
+      traits: st.traits,
     }));
     const seedBase = (s.seed * 31 + s.year * 977 + week * 7919 + 5) >>> 0;
+    const traceStart = trace ? trace.length : 0;
     const run = runOneDay(cohort, stage.levels, stage.minutes, seedBase, stage.ranges, trace,
-      `${stage.levels.length} 题 · ${stage.minutes / 60} 小时`, stage.curve);
+      `${stage.levels.length} 题 · ${stage.minutes / 60} 小时`, stage.curve, stage.format ?? 'oi', tactic);
+    if (trace) {
+      const gLines = guideLinesForStage(stage);
+      for (let ti = traceStart; ti < trace.length; ti += 1) {
+        trace[ti].stageId = stage.id;
+        trace[ti].guideLines = gLines;
+      }
+    }
     allProblems.push(...run.problems);
 
     for (const r of run.rows) {
       allRows.push(r);
-      // 省排名：陕西参赛池里比自己高的人数（官方只公布名额，池子按「线 = 第 quota 名」反推）
-      const spec = FIELDS['csp2.S'];
-      // 分数统一按四舍五入后的整数判线 / 排名，保证「榜上显示 100」就真的按 100 发奖
+      // 省排名：陕西参赛池里比自己高的人数（随卷面难度同步偏移）
       const scoreInt = Math.round(r.real);
-      const rank = rankAmong(fieldScores(spec), scoreInt);
-      const pct = pctOf(rank, spec.total);
+      const rank = rankAmong(csp2Field, scoreInt);
+      const pct = pctOf(rank, csp2Spec.total);
       const line = bandOfLines(guide.lines, scoreInt);
       const awardNum: 0 | 1 | 2 | 3 = line ? (line.label.includes('省一') ? 1 : line.label.includes('省二') ? 2 : 3) : 0;
       info.set(r.name, { rank, award: awardNum, score: scoreInt });
@@ -1454,29 +2346,36 @@ function runCsp2(s: SeasonState, stage: StageDef, trace?: ContestRound[]): Seaso
     return growFromContest(next, meanDiff, 4, 0.0012, topicSet);
   });
 
+  const rivals = ranAny
+    ? computeRivalComparisons(stage, allRows, awards, teamSet, csp2Field, nationalRows, s.seed, s.year)
+    : undefined;
   const recap: ContestRecap = {
-    year: s.year, week, kind: 'official', stageId: stage.id, title: stage.name,
+    year: s.year, week, kind: 'official', format: stage.format ?? 'oi', stageId: stage.id, title: stage.name,
     levels: stage.levels, minutes: stage.minutes, days: 1, rows: allRows, fullScore: 400, problems: allProblems,
-    awards, advanced,
-    national: { total: FIELDS['csp2.S'].total, rows: nationalRows },
+    awards, advanced, tactic, rivals,
+    national: { total: csp2Spec.total, rows: nationalRows },
     note: ranAny
-      ? `初赛过线 ${entrants.length} 人参加（4 题 · 4h）；二等及以上进 NOIP 名单。陕西线（随卷面难度浮动）：一等 ${csp2Guide.lines[0].min} 分（157 人）、二等 ${csp2Guide.lines[1].min} 分，不设三等`
+      ? `初赛过线 ${entrants.length} 人参加（4 题 · 4h · OI 赛制）；二等及以上进 NOIP 名单。陕西线（随卷面难度浮动）：一等 ${csp2Guide.lines[0].min} 分（157 人）、二等 ${csp2Guide.lines[1].min} 分，不设三等`
       : '初赛没人过线，复赛报名表是空的',
   };
-  return {
-    ...bumpFatigue(s, 1),
-    students,
-    week: week + 1,
-    phase: 'result',
-    lastContest: recap,
-    contests: [...s.contests, recap],
-  };
+  return recordOfficialOutcome(
+    {
+      ...bumpFatigue({ ...s, students }, 1, new Set(entrants.map((st) => st.name))),
+      week: week + 1,
+      phase: 'result',
+      lastContest: recap,
+      contests: [...s.contests, recap],
+    },
+    recap,
+    stage,
+  );
 }
-/** 正式比赛：按真实资格链筛参赛者，跑完按全国分位排名发奖 */
+/** 正式比赛：按真实资格链筛参赛者，跑完按全国/国际分位排名发奖 */
 function runStage(s: SeasonState, stage: StageDef, trace?: ContestRound[]): SeasonState {
   const week = s.week;
+  const format: ContestFormat = stage.format ?? 'oi';
 
-  // 各赛事的正式资格（口径来自 2025–26 赛季官方通知）
+  // 各赛事的正式资格（按真实 CCF 规程）
   const eligOfficial = (st: SeasonStudent) => {
     switch (stage.id) {
       case 'noip':
@@ -1487,10 +2386,13 @@ function runStage(s: SeasonState, stage: StageDef, trace?: ContestRound[]): Seas
         // 官方：高三不占省选正式名额（gateText 写的「非高三」）
         return st.grade >= 4 && st.grade <= 5 && st.noip !== undefined;
       case 'apio':
+        // 现实 APIO 中国区面向省队及 NOIP 一等前排高中生
+        return Boolean(st.prov?.team) || (isSenior(st.grade) && Boolean(st.noip?.first));
       case 'noi':
         return Boolean(st.prov?.team);
       case 'ctt':
-        return Boolean(st.noi?.selected);
+        // 跨学年国集周期：上学年 NOI 前 50 入选国集队员参加本学年 12 月 CTT
+        return Boolean(st.cttEligible);
       case 'cts':
         return Boolean(st.ctt?.selected);
       case 'ioi':
@@ -1499,14 +2401,15 @@ function runStage(s: SeasonState, stage: StageDef, trace?: ContestRound[]): Seas
         return false;
     }
   };
-  // 体验/夏令营名额：NOIP 的初中低年级后备体验、省选与 NOI 的初中体验，成绩不计奖
+  // 体验/E类夏令营名额：初中生 NOIP 须 CSP-S 省一；省选须 NOIP 达省一线；NOI E 类须省选达省队线（前 17）
   const eligExperience = (st: SeasonStudent) => {
     switch (stage.id) {
       case 'noip':
-        return isJunior(st.grade) && (st.csp2?.award ?? 0) >= 1;
+        return isJunior(st.grade) && (st.csp2?.award ?? 0) === 1;
       case 'prov':
+        return isJunior(st.grade) && Boolean(st.noip?.reachedFirstLine);
       case 'noi':
-        return isJunior(st.grade) && st.noip !== undefined;
+        return isJunior(st.grade) && st.prov !== undefined && st.prov.rank <= 17;
       default:
         return false;
     }
@@ -1519,48 +2422,73 @@ function runStage(s: SeasonState, stage: StageDef, trace?: ContestRound[]): Seas
   const experienceSet = new Set(experience.map((st) => st.name));
   const teamSet = new Set(s.team);
 
+  // NOI 2025/2026 正式满分 705：笔试 100 + 两试各 300 + 省队 A 类加分 5
+  const fullScore = stage.id === 'noi' ? 705 : stage.levels.length * 100 * stage.days;
+
   if (!qualified.length) {
     const recap: ContestRecap = {
-      year: s.year, week, kind: 'official', stageId: stage.id, title: stage.name,
+      year: s.year, week, kind: 'official', format, stageId: stage.id, title: stage.name,
       levels: stage.levels, minutes: stage.minutes, days: stage.days,
-      rows: [], fullScore: stage.id === 'noi' ? 700 : stage.levels.length * 100 * stage.days, problems: [],
+      rows: [], fullScore, problems: [],
       note: `队里没有人拿到「${stage.gateText}」，这一场只能弃权`,
       awards: [], advanced: [],
     };
     return { ...s, week: week + 1, phase: 'result', lastContest: recap, contests: [...s.contests, recap] };
   }
 
+  const tactic = s.nextTactic ?? 'normal';
   const cohort: CohortEntry[] = qualified.map((st) => ({
     name: st.name,
     skills: contestSkills(st),
-    fatigue: Math.min(0.68, (st.fatigue / 100) * 0.55),
+    fatigue: 0,
+    traits: st.traits,
   }));
-  // NOI 2025 正式总分 705：笔试 100 + 两试各 300 + A 类选手另加 5。
-  // 这里不区分 A/B 类，按 700 分制（笔试 100 + 两试 600）计入总分。
-  const fullScore = stage.id === 'noi' ? 700 : stage.levels.length * 100 * stage.days;
   const seedBase = (s.seed * 31 + s.year * 977 + week * 7919 + 5) >>> 0;
-  // 多试赛事：第 d 试取 ranges 里属于它的那一段，否则两天会撞题
+  // 多试赛事：第 d 试取 ranges 里属于它的那一段；若 ranges 仅给了一天则安全复用
   const dayRanges = (d: number): [number, number][] | undefined => {
-    if (!stage.ranges) return undefined;
+    if (!stage.ranges || stage.ranges.length === 0) return undefined;
     const n = stage.levels.length;
-    return stage.ranges.slice(d * n, (d + 1) * n);
+    const slice = stage.ranges.slice(d * n, (d + 1) * n);
+    return slice.length === n ? slice : stage.ranges.slice(0, n);
   };
-  const runs = Array.from({ length: stage.days }, (_, d) => runOneDay(cohort, stage.levels, stage.minutes, (seedBase + d * 1013) >>> 0, dayRanges(d), trace, stage.days > 1 ? `${stage.short} · 第 ${d + 1} 试` : `${stage.short} · ${stage.levels.length} 题 · ${stage.minutes / 60} 小时`, stage.curve));
+  const traceStart = trace ? trace.length : 0;
+  const runs = Array.from({ length: stage.days }, (_, d) => runOneDay(
+    cohort,
+    stage.levels,
+    stage.minutes,
+    (seedBase + d * 1013) >>> 0,
+    dayRanges(d),
+    trace,
+    stage.days > 1 ? `${stage.short} · 第 ${d + 1} 试` : `${stage.short} · ${stage.levels.length} 题 · ${stage.minutes / 60} 小时`,
+    stage.curve,
+    format,
+    tactic,
+  ));
+  if (trace) {
+    const gLines = guideLinesForStage(stage);
+    for (let ti = traceStart; ti < trace.length; ti += 1) {
+      trace[ti].stageId = stage.id;
+      trace[ti].guideLines = gLines;
+    }
+  }
   const rows = stage.days > 1 ? mergeDays(runs, fullScore) : runs[0].rows;
 
-  // NOI 另有 100 分笔试（计算机基础知识），单独出分后计入总分。
-  // 用与初赛同一套阅读/代码/年级能力，但每个选手独立一次噪声，避免和两试估分绑死。
+  // NOI：100 分笔试（公开题库背诵，常规 98–100 分）+ 省队 A 类 5 分加分
   if (stage.id === 'noi') {
     const written = new Map<string, number>();
+    const bonusOf = new Map<string, number>();
     for (const st of qualified) {
       const nameSeed = [...st.name].reduce((acc, ch) => (acc * 131 + ch.charCodeAt(0)) >>> 0, 7);
-      written.set(st.name, prelimPaperScore(st, makeRng((seedBase ^ nameSeed ^ 0x9e3779b9) >>> 0)));
+      written.set(st.name, noiWrittenScore(st, makeRng((seedBase ^ nameSeed ^ 0x9e3779b9) >>> 0)));
+      bonusOf.set(st.name, officialSet.has(st.name) && st.prov?.category === 'A' ? 5 : 0);
     }
     for (const r of rows) {
       const w = written.get(r.name) ?? 0;
+      const b = bonusOf.get(r.name) ?? 0;
       r.written = w;
-      r.real += w;
-      r.est += w;
+      if (b > 0) r.bonus = b;
+      r.real += w + b;
+      r.est += w + b;
       r.delta = r.real - r.est;
     }
     rows.sort((a, b) => b.real - a.real);
@@ -1596,6 +2524,12 @@ function runStage(s: SeasonState, stage: StageDef, trace?: ContestRound[]): Seas
     rows.forEach((r, i) => { r.rank = i + 1; });
   }
 
+  // 预计算本场外校分数池与省线（只算一次，避免在循环里重复生成与排序）
+  const rawSpec = FIELDS[stage.id] ?? FIELDS.noip;
+  const stageSpec = stage.id === 'noip' ? shiftField(rawSpec, paperShiftOf(stage), fullScore) : rawSpec;
+  const stageField = fieldScores(stageSpec);
+  const noipLines = stage.id === 'noip' ? shiftLines(NOIP_SSX.lines, paperShiftOf(stage)) : NOIP_SSX.lines;
+
   // CTT / CTS 用积分制：作业/互测 10% + CTT 三场 54% + CTS 两场 36%，不再按单场原始分排名
   const hwOf = new Map(s.students.map((st) => [st.name, st.homework ?? 50]));
   const compositeOf = new Map<string, number>();
@@ -1615,16 +2549,12 @@ function runStage(s: SeasonState, stage: StageDef, trace?: ContestRound[]): Seas
     sorted.forEach((r, i) => specialRank.set(r.name, i + 1));
     if (stage.id === 'cts') {
       // 答辩资格是「全国 CTS 积分榜前 6」，不是「本校前 6」。
-      // 本校往往只有 1~3 人打进 CTS，按 slice(0,6) 取人会人人进答辩、再人人进国家队，
-      // 国家队漏斗就形同虚设了。这里和发奖处的 rank 用同一把尺子（全国分数池）。
-      const spec = FIELDS.cts ?? FIELDS.noip;
-      const field = fieldScores(spec);
       const eligible = sorted.filter((r) =>
-        rankAmong(field, Math.round((compositeOf.get(r.name) ?? 0) * 100)) <= 6);
+        rankAmong(stageField, Math.round((compositeOf.get(r.name) ?? 0) * 100)) <= 6);
       const def = eligible.map((r) => {
         const st = s.students.find((x) => x.name === r.name);
         const hw = (st?.homework ?? 50) / 100;
-        const noi = (st?.noi?.score ?? 0) / 700;
+        const noi = (st?.prevNoiScore ?? st?.noi?.score ?? 0) / 705;
         const read = st?.skills.reading ?? 0.5;
         const cts = r.real / fullScore;
         // 纯派生：论文/作业 40% + NOI 笔试与正赛 25% + 阅读表达 20% + CTS 15%
@@ -1641,40 +2571,36 @@ function runStage(s: SeasonState, stage: StageDef, trace?: ContestRound[]): Seas
   const awards: AwardRow[] = [];
   const advanced: string[] = [];
   const noiSelectedSet = new Set<string>();
+  const noipLineFirstSet = new Set<string>();
+  const provCategory = new Map<string, 'A' | 'B'>();
   let schoolTeam = 0; // 单校不超过省队 1/3：17 个名额 → 我校最多 5 人
-  let poolTotal = stage.national;
+  const poolTotal = stageSpec.total;
 
   for (const r of rows) {
     const isOfficial = officialSet.has(r.name);
     const special = stage.id === 'ctt' || stage.id === 'cts';
     // 判线 / 排名统一用四舍五入后的整数，榜上显示多少就按多少发奖
     const scoreInt = Math.round(r.real);
-    let rank: number;
-    let pct: number;
-    if (special) {
-      // CTT/CTS 是积分制，但要和全国集训队/选拔营的人比：
-      // 只在本校三五个人里排，rank<=30 / <=6 会永远成立，国家队漏斗形同虚设。
-      const spec = FIELDS[stage.id] ?? FIELDS.noip;
-      const mine = Math.round((compositeOf.get(r.name) ?? 0) * 100);
-      rank = rankAmong(fieldScores(spec), mine);
-      pct = pctOf(rank, spec.total);
-      poolTotal = spec.total;
-    } else {
-      // 排名 = 该赛事分数池里比自己高的人数 + 1（省选按 NOIP 30% + 省选 70% 的总分池排）
-      const spec = FIELDS[stage.id] ?? FIELDS.noip;
-      const mine = stage.id === 'prov' ? (provTotal.get(r.name) ?? 0) * 100 : scoreInt;
-      rank = rankAmong(fieldScores(spec), mine);
-      pct = pctOf(rank, spec.total);
-      poolTotal = spec.total;
-    }
+    const mine = special
+      ? Math.round((compositeOf.get(r.name) ?? 0) * 100)
+      : stage.id === 'prov'
+        ? (provTotal.get(r.name) ?? 0) * 100
+        : scoreInt;
+    const rank = rankAmong(stageField, mine);
+    const pct = pctOf(rank, stageSpec.total);
     let award = '';
     let tone: AwardRow['tone'] = 'silver';
 
     if (stage.id === 'prov') {
       if (isOfficial && rank <= 17 && schoolTeam < 5) {
-        award = '进省队'; tone = 'team'; schoolTeam += 1; advanced.push(r.name);
+        const cat: 'A' | 'B' = rank <= 5 ? 'A' : 'B';
+        provCategory.set(r.name, cat);
+        award = cat === 'A' ? '进省队 · A类' : '进省队 · B类';
+        tone = 'team';
+        schoolTeam += 1;
+        advanced.push(r.name);
       } else if (!isOfficial) {
-        award = '体验（不计成绩）';
+        award = rank <= 17 ? '体验（达省队线 · E类）' : '体验（不计成绩）';
       } else {
         award = '未进省队';
       }
@@ -1693,37 +2619,35 @@ function runStage(s: SeasonState, stage: StageDef, trace?: ContestRound[]): Seas
         award = '未进国家队';
       }
     } else if (stage.id === 'noip') {
-      const line = bandOfLines(shiftLines(NOIP_SSX.lines, paperShiftOf(stage)), scoreInt);
+      const line = bandOfLines(noipLines, scoreInt);
+      if (line?.label === 'NOIP 一等') noipLineFirstSet.add(r.name);
       if (isOfficial) {
         award = line ? line.label : '无奖';
         tone = line?.tone ?? 'silver';
         if (line?.label === 'NOIP 一等') advanced.push(r.name);
       } else {
-        award = '后备体验（无证书）';
+        award = line?.label === 'NOIP 一等' ? '后备体验（达一等线）' : '后备体验（无证书）';
       }
     } else if (stage.id === 'noi' && !isOfficial) {
-      award = '夏令营（成绩证明）';
-    } else if (stage.id === 'wc') {
-      // WC 学生营员测试官方不评金银铜（stage.bands 为空、advanceText 也写「不评奖」）
-      award = '完成测试（不评奖）';
-      tone = 'silver';
+      award = '夏令营 E 类（成绩证明）';
     } else {
+      // WC / APIO / NOI / IOI 均按名次名额发金/银/铜牌
       const quotas = NATIONAL_QUOTAS[stage.id] ?? [];
       let idx = awardIndexByRank(rank, quotas);
-      if (stage.id === 'noi' && idx === 2 && scoreInt < 100) idx = -1; // 铜牌须 ≥100/705 ≈ 100/700
+      if (stage.id === 'noi' && idx === 2 && scoreInt < 100) idx = -1; // 铜牌须 ≥100/705
       const labels = ['金牌', '银牌', '铜牌'] as const;
       award = idx >= 0 ? labels[idx] : '无奖';
       tone = idx === 0 ? 'gold' : idx === 1 ? 'silver' : idx === 2 ? 'bronze' : 'silver';
       if (stage.id === 'noi' && idx === 0) noiSelectedSet.add(r.name);
     }
 
-    if (isOfficial && stage.id !== 'wc' && award && award !== '无奖' && !award.startsWith('未进')) {
+    if (isOfficial && award && award !== '无奖' && !award.startsWith('未进')) {
       awards.push({ name: r.name, label: award, tone });
     }
     const note = !isOfficial
       ? (experienceSet.has(r.name) ? '体验' : '非正式')
       : stage.id === 'noi' && noiSelectedSet.has(r.name)
-        ? '国集 · 保送清北'
+        ? '下学年国集 · 保送清北'
         : stage.id === 'cts' && defenseOf.has(r.name)
           ? `答辩第 ${defenseOf.get(r.name)!.rank}`
           : stage.id === 'ctt' || stage.id === 'cts'
@@ -1749,16 +2673,26 @@ function runStage(s: SeasonState, stage: StageDef, trace?: ContestRound[]): Seas
     const label = awardOf.get(st.name) ?? '';
     let next: SeasonStudent = { ...st };
     if (stage.id === 'noip') {
-      next = { ...next, noip: { score: Math.round(rows.find((r) => r.name === st.name)?.real ?? 0), rank, first: advancedSet.has(st.name) } };
+      next = {
+        ...next,
+        noip: {
+          score: Math.round(rows.find((r) => r.name === st.name)?.real ?? 0),
+          rank,
+          first: advancedSet.has(st.name),
+          reachedFirstLine: noipLineFirstSet.has(st.name),
+        },
+      };
     } else if (stage.id === 'prov') {
+      const inTeam = advancedSet.has(st.name);
       next = {
         ...next,
         prov: {
           score: Math.round((provTotal.get(st.name) ?? 0) * 100),
           raw: Math.round(rows.find((r) => r.name === st.name)?.real ?? 0),
           rank,
-          first: label === '进省队',
-          team: label === '进省队',
+          first: inTeam,
+          team: inTeam,
+          category: provCategory.get(st.name),
         },
       };
     } else if (stage.id === 'wc') {
@@ -1803,44 +2737,304 @@ function runStage(s: SeasonState, stage: StageDef, trace?: ContestRound[]): Seas
     return growFromContest(next, meanDiff, problems.length, 0.0012 * stage.days, topicSet);
   });
 
+  const rivals = computeRivalComparisons(stage, rows, awards, teamSet, stageField, nationalRows, s.seed, s.year);
+  const scopeLabel = stage.id === 'ioi' ? '全球' : stage.id === 'noip' || stage.id === 'prov' ? '陕西' : '全国';
+  const formatLabel = format === 'ioi' ? 'IOI 实时评测赛制' : 'OI 赛制';
   const recap: ContestRecap = {
-    year: s.year, week, kind: 'official', stageId: stage.id, title: stage.name,
+    year: s.year, week, kind: 'official', format, stageId: stage.id, title: stage.name,
     levels: stage.levels, minutes: stage.minutes, days: stage.days,
     rows, fullScore, problems,
-    awards, advanced,
+    awards, advanced, tactic, rivals,
     defense: stage.id === 'cts'
       ? [...defenseOf.entries()].map(([name, v]) => ({ name, score: v.score, rank: v.rank })).sort((a, b) => a.rank - b.rank)
       : undefined,
     national: { total: poolTotal, rows: nationalRows },
-    note: `参赛 ${qualified.length} 人（正式 ${official.length}${experience.length ? ` · 体验 ${experience.length}` : ''}）· 资格：${stage.gateText || '无门槛'} · 全国约 ${poolTotal.toLocaleString()} 人${stage.id === 'noi' ? ' · 总分含 100 分笔试，前 50 进国集/保送' : ''}${stage.id === 'ctt' ? ' · 积分制：作业 10% + 三场 54%' : ''}${stage.id === 'cts' ? ' · 积分制：+两场 36%，前 6 答辩' : ''}`,
+    note: `参赛 ${qualified.length} 人（正式 ${official.length}${experience.length ? ` · 体验 ${experience.length}` : ''}）· ${formatLabel} · 资格：${stage.gateText || '无门槛'} · ${scopeLabel}约 ${poolTotal.toLocaleString()} 人${stage.id === 'noi' ? ' · 满分 705（含 100 分笔试 + A 类 5 分），前 50 进下学年国集/保送' : ''}${stage.id === 'ctt' ? ' · 积分制：作业 10% + 三场 54%' : ''}${stage.id === 'cts' ? ' · 积分制：+两场 36%，前 6 答辩' : ''}`,
   };
 
+  return recordOfficialOutcome(
+    {
+      ...bumpFatigue({ ...s, students }, stage.days, new Set(qualified.map((st) => st.name))),
+      week: week + 1,
+      phase: 'result',
+      lastContest: recap,
+      contests: [...s.contests, recap],
+    },
+    recap,
+    stage,
+  );
+}
+
+/** 正式比赛结算后：写入选手长期档案、更新校史奇闻纪录、并按主力获奖发放学校经费奖金 */
+function recordOfficialOutcome(s: SeasonState, recap: ContestRecap, stage: StageDef): SeasonState {
+  const archives = syncArchiveSnapshots(s.archives ?? {}, s.students, s.year);
+  const records: SeasonRecords = { ...(s.records ?? {}) };
+  const byName = new Map(s.students.map((st) => [st.name, st]));
+  const natMap = new Map((recap.national?.rows ?? []).map((r) => [r.name, r]));
+  const awardMap = new Map((recap.awards ?? []).map((a) => [a.name, a]));
+
+  if (stage.id === 'csp1' && recap.prelim) {
+    for (const pr of recap.prelim) {
+      const st = byName.get(pr.name);
+      if (!st) continue;
+      const cur = archives[pr.name] ?? createEmptyArchive(st, s.year);
+      const nextArch: StudentArchive = {
+        ...cur,
+        officialCount: cur.officialCount + 1,
+        honors: [
+          ...cur.honors,
+          {
+            year: s.year,
+            grade: st.grade,
+            stageId: stage.id,
+            stageShort: stage.short,
+            score: pr.score,
+            rank: pr.nationalRank ?? 0,
+            award: pr.passed ? '晋级复赛' : '未过线',
+          },
+        ],
+      };
+      archives[pr.name] = nextArch;
+      if (!records.mostOfficialContests || nextArch.officialCount > records.mostOfficialContests.value) {
+        records.mostOfficialContests = {
+          name: pr.name,
+          year: s.year,
+          value: nextArch.officialCount,
+          detail: `${GRADE_NAMES[st.grade]} · 累计 ${nextArch.officialCount} 场正赛`,
+        };
+      }
+    }
+    return { ...s, archives, records };
+  }
+
+  let budgetBonus = 0;
+  for (const r of recap.rows) {
+    const st = byName.get(r.name);
+    if (!st) continue;
+    const nat = natMap.get(r.name);
+    const aw = awardMap.get(r.name);
+    const awardLabel = aw?.label ?? nat?.award ?? '参赛';
+    const cur = archives[r.name] ?? createEmptyArchive(st, s.year);
+
+    const nextArch: StudentArchive = {
+      ...cur,
+      officialCount: cur.officialCount + 1,
+      provFirsts: cur.provFirsts + (
+        (stage.id === 'csp2' && aw?.label === '省一') ||
+        (stage.id === 'noip' && aw?.label === 'NOIP 一等')
+          ? 1
+          : 0
+      ),
+      provTeams: cur.provTeams + (stage.id === 'prov' && st.prov?.team ? 1 : 0),
+      noiGold: cur.noiGold + (stage.id === 'noi' && aw?.label === '金牌' ? 1 : 0),
+      noiSilver: cur.noiSilver + (stage.id === 'noi' && aw?.label === '银牌' ? 1 : 0),
+      noiBronze: cur.noiBronze + (stage.id === 'noi' && aw?.label === '铜牌' ? 1 : 0),
+      noiSelected: cur.noiSelected + (stage.id === 'noi' && st.noi?.selected ? 1 : 0),
+      ioiMedals: cur.ioiMedals + (stage.id === 'ioi' && aw ? 1 : 0),
+      honors: [
+        ...cur.honors,
+        {
+          year: s.year,
+          grade: st.grade,
+          stageId: stage.id,
+          stageShort: stage.short,
+          score: Math.round(nat?.score ?? r.real),
+          rank: nat?.rank ?? r.rank,
+          award: awardLabel,
+        },
+      ],
+    };
+
+    // 单场最高正赛得分率（至少达到一定绝对分才有意义）
+    if (recap.fullScore > 0) {
+      const ratioPct = Math.round((r.real / recap.fullScore) * 1000) / 10;
+      if (!records.highestOfficialRatio || ratioPct > records.highestOfficialRatio.value) {
+        records.highestOfficialRatio = {
+          name: r.name,
+          year: s.year,
+          value: ratioPct,
+          detail: `Y${s.year} ${stage.short} · ${Math.round(r.real)}/${recap.fullScore}（${ratioPct}%）`,
+        };
+      }
+    }
+
+    // 单题挂分王 / 反挂王（仅 OI 盲测赛制有挂分/反挂）
+    if (recap.format !== 'ioi') {
+      for (const pr of r.perProblem) {
+        if (pr.delta < 0) {
+          if (!nextArch.worstDrop || pr.delta < nextArch.worstDrop.delta) {
+            nextArch.worstDrop = {
+              year: s.year,
+              stageShort: stage.short,
+              problemId: pr.problemId,
+              delta: pr.delta,
+              reason: pr.reason || '暗病挂分',
+            };
+          }
+          if (!records.worstDrop || pr.delta < records.worstDrop.value) {
+            records.worstDrop = {
+              name: r.name,
+              year: s.year,
+              value: pr.delta,
+              detail: `Y${s.year} ${stage.short} P${pr.problemId + 1} · ${pr.est}→${pr.real}（${pr.reason || '挂分'}）`,
+            };
+          }
+        } else if (pr.delta > 0) {
+          if (!nextArch.bestGain || pr.delta > nextArch.bestGain.delta) {
+            nextArch.bestGain = {
+              year: s.year,
+              stageShort: stage.short,
+              problemId: pr.problemId,
+              delta: pr.delta,
+              reason: pr.reason || '反挂加分',
+            };
+          }
+          if (!records.bestGain || pr.delta > records.bestGain.value) {
+            records.bestGain = {
+              name: r.name,
+              year: s.year,
+              value: pr.delta,
+              detail: `Y${s.year} ${stage.short} P${pr.problemId + 1} · ${pr.est}→${pr.real}（${pr.reason || '反挂'}）`,
+            };
+          }
+        }
+      }
+    }
+
+    if (!records.mostOfficialContests || nextArch.officialCount > records.mostOfficialContests.value) {
+      records.mostOfficialContests = {
+        name: r.name,
+        year: s.year,
+        value: nextArch.officialCount,
+        detail: `${GRADE_NAMES[st.grade]} · 累计 ${nextArch.officialCount} 场正赛`,
+      };
+    }
+
+    archives[r.name] = nextArch;
+
+    // 校队主力斩获荣誉为校队带来经费奖励
+    if (st.onTeam && aw) {
+      if (stage.id === 'csp2' && aw.label === '省一') budgetBonus += 3;
+      else if (stage.id === 'noip' && aw.label === 'NOIP 一等') budgetBonus += 3;
+      else if (stage.id === 'prov' && st.prov?.team) budgetBonus += 12;
+      else if ((stage.id === 'wc' || stage.id === 'apio') && aw.label === '金牌') budgetBonus += 8;
+      else if (stage.id === 'noi') {
+        if (aw.label === '金牌') budgetBonus += 25;
+        else if (aw.label === '银牌') budgetBonus += 15;
+        else if (aw.label === '铜牌') budgetBonus += 8;
+      } else if (stage.id === 'ioi') {
+        budgetBonus += 30;
+      }
+    }
+  }
+
+  if (budgetBonus > 0) {
+    recap.note = `${recap.note ? `${recap.note} ` : ''}· 学校奖励校队经费 +${budgetBonus}`;
+  }
   return {
-    ...bumpFatigue(s, stage.days),
-    students,
-    week: week + 1,
-    phase: 'result',
-    lastContest: recap,
-    contests: [...s.contests, recap],
+    ...s,
+    budget: clamp(budgetOf(s) + budgetBonus, 0, 200),
+    archives,
+    records,
   };
 }
 
 /** 跑本周的比赛：赛历上有正式比赛就跑正式的，没有就跑校内模拟赛 */
-export function runWeeklyContest(s: SeasonState, trace?: ContestRound[]): SeasonState {
+export function runWeeklyContest(s: SeasonState, trace?: ContestRound[], tactic?: ContestTactic): SeasonState {
   const rawStage = stageOfWeek(s.week);
   // 按赛季年份现出一份「合理范围内的随机卷」：历年难度中位数为锚 + 年份偏难/偏易 + 逐题噪声
   const stage = rawStage ? stagePaperForYear(rawStage, s.year, s.seed) : rawStage;
+  const runInput = tactic ? { ...s, nextTactic: tactic } : s;
   let next: SeasonState;
-  if (!stage) next = runPractice(s, trace);
-  else if (stage.kind === 'prelim') next = runPrelim(s, stage);
-  else if (stage.id === 'csp2') next = runCsp2(s, stage, trace);
-  else next = runStage(s, stage, trace);
-  // sitOut 计的是「缺席接下来几场正式比赛」，不是几个自然周：
-  // 一学年 40 周只有 10 周有正赛，按周衰减会让 2 场禁赛在下一场之前就归零。
-  if (!stage) return next;
+  if (!stage) next = runPractice(runInput, trace);
+  else if (stage.kind === 'prelim') next = runPrelim(runInput, stage);
+  else if (stage.id === 'csp2') next = runCsp2(runInput, stage, trace);
+  else next = runStage(runInput, stage, trace);
+
+  // 记录参赛场次并解锁盲盒苗子特性（累计打满 3 场或第 6 周后揭晓）
+  const playedNames = new Set<string>([
+    ...(next.lastContest?.rows ?? []).map((r) => r.name),
+    ...(next.lastContest?.prelim ?? []).map((p) => p.name),
+  ]);
+  const revealAll = s.week >= 6;
+  const students = next.students.map((st) => {
+    const nextPlayed = (st.contestsPlayed ?? 0) + (playedNames.has(st.name) ? 1 : 0);
+    const revealed = Boolean(st.traitsRevealed) || revealAll || nextPlayed >= 3;
+    const sitOut = stage && st.sitOut > 0 ? st.sitOut - 1 : st.sitOut;
+    return {
+      ...st,
+      sitOut,
+      contestsPlayed: nextPlayed,
+      traitsRevealed: revealed,
+    };
+  });
   return {
     ...next,
-    students: next.students.map((st) => (st.sitOut > 0 ? { ...st, sitOut: st.sitOut - 1 } : st)),
+    students,
+    nextTactic: 'normal',
+  };
+}
+
+export interface AutoRunResult {
+  season: SeasonState;
+  weeksRun: number;
+  stopReason: 'event' | 'stage' | 'fatigue' | 'yearEnd' | 'limit' | 'blocked';
+  stopText: string;
+}
+
+/**
+ * 一键按当前方案连续推进平淡训练周，消除机械点击疲劳。
+ * 遇到以下任一情况立即停下交回控制：
+ * 1) 触发每周事件卡（pendingEvent）
+ * 2) 抵达正赛周（stageOfWeek）
+ * 3) 主力中有队员疲劳 > 70
+ * 4) 抵达学年末结算
+ */
+export function fastForwardWeeks(s: SeasonState, plan: WeekPlan, maxWeeks = 12): AutoRunResult {
+  if (s.phase !== 'plan' || s.pendingEvent || stageOfWeek(s.week)) {
+    return {
+      season: s,
+      weeksRun: 0,
+      stopReason: 'blocked',
+      stopText: s.pendingEvent ? '需先处理本周插曲' : stageOfWeek(s.week) ? '本周为正赛周' : '当前不在排训练阶段',
+    };
+  }
+  let cur = s;
+  let weeksRun = 0;
+  let curPlan: WeekPlan = { ...plan };
+  for (let i = 0; i < maxWeeks; i += 1) {
+    if (cur.phase !== 'plan' || cur.pendingEvent || stageOfWeek(cur.week)) break;
+    cur = planWeek(cur, curPlan);
+    cur = runWeeklyContest(cur);
+    cur = advanceWeek(cur);
+    weeksRun += 1;
+    // 连推第 2 周起沿用洁净方案，避免重复扣一次性特训项目或重复轮休
+    curPlan = cur.lastPlan ?? {
+      ...plan,
+      special: null,
+      alumniName: null,
+      care: plan.care?.filter((c) => c.action !== 'rest'),
+    };
+    if (cur.phase === 'yearEnd' || cur.phase === 'finished') {
+      return { season: cur, weeksRun, stopReason: 'yearEnd', stopText: `已连推 ${weeksRun} 周，抵达学年末结算` };
+    }
+    if (cur.pendingEvent) {
+      return { season: cur, weeksRun, stopReason: 'event', stopText: `已连推 ${weeksRun} 周，第 ${cur.week} 周触发插曲「${cur.pendingEvent.title}」` };
+    }
+    if (stageOfWeek(cur.week)) {
+      const stg = stageOfWeek(cur.week)!;
+      return { season: cur, weeksRun, stopReason: 'stage', stopText: `已连推 ${weeksRun} 周，进入正赛周：${stg.name}` };
+    }
+    const tired = teamStudents(cur).find((x) => x.fatigue > 70);
+    if (tired) {
+      return { season: cur, weeksRun, stopReason: 'fatigue', stopText: `已连推 ${weeksRun} 周，${tired.name} 疲劳达 ${Math.round(tired.fatigue)}，建议调整或轮休` };
+    }
+  }
+  return {
+    season: cur,
+    weeksRun,
+    stopReason: 'limit',
+    stopText: `已连续推进 ${weeksRun} 个训练周`,
   };
 }
 
@@ -1859,15 +3053,57 @@ export function advanceWeek(s: SeasonState): SeasonState {
   });
 }
 
+function evaluateYearGoal(goalId: SeasonGoalId, summary: YearSummary): GoalResult {
+  const def = SEASON_GOALS.find((g) => g.id === goalId) ?? SEASON_GOALS[0];
+  const prov1 = summary.csp2First + summary.noipFirst;
+  const provTeam = summary.provTeam;
+  const noiMedals = summary.noiGold + summary.noiSilver + summary.noiBronze;
+
+  let met = false;
+  if (def.id === 'safe') met = prov1 >= 2;
+  else if (def.id === 'ambitious') met = provTeam >= 1 || prov1 >= 4;
+  else met = noiMedals >= 1 || provTeam >= 3;
+
+  if (met) {
+    const rewardBudget = def.id === 'gamble' ? 30 : def.id === 'ambitious' ? 18 : 10;
+    const rewardSuspend = def.id === 'gamble' ? 2 : def.id === 'ambitious' ? 1 : 0;
+    const deltaPrestige = def.id === 'gamble' ? 7 : def.id === 'ambitious' ? 4 : 2;
+    return {
+      goalId: def.id,
+      title: def.name,
+      met: true,
+      note: `目标达成（${def.requirement}）· ${def.rewardText}`,
+      rewardBudget,
+      rewardSuspend,
+      deltaPrestige,
+    };
+  }
+  const deltaPrestige = def.id === 'gamble' ? -8 : def.id === 'ambitious' ? -5 : -3;
+  return {
+    goalId: def.id,
+    title: def.name,
+    met: false,
+    note: `未达目标（${def.requirement}）· ${def.penaltyText}`,
+    rewardBudget: 0,
+    rewardSuspend: 0,
+    deltaPrestige,
+  };
+}
+
 /** 学年末：默认停在「继续 / 退休」的选择页，教练带多少年由自己决定 */
 function endYear(s: SeasonState): SeasonState {
   const summary = summarizeYear(s);
   summary.graduates = s.students.filter((st) => st.grade === 6).map((st) => st.name);
+  const goalResult = evaluateYearGoal(s.yearGoal ?? 'safe', summary);
+  summary.goalResult = goalResult;
   const history = [...s.history, summary];
+  const nextBudget = clamp(budgetOf(s) + goalResult.rewardBudget, 0, 200);
+  const nextPrestige = clamp(s.prestige + goalResult.deltaPrestige, 0, 100);
+  const nextYearSuspendBonus = (s.nextYearSuspendBonus ?? 0) + goalResult.rewardSuspend;
   if (s.year >= s.careerYears) {
-    return { ...s, phase: 'finished', history };
+    return { ...s, phase: 'finished', history, budget: nextBudget, prestige: nextPrestige, nextYearSuspendBonus };
   }
-  return { ...s, phase: 'yearEnd', history };
+  return { ...s, phase: 'yearEnd', history, budget: nextBudget, prestige: nextPrestige, nextYearSuspendBonus };
 }
 
 /** 学年末选择「继续带队」 */
@@ -1918,6 +3154,34 @@ function summarizeYear(s: SeasonState): YearSummary {
 
 function beginNextYear(s: SeasonState): SeasonState {
   const grads = s.students.filter((st) => st.grade === 6);
+  const archives = syncArchiveSnapshots(s.archives ?? {}, s.students, s.year);
+  const records: SeasonRecords = { ...(s.records ?? {}) };
+
+  // 记录本学年综合暴涨黑马 + 为每位高三毕业生定格去向
+  for (const st of s.students) {
+    const gain = Math.round((overallOf(st.skills) - st.startOverall) * 10) / 10;
+    if (!records.fastestGrowth || gain > records.fastestGrowth.value) {
+      records.fastestGrowth = {
+        name: st.name,
+        year: s.year,
+        value: gain,
+        detail: `Y${s.year} · ${st.startOverall.toFixed(1)} → ${overallOf(st.skills).toFixed(1)}`,
+      };
+    }
+  }
+
+  const gradSummaries = grads.map((g) => {
+    const cur = archives[g.name] ?? createEmptyArchive(g, s.year);
+    const dest = destinationOf(g, cur);
+    archives[g.name] = {
+      ...cur,
+      graduatedYear: s.year,
+      destination: dest,
+      peakOverall: Math.max(cur.peakOverall, overallOf(g.skills)),
+      bestTopic: bestTopicOf(g),
+    };
+    return { name: g.name, grade: g.grade, overall: overallOf(g.skills), destination: dest };
+  });
 
   const staying = s.students
     .filter((st) => st.grade < 6)
@@ -1933,6 +3197,9 @@ function beginNextYear(s: SeasonState): SeasonState {
       onTeam: false,
       onReserve: false,
       sitOut: 0,
+      // 跨学年结转：上学年 NOI 前 50 获得本学年 12 月 CTT 国家集训队资格
+      cttEligible: Boolean(st.noi?.selected),
+      prevNoiScore: st.noi?.selected ? st.noi.score : undefined,
       // 清空上一学年的资格链
       csp1: undefined, csp2: undefined, noip: undefined,
       wc: undefined, prov: undefined, apio: undefined, noi: undefined,
@@ -1949,7 +3216,7 @@ function beginNextYear(s: SeasonState): SeasonState {
   }
 
   // 新生名是随机拼的，可能和在校生/往届生重名；重名会让比赛引擎按名字认人出错，这里强制去重
-  const used = new Set(staying.map((st) => st.name));
+  const used = new Set([...staying.map((st) => st.name), ...Object.keys(archives)]);
   for (const n of newcomers) {
     if (!used.has(n.name)) { used.add(n.name); continue; }
     let k = 2;
@@ -1960,6 +3227,7 @@ function beginNextYear(s: SeasonState): SeasonState {
   }
   const students = [...staying, ...newcomers];
   rankStudents(students);
+  const nextArchives = syncArchiveSnapshots(archives, newcomers, s.year + 1, false, students.length);
   const keptTeam = s.team.filter((n) => students.some((st) => st.name === n));
   const keptReserve = s.reserve.filter((n) => students.some((st) => st.name === n));
   // 声望：比赛成绩好，来年招生质量高；没成绩就慢慢回落到 50。
@@ -1969,6 +3237,8 @@ function beginNextYear(s: SeasonState): SeasonState {
       + lastYear.csp2First * 2 + lastYear.noipFirst * 2 + lastYear.cttSelected * 5 + lastYear.ioiGold * 20
     : 0;
   const prestige = clamp(s.prestige * 0.85 + 7.5 + prestigeGain, 0, 100);
+  const nextBudget = clamp(Math.round(budgetOf(s) * 0.5) + initialBudgetFor(prestige), 20, 150);
+  const nextSuspendQuota = initialSuspendFor(prestige) + (s.nextYearSuspendBonus ?? 0);
 
   return {
     ...s,
@@ -1979,13 +3249,21 @@ function beginNextYear(s: SeasonState): SeasonState {
     team: [],
     reserve: [],
     prestige,
+    budget: nextBudget,
+    suspendQuota: nextSuspendQuota,
+    nextYearSuspendBonus: 0,
+    scheduledEvents: [],
+    campUsed: 0,
+    suspendPressure: 0,
+    archives: nextArchives,
+    records,
     lastTeam: keptTeam,
     lastReserve: keptReserve,
     plan: null,
     report: null,
     lastContest: null,
     contests: [],
-    graduates: grads.map((g) => ({ name: g.name, grade: g.grade, overall: overallOf(g.skills) })),
+    graduates: gradSummaries,
     newcomers: newcomers.map((n) => n.name),
     // 本学年的 summary 已在 endYear 里写入 history，这里不再重复 push
     history: s.history,
@@ -2153,15 +3431,19 @@ export function qualifiedFor(s: SeasonState, stage: StageDef): number {
         return true;
       case 'csp2': return Boolean(st.csp1?.passed);
       case 'noip':
-        // 正式：S 组二等及以上（限高中生）；体验：初中生拿省一可当后备体验
+        // 正式：S 组二等及以上（限高中生）；体验：初中生须 S 组省一
         return isSenior(st.grade)
           ? (st.csp2?.award ?? 0) >= 1 && (st.csp2?.award ?? 0) <= 2
-          : isJunior(st.grade) && (st.csp2?.award ?? 0) >= 1;
+          : isJunior(st.grade) && (st.csp2?.award ?? 0) === 1;
       case 'wc': return isSenior(st.grade) && Boolean(st.noip?.first);
-      case 'prov': return st.grade !== 6 && st.noip !== undefined;
-      case 'apio': return Boolean(st.prov?.team);
-      case 'noi': return Boolean(st.prov?.team) || (isJunior(st.grade) && st.noip !== undefined);
-      case 'ctt': return Boolean(st.noi?.selected);
+      case 'prov':
+        return (st.grade >= 4 && st.grade <= 5 && st.noip !== undefined)
+          || (isJunior(st.grade) && Boolean(st.noip?.reachedFirstLine));
+      case 'apio':
+        return Boolean(st.prov?.team) || (isSenior(st.grade) && Boolean(st.noip?.first));
+      case 'noi':
+        return Boolean(st.prov?.team) || (isJunior(st.grade) && st.prov !== undefined && st.prov.rank <= 17);
+      case 'ctt': return Boolean(st.cttEligible);
       case 'cts': return Boolean(st.ctt?.selected);
       case 'ioi': return Boolean(st.cts?.selected);
       default: return false;

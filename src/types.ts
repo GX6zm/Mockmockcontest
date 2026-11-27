@@ -4,6 +4,15 @@ export type Topic =
   | 'math' | 'dp' | 'graph' | 'greedy'
   | 'ds' | 'impl' | 'string' | 'geometry';
 
+/** 赛制：oi = 赛中盲测估分/最后提交为准/有 freopen；ioi = 实时评测/取历史最高分/无 freopen */
+export type ContestFormat = 'oi' | 'ioi';
+
+/** 选手特性词条 */
+export type TraitId = 'clutch' | 'bruteMaster' | 'lateBloomer' | 'specialist' | 'tester' | 'sprinter';
+
+/** 赛前战术指令 */
+export type ContestTactic = 'steady' | 'normal' | 'aggressive';
+
 /** 选手当前所处阶段 */
 export type Phase =
   | 'idle'      // 选题
@@ -14,6 +23,7 @@ export type Phase =
   | 'testing'   // 对拍
   | 'deciding'  // 犹豫要不要交
   | 'restoring' // 补交暴力保底
+  | 'fixing'    // IOI 实时评测后快速修 bug 重交
   | 'checking'  // 没事做了：检查文件、复读题面，等收卷
   | 'done';     // 收工
 
@@ -51,6 +61,10 @@ export interface Attempt {
   mode: 'brute' | 'full';
   score: number;   // 真实得分（赛中隐藏）
   est: number;     // 选手自估
+  /** 扣除暗病挂分前的干净分（已过赛制曲线，用于 IOI 修 bug 重交） */
+  clean?: number;
+  /** 本次提交是否触发了暗病挂分 */
+  damaged?: boolean;
   tested: boolean;
   time: number;
   reason: string;
@@ -65,6 +79,8 @@ export interface ProblemState {
   tested: boolean;
   /** 对拍发现 bug、回去返工的次数 */
   debugRounds: number;
+  /** IOI 实时评测后快速修 bug 重交的次数 */
+  fixRounds: number;
   attempts: Attempt[];
   submissions: number;
   timeSpent: number;
@@ -86,6 +102,8 @@ export interface Student {
   /** 开场通读题面剩余秒数（读完全部题才开始做） */
   surveyLeft: number;
   surveyTotal: number;
+  /** 选手特性词条（影响对拍/挂分倾向，仅展示与轻量判定） */
+  traits?: TraitId[];
 }
 
 export interface Submission {
@@ -105,6 +123,12 @@ export interface ContestConfig {
   studentCount: number;
   minutes: number;
   seed: number;
+  /**
+   * 赛制：默认 'oi'（传统盲测）；'ioi' 为实时评测、取历次提交最高分、无 freopen 爆零。
+   */
+  format?: ContestFormat;
+  /** 赛前战术指令：稳健保底 / 常规 / 搏命冲高 */
+  tactic?: ContestTactic;
   /**
    * 外部带入的阵容（教练模式用）：给了就按这份名单和技能生成选手，
    * 不再随机从校 OJ 名单里抽人。观战模式不传。
@@ -132,6 +156,8 @@ export interface CohortEntry {
   fatigue?: number;
   focus?: number;
   motivation?: number;
+  /** 选手特性词条 */
+  traits?: TraitId[];
 }
 
 export interface Contest {
@@ -171,4 +197,5 @@ export interface StudentResult {
   rankDelta: number; // >0 表示名次上升
   calibration: number; // 0-100 估分准确度
   written?: number; // NOI 笔试分（0-100），其他比赛没有
+  bonus?: number;   // NOI 省队 A 类加分（+5），其他比赛没有
 }

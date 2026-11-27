@@ -14,13 +14,13 @@ import type { Skills, Topic } from './types.ts';
 
 declare const __OPV__: boolean;
 
-/** 只有 `OPV=1` 的构建才是 OPv 版 */
-export const IS_OPV: boolean = typeof __OPV__ !== 'undefined' && __OPV__ === true;
+/** 自定义开局（OP 模式）已并入主版本，始终可用（默认关闭，不启用即按原始数据开档） */
+export const IS_OPV = true;
 
 export const OPV_CONFIG_KEY = 'oi-sim-opv-config-v1';
-/** OPv 教练档单独存，绝不覆盖原版存档 */
+/** 历史 OPv 独立存档键（保留用于平滑迁移到主存档） */
 export const OPV_COACH_KEY = 'oi-sim-coach-opv-v1';
-export const OPV_LABEL = 'OPv · 自定义开局';
+export const OPV_LABEL = '自定义开局（OP）';
 
 export const OPV_TOPIC_LIST: Topic[] = ['math', 'dp', 'graph', 'greedy', 'ds', 'impl', 'string', 'geometry'];
 export const OPV_TOPIC_NAMES: Record<Topic, string> = {
@@ -197,8 +197,16 @@ export function opvAbility(kp: number): number {
   return 0.8 + t * (OPV_ABILITY_CEIL - 0.8);
 }
 
-/** 赛季里所有 clamp 的天花板：OPv 放宽，普通构建保持 0.998（原版行为零变化） */
-export const ABILITY_CEIL = IS_OPV ? OPV_ABILITY_CEIL : NORMAL_ABILITY_CEIL;
+/** 引擎能力值 -> 0–150 知识点展示（opvAbility 的反函数，120 以下与原版完全一致） */
+export function kpFromAbility(v: number): number {
+  const c = Math.max(0, Math.min(ABILITY_CEIL, v));
+  if (c <= 0.8) return Math.round(Math.min(1, c) * 150);
+  const t = (c - 0.8) / (OPV_ABILITY_CEIL - 0.8);
+  return Math.round(OPV_BASE_KP + t * (150 - OPV_BASE_KP));
+}
+
+/** 统一能力天花板：120 知识点以下保持原口径，120–150 平滑进入超频区（最高 1.35） */
+export const ABILITY_CEIL = OPV_ABILITY_CEIL;
 
 /** 0–150 知识点 / 0–100 元能力 -> 引擎技能 */
 export function opvSkills(cfg: OpvConfig): Skills {

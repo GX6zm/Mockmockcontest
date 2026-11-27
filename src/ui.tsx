@@ -98,8 +98,40 @@ export function Ic({
   );
 }
 
+export type MotionMode = 'full' | 'static';
+const MOTION_STORAGE_KEY = 'oi-sim-motion-v1';
+
+/** 读取当前动效模式（优先 localStorage，其次 <html data-motion>） */
+export function getMotionMode(): MotionMode {
+  if (typeof document === 'undefined') return 'full';
+  try {
+    const saved = localStorage.getItem(MOTION_STORAGE_KEY);
+    if (saved === 'static' || saved === 'full') return saved;
+  } catch { /* ignore */ }
+  return document.documentElement.dataset.motion === 'static' ? 'static' : 'full';
+}
+
+/** 实时切换满血 / 静帧动效并持久化，让单一 HTML 同时兼顾低配机与高配机 */
+export function setMotionMode(mode: MotionMode): void {
+  if (typeof document !== 'undefined') {
+    document.documentElement.dataset.motion = mode;
+  }
+  try {
+    localStorage.setItem(MOTION_STORAGE_KEY, mode);
+  } catch { /* ignore */ }
+}
+
+/** 应用启动时同步一次已保存的动效偏好 */
+export function initMotionMode(): MotionMode {
+  const mode = getMotionMode();
+  if (typeof document !== 'undefined') {
+    document.documentElement.dataset.motion = mode;
+  }
+  return mode;
+}
+
 /**
- * 满血版开关。静帧版把 <html data-motion="static"> 写死，
+ * 满血版开关。静帧模式下把 <html data-motion="static"> 打开，
  * 这里返回 false → 不撒纸屑、不跑任何 JS 驱动的视觉动效。
  */
 export function motionFull(): boolean {

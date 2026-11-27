@@ -16,7 +16,7 @@ let mismatches = 0;
 
 for (let week = 1; week <= YEAR_WEEKS; week++) {
   if (s.phase === 'team') s = setTeam(s, s.students.slice(0, 8).map((st) => st.name));
-  s = planWeek(s, 'dp', 2, { preset: 'normal', problemCount: 3, minutes: 180 });
+  s = planWeek(s, { topic: 'dp', intensity: 'normal', mock: { preset: 'normal', problemCount: 3, minutes: 180 } });
   const stage = stageOfWeek(week);
   const trace = [];
   const t0 = Date.now();
@@ -40,8 +40,8 @@ for (let week = 1; week <= YEAR_WEEKS; week++) {
       if (!c.isFinished) throw new Error(`第 ${week} 周 ${round.label} 没跑到收卷`);
       for (const r of finalize(c)) replayRows.set(r.name, (replayRows.get(r.name) ?? 0) + r.real);
     }
-    // 瞬时结算的分数（只比引擎跑出来的部分）
-    const settleRows = new Map(recap.rows.map((r) => [r.name, r.real - (r.written ?? 0)]));
+    // 瞬时结算的分数（只比引擎跑出来的部分：扣掉 NOI 笔试和省队 A 类 5 分加分）
+    const settleRows = new Map(recap.rows.map((r) => [r.name, r.real - (r.written ?? 0) - (r.bonus ?? 0)]));
     for (const [name, score] of settleRows) {
       const replay = replayRows.get(name);
       if (replay === undefined) { console.log(`❌ ${week} 周 ${name} 不在回放里`); mismatches++; continue; }

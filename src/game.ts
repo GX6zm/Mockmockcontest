@@ -12,7 +12,7 @@ import { ROSTER } from './roster.ts';
 import { IS_OPV, loadOpvConfig, opvSkills } from './opv.ts';
 import type {
   Attempt, CohortEntry, Contest, ContestConfig, Phase, Problem, ProblemResult,
-  ProblemState, Student, StudentResult, Skills, Topic,
+  ProblemState, Student, StudentResult, Skills, Topic, TraitId,
 } from './types.ts';
 
 export const STEP = 0.5;
@@ -139,21 +139,32 @@ interface TitleDef {
   max: number;
 }
 
-const TITLE_POOL: TitleDef[] = [
+export const TITLE_POOL: TitleDef[] = [
   // ---------- 入门 / 普及-（0–1）----------
   { topic: 'impl', title: '排队打水', min: 0, max: 1 },
   { topic: 'impl', title: '模拟电梯', min: 0, max: 1 },
   { topic: 'impl', title: '日期计算', min: 0, max: 2 },
   { topic: 'impl', title: '简单的计算器', min: 0, max: 1 },
+  { topic: 'impl', title: '剧场排座', min: 0, max: 1 },
+  { topic: 'impl', title: '花坛铺砖', min: 0, max: 2 },
+  { topic: 'impl', title: '书架整理', min: 1, max: 2 },
   { topic: 'math', title: '质因数分解', min: 0, max: 2 },
   { topic: 'math', title: '最大公约数', min: 0, max: 1 },
   { topic: 'math', title: '斐波那契数列', min: 0, max: 1 },
+  { topic: 'math', title: '齿轮啮合', min: 0, max: 2 },
+  { topic: 'math', title: '密码破译', min: 1, max: 3 },
   { topic: 'greedy', title: '硬币兑换', min: 0, max: 1 },
   { topic: 'greedy', title: '区间选点 · 入门', min: 0, max: 2 },
+  { topic: 'greedy', title: '圆桌分糖', min: 1, max: 2 },
+  { topic: 'greedy', title: '营地补给', min: 1, max: 3 },
   { topic: 'string', title: '统计单词', min: 0, max: 1 },
   { topic: 'string', title: '回文判断', min: 0, max: 1 },
+  { topic: 'string', title: '括号序列修复', min: 1, max: 3 },
+  { topic: 'string', title: '词典压缩', min: 1, max: 3 },
   { topic: 'dp', title: '爬楼梯', min: 0, max: 1 },
   { topic: 'dp', title: '数字三角形', min: 0, max: 2 },
+  { topic: 'dp', title: '数轴跳棋', min: 1, max: 2 },
+  { topic: 'dp', title: '石碑拓片', min: 1, max: 3 },
   { topic: 'graph', title: '图的遍历', min: 0, max: 1 },
   { topic: 'graph', title: '连通块计数', min: 0, max: 2 },
   { topic: 'ds', title: '前缀和', min: 0, max: 1 },
@@ -162,52 +173,99 @@ const TITLE_POOL: TitleDef[] = [
   // ---------- 普及（2）----------
   { topic: 'impl', title: '大模拟 · 图书馆', min: 2, max: 3 },
   { topic: 'impl', title: '高精度加减', min: 2, max: 3 },
+  { topic: 'impl', title: '气象站网', min: 2, max: 3 },
+  { topic: 'impl', title: '云端同步', min: 2, max: 4 },
   { topic: 'math', title: '快速幂', min: 2, max: 3 },
   { topic: 'math', title: '约数个数', min: 2, max: 3 },
+  { topic: 'math', title: '潮汐发电', min: 2, max: 4 },
   { topic: 'greedy', title: '区间调度', min: 2, max: 4 },
   { topic: 'greedy', title: '排序不等式', min: 2, max: 4 },
+  { topic: 'greedy', title: '货仓选址', min: 2, max: 3 },
+  { topic: 'greedy', title: '港口泊位', min: 2, max: 4 },
   { topic: 'string', title: '字符串哈希', min: 2, max: 4 },
   { topic: 'string', title: '字典树', min: 3, max: 4 },
+  { topic: 'string', title: '前缀密码', min: 2, max: 4 },
   { topic: 'dp', title: '0/1 背包', min: 2, max: 3 },
   { topic: 'dp', title: '最长上升子序列', min: 2, max: 4 },
+  { topic: 'dp', title: '残缺棋盘', min: 2, max: 4 },
   { topic: 'graph', title: '单源最短路', min: 2, max: 4 },
   { topic: 'graph', title: '最小生成树', min: 2, max: 4 },
+  { topic: 'graph', title: '信号中继', min: 2, max: 4 },
   { topic: 'ds', title: '并查集应用', min: 2, max: 3 },
   { topic: 'ds', title: '树状数组', min: 3, max: 4 },
+  { topic: 'ds', title: '烽火传递', min: 2, max: 4 },
   { topic: 'geometry', title: '多边形面积', min: 2, max: 3 },
+  { topic: 'geometry', title: '围栏修建', min: 2, max: 3 },
+  { topic: 'geometry', title: '无人机巡检', min: 2, max: 4 },
   // ---------- 普及+ / 提高（3–4）----------
   { topic: 'impl', title: '表达式求值', min: 3, max: 5 },
   { topic: 'impl', title: '高精度乘除', min: 3, max: 4 },
+  { topic: 'impl', title: '遗迹密道', min: 3, max: 4 },
+  { topic: 'impl', title: '棋盘覆盖', min: 3, max: 5 },
   { topic: 'math', title: '组合数取模', min: 3, max: 5 },
   { topic: 'math', title: '数论分块', min: 4, max: 5 },
+  { topic: 'math', title: '排列重塑', min: 3, max: 5 },
+  { topic: 'math', title: '航线规划', min: 4, max: 6 },
   { topic: 'greedy', title: '交换论证', min: 3, max: 5 },
   { topic: 'greedy', title: '反悔贪心', min: 4, max: 5 },
+  { topic: 'greedy', title: '任务抢占', min: 3, max: 5 },
+  { topic: 'greedy', title: '廊桥调度', min: 3, max: 5 },
+  { topic: 'greedy', title: '燃料补给', min: 3, max: 5 },
   { topic: 'string', title: 'KMP 匹配', min: 3, max: 4 },
+  { topic: 'string', title: '回文卷轴', min: 4, max: 6 },
   { topic: 'dp', title: '区间 DP', min: 3, max: 4 },
   { topic: 'dp', title: '树形 DP', min: 4, max: 5 },
   { topic: 'dp', title: '状压入门', min: 4, max: 5 },
+  { topic: 'dp', title: '列车编组', min: 3, max: 4 },
+  { topic: 'dp', title: '魔法药剂', min: 3, max: 5 },
+  { topic: 'dp', title: '序列折叠', min: 4, max: 5 },
+  { topic: 'dp', title: '区间博弈', min: 4, max: 6 },
+  { topic: 'dp', title: '树上寻宝', min: 4, max: 6 },
   { topic: 'graph', title: '强连通分量', min: 3, max: 5 },
   { topic: 'graph', title: '分层图', min: 4, max: 5 },
+  { topic: 'graph', title: '雪山索道', min: 3, max: 5 },
+  { topic: 'graph', title: '城际光缆', min: 3, max: 5 },
+  { topic: 'graph', title: '地铁换乘', min: 3, max: 5 },
+  { topic: 'graph', title: '迷宫传送', min: 4, max: 5 },
+  { topic: 'graph', title: '电网调度', min: 4, max: 6 },
+  { topic: 'graph', title: '城市供水', min: 4, max: 6 },
   { topic: 'ds', title: '线段树维护', min: 4, max: 5 },
   { topic: 'ds', title: '树链剖分入门', min: 4, max: 5 },
   { topic: 'ds', title: '分块', min: 4, max: 5 },
+  { topic: 'ds', title: '古籍修复', min: 3, max: 5 },
+  { topic: 'ds', title: '矩阵染色', min: 3, max: 5 },
+  { topic: 'ds', title: '树链染色', min: 4, max: 6 },
   { topic: 'geometry', title: '凸包', min: 3, max: 5 },
   { topic: 'geometry', title: '最近点对', min: 4, max: 5 },
+  { topic: 'geometry', title: '雷达盲区', min: 3, max: 5 },
+  { topic: 'geometry', title: '夜航灯塔', min: 3, max: 5 },
+  { topic: 'geometry', title: '矿道爆破', min: 4, max: 6 },
   // ---------- 提高+ / 省选（5–6）----------
   { topic: 'math', title: '莫比乌斯反演', min: 5, max: 6 },
+  { topic: 'math', title: '星际跃迁', min: 5, max: 7 },
   { topic: 'dp', title: '计数 DP', min: 5, max: 6 },
   { topic: 'dp', title: '矩阵加速递推', min: 5, max: 6 },
+  { topic: 'dp', title: '卡牌博弈', min: 5, max: 6 },
   { topic: 'graph', title: '网络流建模', min: 5, max: 6 },
   { topic: 'graph', title: '费用流', min: 6, max: 7 },
+  { topic: 'graph', title: '关键节点', min: 5, max: 7 },
+  { topic: 'graph', title: '双向奔赴', min: 5, max: 7 },
   { topic: 'ds', title: '平衡树', min: 5, max: 6 },
+  { topic: 'ds', title: '动态开点星图', min: 5, max: 6 },
+  { topic: 'ds', title: '离线查询驿站', min: 5, max: 7 },
   { topic: 'string', title: '后缀数组', min: 5, max: 6 },
+  { topic: 'string', title: '基因片段', min: 5, max: 6 },
+  { topic: 'string', title: '多串情报检索', min: 5, max: 7 },
   { topic: 'geometry', title: '旋转卡壳', min: 5, max: 6 },
+  { topic: 'geometry', title: '激光反射', min: 5, max: 6 },
+  { topic: 'geometry', title: '星图重构', min: 5, max: 7 },
   { topic: 'geometry', title: '半平面交', min: 6, max: 7 },
   { topic: 'string', title: '回文自动机', min: 6, max: 7 },
   { topic: 'math', title: '生成函数', min: 6, max: 7 },
   // ---------- NOI / CTS（7）----------
   { topic: 'dp', title: '动态 DP', min: 6, max: 7 },
   { topic: 'ds', title: 'LCT 维护', min: 6, max: 7 },
+  { topic: 'ds', title: '区间历史最值', min: 6, max: 7 },
   { topic: 'graph', title: '最小割树', min: 6, max: 7 },
   { topic: 'math', title: '多项式 exp', min: 7, max: 7 },
   { topic: 'string', title: '广义 SAM', min: 6, max: 7 },
@@ -335,15 +393,18 @@ function blankProblems(n: number): ProblemState[] {
     mode: 'full' as const,
     tested: false,
     debugRounds: 0,
+    fixRounds: 0,
     attempts: [] as Attempt[],
     submissions: 0,
     timeSpent: 0,
   }));
 }
 
+const hasTrait = (st: Student, id: TraitId): boolean => Boolean(st.traits?.includes(id));
+
 function mkStudent(
   id: number, name: string, skills: Skills, problemCount: number, rng: () => number,
-  fatigue = 0, focus?: number, motivation?: number,
+  fatigue = 0, focus?: number, motivation?: number, traits?: TraitId[],
 ): Student {
   return {
     id,
@@ -360,6 +421,7 @@ function mkStudent(
     finished: false,
     surveyLeft: 0,
     surveyTotal: 0,
+    ...(traits?.length ? { traits } : {}),
   };
 }
 
@@ -369,7 +431,7 @@ function createStudents(cfg: ContestConfig, problemCount: number, rng: () => num
   if (cfg.cohort && cfg.cohort.length > 0) {
     return cfg.cohort.slice(0, count).map((e, i) => {
       const skills = JSON.parse(JSON.stringify(e.skills)) as Skills;
-      return mkStudent(i, e.name, skills, problemCount, rng, e.fatigue, e.focus, e.motivation);
+      return mkStudent(i, e.name, skills, problemCount, rng, e.fatigue, e.focus, e.motivation, e.traits);
     });
   }
 
@@ -443,29 +505,44 @@ export function createContest(cfg: ContestConfig): Contest {
 }
 
 // ===== 观测量 =====
-export function totalEstimate(st: Student): number {
+export function isIoiFormat(c: Contest): boolean {
+  return c.config.format === 'ioi';
+}
+
+function effectiveAttempt(ps: ProblemState, ioi: boolean): Attempt | undefined {
+  if (ps.attempts.length === 0) return undefined;
+  if (!ioi) return ps.attempts[ps.attempts.length - 1];
+  let best = ps.attempts[0];
+  for (let i = 1; i < ps.attempts.length; i++) {
+    if (ps.attempts[i].score >= best.score) best = ps.attempts[i];
+  }
+  return best;
+}
+
+export function totalEstimate(st: Student, ioi = false): number {
   let t = 0;
   for (const ps of st.problems) {
-    const last = ps.attempts[ps.attempts.length - 1];
-    if (last) t += last.est;
+    const eff = effectiveAttempt(ps, ioi);
+    if (eff) t += eff.est;
   }
   return t;
 }
 
-export function problemEstimate(st: Student, pid: number): number | null {
+export function problemEstimate(st: Student, pid: number, ioi = false): number | null {
   const ps = st.problems[pid];
   if (!ps) return null;
-  const last = ps.attempts[ps.attempts.length - 1];
-  return last ? last.est : null;
+  const eff = effectiveAttempt(ps, ioi);
+  return eff ? eff.est : null;
 }
 
 export function estimateRankMap(c: Contest): Map<number, number> {
-  const sorted = c.students.slice().sort((a, b) => totalEstimate(b) - totalEstimate(a));
+  const ioi = isIoiFormat(c);
+  const sorted = c.students.slice().sort((a, b) => totalEstimate(b, ioi) - totalEstimate(a, ioi));
   const map = new Map<number, number>();
   let last = -1;
   let rank = 0;
   sorted.forEach((st, i) => {
-    const v = totalEstimate(st);
+    const v = totalEstimate(st, ioi);
     if (v !== last) { rank = i + 1; last = v; }
     map.set(st.id, rank);
   });
@@ -509,12 +586,15 @@ function phaseDuration(c: Contest, st: Student, p: Problem, ps: ProblemState): n
         ? (520 + d * 760) * (1.55 - st.skills.coding * 0.8)
         : (260 + d * 260) * (1.4 - st.skills.coding * 0.7)) * (1 - 0.7 * fam);
     case 'testing':
-      return (150 + d * 260) * (1.35 - st.skills.debug * 0.55) * (1 - 0.85 * fam);
+      return (150 + d * 260) * (1.35 - st.skills.debug * 0.55) * (1 - 0.85 * fam) * (hasTrait(st, 'tester') ? 1.15 : 1);
     case 'deciding':
       // 顺手题不纠结，犹豫时间跟着缩短
       return (30 + c.rng() * 60) * (1 - 0.6 * fam);
     case 'restoring':
       return 90 + d * 120;
+    case 'fixing':
+      // IOI 实时评测看到报错/挂点后快速定位修复：约 3–7 分钟
+      return (180 + d * 240) * (1.35 - st.skills.debug * 0.55);
     default:
       return 60;
   }
@@ -579,16 +659,17 @@ function lastAttemptOfMode(ps: ProblemState, mode: 'brute' | 'full'): Attempt | 
 
 /** 所有题都"做完"了但还有时间：回去抢救估分最低的那道 */
 function chooseRetry(c: Contest, st: Student, remaining: number): number | null {
+  const ioi = isIoiFormat(c);
   let best: number | null = null;
   let bestScore = 0;
   for (const p of c.problems) {
     const ps = st.problems[p.id];
     if (ps.status !== 'done') continue;
-    const last = ps.attempts[ps.attempts.length - 1];
-    if (!last || last.est >= 100) continue;
+    const eff = effectiveAttempt(ps, ioi);
+    if (!eff || eff.est >= 100) continue;
     const cost = estimatedCost(st, p) * 60;
     if (remaining < cost * 0.75) continue;
-    const room = (100 - last.est) / Math.max(10, cost / 60);
+    const room = (100 - eff.est) / Math.max(10, cost / 60);
     if (room > bestScore) { bestScore = room; best = p.id; }
   }
   if (best !== null) st.problems[best].status = 'queue';
@@ -609,17 +690,17 @@ function subtaskPass(gap: number, i: number, optimism: number, level: number): n
   return clamp(sigmoid((gap + off + optimism) / 13), 0.02, 0.985);
 }
 
-/** 写挂概率：大样例能挡住大部分细节错，但暗病永远有；细节越多、题越难越容易藏 */
+/** 写挂概率：大样例能挡住大部分细节错，但暗病永远有；debug 与对拍能显著压低暗病率 */
 function bugChance(st: Student, p: Problem, mode: 'brute' | 'full', tested: boolean, debugRounds: number): number {
   const fam = familiarity(st, p);
-  let bugP = (0.235 + (p.detail / 100) * 0.15) * clamp(0.55 + p.difficulty / 110, 0.65, 1.5)
-    - st.skills.debug * 0.04
-    - (tested ? 0.05 : 0)
-    - debugRounds * 0.025
-    - (mode === 'brute' ? 0.03 : 0);
+  let bugP = (0.26 + (p.detail / 100) * 0.16) * clamp(0.6 + p.difficulty / 115, 0.65, 1.45)
+    - st.skills.debug * 0.14
+    - (tested ? 0.13 : 0)
+    - Math.min(0.09, debugRounds * 0.035)
+    - (mode === 'brute' ? 0.06 : 0);
   // 顺手到闭眼写的题，手一抖写挂的概率也跟着降
-  bugP *= 1 - 0.55 * fam;
-  return clamp(bugP, 0.03, 0.5);
+  bugP *= 1 - 0.6 * fam;
+  return clamp(bugP, 0.015, 0.48);
 }
 
 /** 卡常概率：只有需要跑大数据、写起来又重的题才会 */
@@ -660,98 +741,118 @@ export function curveScore(curve: [number, number][] | undefined, raw: number): 
   return clamp(pts[pts.length - 1][1], 0, 1) * 100;
 }
 
-/**
- * 估分：正赛发了大样例，选手自测完基本知道哪些子任务过了 —— 所以估分就等于
- * 「干净分」加一点固定噪声。暗病（挂分梯子）赛后才知道。
- * 不再有“自我认知 / 性格偏差”这类隐藏属性：所有人用同一条中性规则。
- */
-const EST_NOISE = 3.0;
-
-function beliefOf(c: Contest, clean: number): number {
-  // 极少数时候选手严重低估自己：以为暴力都过不了，结果正解跑过去了 —— 天神眷顾
-  if (c.rng() < 0.003) return clamp(Math.round((clean - 30 - c.rng() * 30) / 10) * 10, 0, 100);
-  const noise = gauss(c.rng) * EST_NOISE;
-  return clamp(Math.round((clean + noise) / 10) * 10, 0, 100);
-}
+const round5 = (x: number): number => Math.round(x / 5) * 5;
 
 /**
- * 挂分梯子：赛后才知道的暗病，一处一处往外掏分。
- * 幅度越大概率越低 —— 掉一个小点最常见，整题爆零要看运气。
+ * 单调嵌套子任务抽签：共用同一个发挥值 u，因为 SUB_OFF 严格递减，
+ * 每个子任务的边缘通过率精确等于 subtaskPass（不破坏既有难度标定），
+ * 同时保证按 10% → 30% → 60% → 100% 递进通过，不会出现“小数据挂、大数据过”。
  */
-function applyDamage(
-  c: Contest, st: Student, p: Problem, mode: 'brute' | 'full', passed: boolean[], clean: number,
-  tested: boolean, debugRounds: number,
-): { score: number; reason: string } {
-  const bugP = bugChance(st, p, mode, tested, debugRounds);
-  if (c.rng() >= bugP) {
-    return { score: clean, reason: clean === 100 ? '' : clean === 0 ? 'WA · 算法有反例' : '部分分 · 正确性不足' };
-  }
-  const live = passed.map((ok, i) => (ok ? i : -1)).filter((i) => i >= 0);
-  if (!live.length) return { score: 0, reason: 'WA · 算法有反例' };
-
-  const bySize = [...live].sort((a, b) => p.subtasks[a].points - p.subtasks[b].points);
-  const tle = c.rng() < tleChance(st, p);
-  const r = c.rng();
-  let killed: number[];
-  let reason: string;
-  if (r < 0.70) {
-    // 小刀口：掉最小的一个点
-    killed = [bySize[0]];
-    reason = ['math', 'geometry', 'impl'].includes(p.topic) ? 'WA · 精度写挂' : 'WA · 边界没处理好';
-  } else if (r < 0.90) {
-    // 大刀口：掉最大的一个点
-    killed = [bySize[bySize.length - 1]];
-    reason = tle ? 'TLE · 常数被卡' : 'WA · 多测没清空';
-  } else if (r < 0.97) {
-    // 双刀：两个大点一起掉
-    killed = bySize.slice(-2);
-    reason = tle ? 'TLE · 常数被卡' : 'WA · 多测没清空';
-  } else {
-    // 全灭：整题爆零，概率最低
-    killed = bySize;
-    const r2 = c.rng();
-    reason = r2 < 0.45 ? 'RE · 数组开小' : r2 < 0.75 ? 'CE · freopen 写错' : 'WA · 算法有反例';
-  }
-  for (const i of killed) passed[i] = false;
-  return {
-    score: passed.reduce((a, ok, i) => a + (ok ? p.subtasks[i].points : 0), 0),
-    reason,
-  };
-}
-
-function submitAttempt(c: Contest, st: Student, p: Problem, ps: ProblemState, mode: 'brute' | 'full', tested: boolean) {
-  // 选手实际写出来的东西：哪些子任务是对的
+function rollSubtasks(c: Contest, st: Student, p: Problem, mode: 'brute' | 'full'): boolean[] {
   const covered = mode === 'full' ? 4 : 2;
   const gap = abilityOf(st, p.topic) - p.think;
+  const bruteBoost = mode === 'brute'
+    ? ((hasTrait(st, 'bruteMaster') ? 10 : 0) + (c.config.tactic === 'steady' ? 5 : 0))
+    : 0;
+  const u = c.rng();
   const passed: boolean[] = [];
-  for (let i = 0; i < covered; i++) passed.push(c.rng() < subtaskPass(gap, i, 0, p.level));
-  const clean = passed.reduce((a, ok, i) => a + (ok ? p.subtasks[i].points : 0), 0);
+  for (let i = 0; i < covered; i++) {
+    passed.push(u < subtaskPass(gap + bruteBoost, i, 0, p.level));
+  }
+  return passed;
+}
 
-  // 大样例自测完的估分：基本就是干净分（再按赛事得分率曲线校正）
-  const estRaw = beliefOf(c, clean);
-  let truth = applyDamage(c, st, p, mode, passed, clean, tested, ps.debugRounds);
-
-  // 最后 15 分钟慌里慌张交代码，偶尔忘写 freopen —— 游记里的经典爆零方式
-  const remain = c.duration - c.timeElapsed;
-  if (remain < 900 && c.rng() < 0.012 * (1 - st.skills.debug * 0.6)) {
-    truth = { score: 0, reason: 'CE · 匆忙交卷忘写 freopen' };
+/**
+ * 挂分梯子：直接作用在最终得分刻度（已过赛制曲线后的干净分）上，
+ * 避免正赛 scoreCurve 把强手的大挂分吞成 0、或把低分段小挂分放大成 -74。
+ * - 对拍过（tested）显著挡住小数据边界/算法反例，漏网的主要是大数据卡常/爆 int/数组开小；
+ * - 暴力保底不会因轻挂轻易爆零，也不会触发大数据 TLE。
+ */
+function applyDamage(
+  c: Contest, st: Student, p: Problem, mode: 'brute' | 'full', cleanScore: number,
+  tested: boolean, debugRounds: number, bugScale = 1,
+): { score: number; reason: string; damaged: boolean } {
+  if (cleanScore <= 0) {
+    return { score: 0, reason: 'WA · 思路未成型或算法有反例', damaged: false };
+  }
+  const bugP = clamp(bugChance(st, p, mode, tested, debugRounds) * bugScale, 0.008, 0.48);
+  if (c.rng() >= bugP) {
+    return {
+      score: cleanScore,
+      reason: cleanScore >= 100 ? 'AC' : '部分分 · 正常拿满已写子任务',
+      damaged: false,
+    };
   }
 
-  const curve = c.config.scoreCurve;
-  const est = curve ? Math.round(curveScore(curve, estRaw)) : estRaw;
-  if (curve) truth = { ...truth, score: Math.round(curveScore(curve, truth.score)) };
+  const ioi = isIoiFormat(c);
+  const tle = mode === 'full' && cleanScore >= 50 && c.rng() < tleChance(st, p);
+  const r = c.rng();
+  const midCut = mode === 'brute' ? 0.65 : (tested ? 0.52 : 0.45);
+  const heavyCut = mode === 'brute' ? 0.94 : (tested ? 0.86 : 0.80);
+  const wipeCut = mode === 'brute' ? 0.98 : (tested ? 0.97 : 0.94);
 
-  ps.attempts.push({
-    mode,
-    score: truth.score,
-    est,
-    tested,
+  if (r < midCut) {
+    // 轻挂：掉 10 分（低分暴力只掉 5 分，不轻易一刀清空）
+    const drop = cleanScore <= 15 ? Math.min(cleanScore, 5) : Math.min(cleanScore - 5, 10);
+    const reason = tle
+      ? 'TLE · 极限数据轻微超时'
+      : tested
+        ? 'WA · 极端边界 / 溢出细节'
+        : ['math', 'geometry', 'impl'].includes(p.topic)
+          ? 'WA · 精度或特判写挂'
+          : 'WA · 边界细节没处理好';
+    return { score: Math.max(0, cleanScore - drop), reason, damaged: true };
+  }
+
+  if (r < heavyCut) {
+    // 中挂：典型大数据子任务翻车（满分题掉 30–40 分）
+    const drop = cleanScore >= 90
+      ? (tle ? 40 : 30)
+      : Math.min(cleanScore - 5, Math.max(15, round5(cleanScore * 0.35)));
+    const actualDrop = Math.max(5, Math.min(cleanScore, drop));
+    const reason = tle
+      ? 'TLE · 大数据常数被卡'
+      : tested
+        ? 'WA · 大数据爆 int / 溢出'
+        : (c.rng() < 0.5 ? 'WA · 多测没清空' : 'WA · 大样例太水漏了反例');
+    return { score: Math.max(0, cleanScore - actualDrop), reason, damaged: true };
+  }
+
+  if (r < wipeCut) {
+    // 重挂：两个大点一起掉（满分题掉 60 分）
+    const drop = cleanScore >= 90
+      ? 60
+      : Math.min(cleanScore, Math.max(20, round5(cleanScore * 0.6)));
+    const reason = tle
+      ? 'TLE · 复杂度退化被卡'
+      : tested
+        ? 'RE · 大数据数组开小 / 栈溢出'
+        : 'WA · 核心结论有反例';
+    return { score: Math.max(0, cleanScore - drop), reason, damaged: true };
+  }
+
+  // 全灭：整题爆零（概率最低；IOI 赛制用标准输入输出，无 freopen 写错）
+  const r2 = c.rng();
+  const reason = r2 < 0.45
+    ? 'RE · 数组开小 / 越界爆零'
+    : r2 < 0.75
+      ? (ioi ? 'WA · 读入输出格式或特判错误' : 'CE · freopen 文件名写错')
+      : 'WA · 算法假了，全点翻车';
+  return { score: 0, reason, damaged: true };
+}
+
+function recordAttempt(
+  c: Contest, st: Student, p: Problem, ps: ProblemState,
+  attempt: Omit<Attempt, 'nth' | 'time'>,
+): Attempt {
+  const full: Attempt = {
+    ...attempt,
     time: c.timeElapsed,
-    reason: truth.reason,
     nth: ps.submissions + 1,
-  });
+  };
+  ps.attempts.push(full);
   ps.submissions += 1;
-  ps.tested = tested;
+  ps.tested = attempt.tested;
   p.submitCount += 1;
   st.totalSubmissions += 1;
   c.submissions.push({
@@ -760,18 +861,137 @@ function submitAttempt(c: Contest, st: Student, p: Problem, ps: ProblemState, mo
     studentName: st.name,
     problemId: p.id,
     nth: ps.submissions,
+    mode: attempt.mode,
+  });
+  return full;
+}
+
+function submitAttempt(
+  c: Contest, st: Student, p: Problem, ps: ProblemState, mode: 'brute' | 'full', tested: boolean,
+): Attempt {
+  const ioi = isIoiFormat(c);
+  // 1) 单调嵌套子任务得分 → 先过赛制曲线得到真实刻度的干净分
+  const passed = rollSubtasks(c, st, p, mode);
+  const cleanRaw = passed.reduce((a, ok, i) => a + (ok ? p.subtasks[i].points : 0), 0);
+  const curve = c.config.scoreCurve;
+  const cleanCal = curve ? clamp(round5(curveScore(curve, cleanRaw)), 0, 100) : cleanRaw;
+
+  // 2) 在真实得分刻度上执行挂分梯子，不再被曲线扭曲（叠加大心脏/对拍强迫症/赛前战术系数）
+  const tacticBugScale = c.config.tactic === 'steady' ? 0.75 : c.config.tactic === 'aggressive' ? 1.25 : 1;
+  const traitBugScale = (hasTrait(st, 'clutch') ? 0.70 : 1) * (hasTrait(st, 'tester') ? 0.78 : 1);
+  let truth = applyDamage(c, st, p, mode, cleanCal, tested, ps.debugRounds, tacticBugScale * traitBugScale);
+
+  // 3) 仅传统 OI 赛制（文件读写）会在最后 15 分钟出现忘写 freopen 爆零
+  const remain = c.duration - c.timeElapsed;
+  if (!ioi && remain < 900 && truth.score > 0 && c.rng() < 0.012 * (1 - st.skills.debug * 0.6)) {
+    truth = { score: 0, reason: 'CE · 匆忙交卷忘写 freopen', damaged: true };
+  }
+
+  // 4) 估分与反挂分：IOI 实时评测直接看到真实得分；OI 偶发数据水多冲分或保守低估
+  let est = cleanCal;
+  if (ioi) {
+    est = truth.score;
+  } else {
+    if (!truth.damaged && cleanCal > 0 && cleanCal < 100 && c.rng() < 0.06) {
+      const bonus = c.rng() < 0.75 ? 10 : 20;
+      truth = {
+        score: Math.min(100, truth.score + bonus),
+        reason: '反挂 · CCF 数据较水，多冲过测试点',
+        damaged: false,
+      };
+    } else {
+      const er = c.rng();
+      if (cleanCal >= 30 && er < 0.004) {
+        est = Math.max(0, cleanCal - 30);
+        if (!truth.damaged) truth = { ...truth, reason: '反挂 · 赛时以为写假，实测稳过' };
+      } else if (cleanCal >= 10 && er < 0.044) {
+        est = Math.max(0, cleanCal - 10);
+        if (!truth.damaged) truth = { ...truth, reason: '反挂 · 赛时估分偏保守' };
+      } else if (cleanCal <= 90 && er > 0.98) {
+        est = Math.min(100, cleanCal + 10);
+        if (!truth.damaged) truth = { ...truth, reason: '估高 · 误判了大样例覆盖度' };
+      }
+    }
+  }
+
+  return recordAttempt(c, st, p, ps, {
     mode,
+    score: truth.score,
+    est,
+    clean: cleanCal,
+    damaged: truth.damaged,
+    tested,
+    reason: truth.reason,
   });
 }
 
+/** 补交之前已写好的暴力：沿用原暴力代码结果，不重抽子任务；仅保留极低概率收卷前手滑 */
+function restoreBruteAttempt(c: Contest, st: Student, p: Problem, ps: ProblemState, brute: Attempt): Attempt {
+  let score = brute.score;
+  let reason = brute.reason;
+  let damaged = brute.damaged ?? false;
+  const remain = c.duration - c.timeElapsed;
+  if (!isIoiFormat(c) && remain < 900 && score > 0 && c.rng() < 0.008 * (1 - st.skills.debug * 0.6)) {
+    score = 0;
+    reason = 'CE · 匆忙换回暴力忘改 freopen';
+    damaged = true;
+  }
+  return recordAttempt(c, st, p, ps, {
+    mode: 'brute',
+    score,
+    est: brute.est,
+    clean: brute.clean ?? brute.score,
+    damaged,
+    tested: brute.tested,
+    reason,
+  });
+}
+
+/** IOI 实时评测后快速修 bug 重交：保持同一算法上限 clean，但按评测反馈大幅压低剩余挂分率 */
+function resubmitIoiFix(c: Contest, st: Student, p: Problem, ps: ProblemState): Attempt {
+  const prev = ps.attempts[ps.attempts.length - 1];
+  const mode = prev?.mode ?? ps.mode;
+  const cleanCal = prev?.clean ?? prev?.score ?? 0;
+  const fixScale = clamp(0.28 - st.skills.debug * 0.12, 0.12, 0.3);
+  const truth = applyDamage(c, st, p, mode, cleanCal, true, ps.debugRounds + ps.fixRounds, fixScale);
+  const reason = !truth.damaged && cleanCal > (prev?.score ?? 0)
+    ? (truth.score >= 100 ? 'AC · 实时修 bug 后通过' : '修复成功 · 拿回子任务分')
+    : truth.reason;
+  return recordAttempt(c, st, p, ps, {
+    mode,
+    score: truth.score,
+    est: truth.score,
+    clean: cleanCal,
+    damaged: truth.damaged,
+    tested: true,
+    reason,
+  });
+}
+
+function shouldIoiQuickFix(c: Contest, st: Student, ps: ProblemState, attempt: Attempt, remaining: number): boolean {
+  if (!isIoiFormat(c)) return false;
+  if (!attempt.damaged || attempt.score >= (attempt.clean ?? attempt.score)) return false;
+  if (ps.fixRounds >= 2 || remaining < 180) return false;
+  return c.rng() < clamp(0.55 + st.skills.debug * 0.35, 0.5, 0.92);
+}
+
 function decide(c: Contest, st: Student, p: Problem, ps: ProblemState, remaining: number) {
-  // 固定中性策略：不再按自我认知/冒险/耐心分流，所有人都用同一套交题规则。
+  const ioi = isIoiFormat(c);
+  // 固定中性策略：不再按自我认知/冒险/耐心分流，所有人都用同一套交题规则；正赛可叠加上层战术指令。
   const cautious = 0.55;
+  const tactic = c.config.tactic ?? 'normal';
+  const wantMoreP = tactic === 'aggressive' ? 0.72 : tactic === 'steady' ? 0.42 : 0.55;
+  const retreatScale = tactic === 'aggressive' ? 0.5 : tactic === 'steady' ? 1.25 : 1;
 
   if (ps.mode === 'brute') {
-    submitAttempt(c, st, p, ps, 'brute', ps.tested);
+    const done = submitAttempt(c, st, p, ps, 'brute', ps.tested);
+    if (shouldIoiQuickFix(c, st, ps, done, remaining)) {
+      ps.phase = 'fixing';
+      ps.progress = 0;
+      return;
+    }
     const cost = estimatedCost(st, p) * 60;
-    const wantMore = c.rng() < 0.55;
+    const wantMore = c.rng() < wantMoreP;
     if (remaining > cost * 0.9 && wantMore) {
       ps.mode = 'full';
       ps.phase = 'thinking';
@@ -783,20 +1003,29 @@ function decide(c: Contest, st: Student, p: Problem, ps: ProblemState, remaining
   }
 
   const safe = lastAttemptOfMode(ps, 'brute');
-  const est = expectedScore(st, p, 'full');
+  const rawExp = expectedScore(st, p, 'full');
+  // 统一口径再比较：safe.est 已经过 scoreCurve，期望正解分也必须走同一条曲线
+  const estFull = c.config.scoreCurve ? curveScore(c.config.scoreCurve, rawExp) : rawExp;
 
-  // 正解没把握、手里还有暴力分：不敢交，保住保底分
-  if (safe && safe.est > 0 && est < safe.est * 0.85 && cautious > 0.55 && c.rng() < 0.75) {
+  // OI 赛制以最后一次提交为准：正解没把握、手里还有暴力分时，有时选择保住保底分；
+  // IOI 赛制取历次最高分，提交正解不会覆盖已有暴力分，因此不会畏手畏脚。
+  if (!ioi && safe && safe.est > 0 && estFull < safe.est * 0.85 && cautious >= 0.55 && c.rng() < 0.65 * retreatScale) {
     finishProblem(st, ps);
     return;
   }
 
-  submitAttempt(c, st, p, ps, 'full', ps.tested);
+  const done = submitAttempt(c, st, p, ps, 'full', ps.tested);
 
-  // 交完正解心里发毛：补交一版暴力，防止挂穿
-  const done = ps.attempts[ps.attempts.length - 1];
+  // IOI 实时评测看到 RE/WA/TLE 掉分：立刻花几分钟定位修 bug 重交，而不是直接弃题
+  if (shouldIoiQuickFix(c, st, ps, done, remaining)) {
+    ps.phase = 'fixing';
+    ps.progress = 0;
+    return;
+  }
+
+  // OI 赛制交完正解心里发毛：补交一版暴力，防止挂穿；IOI 赛制取历史最高分无需补交暴力
   const doubt = 1 - done.est / 100;
-  if (safe && safe.est > 0 && remaining > 300 && doubt > 0.45 && c.rng() < 0.35 + cautious * 0.2) {
+  if (!ioi && safe && safe.est > 0 && remaining > 300 && doubt > 0.45 && c.rng() < (0.35 + cautious * 0.2) * retreatScale) {
     ps.phase = 'restoring';
     ps.progress = 0;
     return;
@@ -811,7 +1040,8 @@ function completePhase(c: Contest, st: Student, p: Problem, ps: ProblemState, re
       return;
     case 'thinking': {
       const skill = abilityOf(st, p.topic);
-      let chance = sigmoid((skill - p.think + 20) / 14);
+      const tacticShift = c.config.tactic === 'aggressive' ? 5 : c.config.tactic === 'steady' ? -4 : 0;
+      let chance = sigmoid((skill - p.think + 20 + tacticShift) / 14);
       if (ps.attempts.length > 0) chance += 0.10;
       const found = c.rng() < chance;
       ps.mode = found ? 'full' : 'brute';
@@ -819,7 +1049,9 @@ function completePhase(c: Contest, st: Student, p: Problem, ps: ProblemState, re
       return;
     }
     case 'coding': {
-      const diligence = clamp(0.12 + st.skills.debug * 0.45, 0.05, 0.92);
+      const tacticDil = c.config.tactic === 'steady' ? 0.18 : c.config.tactic === 'aggressive' ? -0.12 : 0;
+      const traitDil = hasTrait(st, 'tester') ? 0.25 : 0;
+      const diligence = clamp(0.12 + st.skills.debug * 0.45 + tacticDil + traitDil, 0.05, 0.96);
       if (c.rng() < diligence) {
         ps.phase = 'testing';
       } else {
@@ -847,7 +1079,28 @@ function completePhase(c: Contest, st: Student, p: Problem, ps: ProblemState, re
       return;
     case 'restoring': {
       const brute = lastAttemptOfMode(ps, 'brute');
-      if (brute) submitAttempt(c, st, p, ps, 'brute', brute.tested);
+      if (brute) restoreBruteAttempt(c, st, p, ps, brute);
+      finishProblem(st, ps);
+      return;
+    }
+    case 'fixing': {
+      ps.fixRounds += 1;
+      const fixed = resubmitIoiFix(c, st, p, ps);
+      if (shouldIoiQuickFix(c, st, ps, fixed, remaining)) {
+        ps.phase = 'fixing';
+        ps.progress = 0;
+        return;
+      }
+      // 如果是暴力修完且还有充裕时间，继续按正常流程想正解
+      if (ps.mode === 'brute') {
+        const cost = estimatedCost(st, p) * 60;
+        if (remaining > cost * 0.9 && c.rng() < 0.55) {
+          ps.mode = 'full';
+          ps.phase = 'thinking';
+          ps.progress = 0;
+          return;
+        }
+      }
       finishProblem(st, ps);
       return;
     }
@@ -939,17 +1192,18 @@ export function tick(c: Contest, simSeconds: number) {
 
 // ===== 赛后统一出分 =====
 export function finalize(c: Contest): StudentResult[] {
+  const ioi = isIoiFormat(c);
   const rows: StudentResult[] = c.students.map((st) => {
     const perProblem: ProblemResult[] = st.problems.map((ps, i) => {
-      const last = ps.attempts[ps.attempts.length - 1];
+      const eff = effectiveAttempt(ps, ioi);
       const trail = ps.attempts.map((a) => ({ time: a.time, mode: a.mode, est: a.est, score: a.score }));
       return {
         problemId: i,
-        real: last ? last.score : 0,
-        est: last ? last.est : 0,
-        delta: last ? last.score - last.est : 0,
+        real: eff ? eff.score : 0,
+        est: eff ? eff.est : 0,
+        delta: eff ? eff.score - eff.est : 0,
         attempts: ps.attempts.length,
-        reason: last ? last.reason : '未提交',
+        reason: eff ? eff.reason : '未提交',
         trail,
       };
     });
@@ -1001,6 +1255,7 @@ export function phaseLabel(phase: Phase): string {
     case 'testing': return '对拍';
     case 'deciding': return '犹豫';
     case 'restoring': return '补交暴力';
+    case 'fixing': return '修 Bug';
     case 'checking': return '检查文件';
     case 'idle': return '选题';
     case 'done': return '收工';
@@ -1017,6 +1272,7 @@ export function phaseColor(phase: Phase): string {
     case 'testing': return '#9b59b6';
     case 'deciding': return '#e74c3c';
     case 'restoring': return '#e67e22';
+    case 'fixing': return '#ec4899';
     case 'checking': return '#94a3b8';
     default: return '#64748b';
   }

@@ -156,18 +156,18 @@ export default function OpvEditor({
     <div className="fixed inset-0 z-50 overflow-y-auto bg-black/85 p-3 sm:p-6" data-testid="opv-editor">
       <div className="max-w-4xl mx-auto rounded-2xl border border-amber-500/30 bg-[#0d1116] shadow-2xl">
         {/* 标题 */}
-        <div className="sticky top-0 z-10 flex items-start gap-3 px-5 py-4 rounded-t-2xl border-b border-slate-700/60 bg-[#0d1116]">
+        <div className="sticky top-0 z-10 flex items-start gap-3 px-5 py-4 border-b border-white/10 bg-[#0d1118]">
           <div className="ui-editor-mark"><Ic n="zap" size={24} /></div>
           <div className="flex-1 min-w-0">
             <div className="flex flex-wrap items-baseline gap-2">
-              <h2 className="text-lg font-black text-white">OP 开局 · 自定义一个人的数值</h2>
-              <span className="text-[10px] px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-300 font-bold">OPv</span>
+              <h2 className="text-lg font-black text-white">自定义开局 · 设定一名选手的初始数值</h2>
+              <span className="text-[11px] px-1.5 py-0.5 border border-amber-500/40 bg-amber-500/15 text-amber-300 font-bold">OP</span>
             </div>
-            <p className="text-[11px] text-slate-400 mt-1">
-              「数据爬得太早，根本无法证明我现在的实力」——那就自己填。开档前设好年龄、属性和数值，进教练模式或观战模式都按这份来。
+            <p className="text-[12px] text-slate-400 mt-1">
+              「数据爬得太早，根本无法证明我现在的实力」——可改写名单里任意一人或新加一位选手；不启用时默认按原始校队数据开档。
             </p>
           </div>
-          <button onClick={onClose} className="text-slate-500 hover:text-white text-lg leading-none px-1" title="关闭"><Ic n="x" size={16} /></button>
+          <button onClick={onClose} className="ui-btn-ghost px-2 py-1 text-slate-300" title="关闭"><Ic n="x" size={16} /></button>
         </div>
 
         <div className="p-5 space-y-5">
@@ -330,30 +330,29 @@ export default function OpvEditor({
             </details>
           </section>
 
-          <div className="text-[10px] leading-relaxed text-slate-500">
-            这份设置只对 <b className="text-slate-300">OPv 版</b> 生效，存在本机浏览器里；教练档也单独存，不会动原版的存档和 HTML。
-            自定义数值在开档这一刻写入，之后照常训练成长、升级、毕业。OPv 把赛场能力上限从 0.998 放宽到 1.35，
-            120 知识点以下仍按原版口径，所以只有超出 120 的部分会「超频」，名单里其他选手一分不变。
+          <div className="text-[11px] leading-relaxed text-slate-400">
+            这份设置保存在本机浏览器里，仅在启用后于「新的一届」开档时写入，之后照常训练成长、升级、毕业；点左下「恢复原始数据」可随时关闭。
+            120 知识点以下沿用常规口径，120–150 平滑进入超频区（最高 1.35 赛场能力），名单里其余选手不受影响。
           </div>
         </div>
 
         {/* 底部操作 */}
-        <div className="sticky bottom-0 flex flex-wrap gap-2 px-5 py-3 rounded-b-2xl border-t border-slate-700/60 bg-[#0d1116]">
+        <div className="sticky bottom-0 flex flex-wrap gap-2 px-5 py-3 border-t border-white/10 bg-[#0d1118]">
           <button
             onClick={() => onSaved(null)}
-            className="px-3 py-2 rounded-xl border border-slate-700 text-[11px] text-slate-400 hover:border-rose-400/50 hover:text-rose-300"
+            className="ui-btn-ghost px-3 py-2 text-[11px] text-slate-300 hover:border-rose-400/50 hover:text-rose-300"
             data-testid="opv-reset"
           >
-            <Ic n="rotateCcw" /> 恢复原始数据（关掉 OP）
+            <Ic n="rotateCcw" /> 恢复原始数据（关掉自定义）
           </button>
           <div className="flex-1" />
-          <button onClick={onClose} className="px-4 py-2 rounded-xl border border-slate-700 text-[12px] text-slate-300 hover:border-slate-500">
+          <button onClick={onClose} className="ui-btn-ghost px-4 py-2 text-[12px]">
             取消
           </button>
           <button
             onClick={save}
             data-testid="opv-save"
-            className="px-5 py-2 rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-slate-900 font-bold text-[12px]"
+            className="ui-btn-primary px-5 py-2 text-[12px]"
           >
             <Ic n="save" /> 保存设置（开新的一届生效）
           </button>

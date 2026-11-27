@@ -11,10 +11,11 @@
  *  ③ 不缓存到模块变量里，多标签页时始终以 localStorage 为准，避免互相覆盖。
  */
 import type { SeasonState } from './season.ts';
-import { IS_OPV, OPV_COACH_KEY } from './opv.ts';
+import { OPV_COACH_KEY } from './opv.ts';
 
-/** OPv 版用独立存档，绝不能把原版的教练档覆盖掉（file:// 下同源） */
-const KEY = IS_OPV ? OPV_COACH_KEY : 'oi-sim-coach-v1';
+/** 统一主存档键；首次读档时若主存档为空，会平滑迁移旧 OPv 存档 */
+const KEY = 'oi-sim-coach-v1';
+const LEGACY_KEYS = [OPV_COACH_KEY];
 const VERSION = 1;
 
 interface CoachSave {
@@ -45,28 +46,35 @@ function validSeason(v: unknown): v is SeasonState {
     && s.week >= 1 && s.week <= 60 && s.year >= 1;
 }
 
-export function hasCoachSave(): boolean {
+function readValidFrom(key: string): SeasonState | null {
   try {
-    const raw = localStorage.getItem(KEY);
-    if (!raw) return false;
+    const raw = localStorage.getItem(key);
+    if (!raw) return null;
     const parsed = JSON.parse(raw) as CoachSave;
-    return parsed?.version === VERSION && validSeason(parsed.season);
+    if (!parsed || parsed.version !== VERSION || !validSeason(parsed.season)) return null;
+    return parsed.season;
   } catch {
-    return false;
+    return null;
   }
 }
 
-/** 读不到 / 读到坏档时，用调用方给的新档兜底 */
+export function hasCoachSave(): boolean {
+  if (readValidFrom(KEY)) return true;
+  return LEGACY_KEYS.some((k) => Boolean(readValidFrom(k)));
+}
+
+/** 读不到 / 读到坏档时，用调用方给的新档兜底；存在旧 OPv 存档时自动平滑迁移 */
 export function loadCoachSeason(fallback: () => SeasonState): SeasonState {
-  try {
-    const raw = localStorage.getItem(KEY);
-    if (!raw) return fallback();
-    const parsed = JSON.parse(raw) as CoachSave;
-    if (!parsed || parsed.version !== VERSION || !validSeason(parsed.season)) return fallback();
-    return parsed.season;
-  } catch {
-    return fallback();
+  const primary = readValidFrom(KEY);
+  if (primary) return primary;
+  for (const k of LEGACY_KEYS) {
+    const legacy = readValidFrom(k);
+    if (legacy) {
+      saveCoachSeason(legacy);
+      return legacy;
+    }
   }
+  return fallback();
 }
 
 /** 返回是否真的写进去了：file:// / 隐私模式下可能不可用，UI 不该假装已存档 */
@@ -95,6 +103,7 @@ export function coachStorageAvailable(): boolean {
 export function clearCoachSeason(): void {
   try {
     localStorage.removeItem(KEY);
+    for (const k of LEGACY_KEYS) localStorage.removeItem(k);
   } catch {
     /* ignore */
   }
